@@ -1,11 +1,20 @@
 # -*- coding: utf-8 -*-
 """Rename photos from timelapse cameras
 
+Exit codes
+    0   No errors
+    1   No files found in source directory
+    2   Ant Renamer executable not found
+    3   Ant Renamer batch file not found
+    4   An error occurred running Ant Renamer
+    5   An error occurred running xcopy
+
 @author Patrick O'Keeffe <pokeeffe@wsu.edu>
 """
 
 import os
 import subprocess
+import sys
 
 splashscreen = """\
 =========================================================
@@ -16,10 +25,19 @@ splashscreen = """\
 =========================================================
 """
 srcloc = r'F:\DCIM\100_WSCT'
-antexe = r'C:\Program Files (x86)\Ant Renamer\renamer.exe'
-antarg = '-b "%s" -afr "%s" -g -x' #batch file name, source dir
-arbloc = r'..\Ant Renamer batch files\%s timelapse rename batch process.arb'
 dstloc = r'C:\SHARES\2011_REACCH\tower_%s\photos_timelapsecam'
+antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
+antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
+arbloc = r'%s timelapse file namer.arb'
+cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
+    # XCOPY source <destination> 
+    #   /C      continue, even on error
+    #   /K      copies attributes (default is reset)
+    #   /V      verify each new file 
+    #   /Q      do not display file names while copying
+    #   /X      copies file audit settings (incl ownership/ACL)
+    #   /Y      suppresses prompt to overwrite existing file
+ejtcmd = r'"..\bin\usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
 
 _codelist = {'1' : 'CFNT',
              '2' : 'LIND',
@@ -29,13 +47,15 @@ _codelist = {'1' : 'CFNT',
 def check_for_ant_renamer():
     if not os.path.isfile(antexe):
         print 'Error: could not locate Ant Renamer installation directory'
-        raw_input('Press any key to continue...')
+        raw_input('Press any key to exit...')
+        sys.exit(2)
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
     if not os.path.isfile(arbpath):
         print 'Error: could not locate appropriate Ant Renamer batch file'
-        raw_input('Press any key to continue...')
+        raw_input('Press any key to exit...')
+        sys.exit(3)
     return arbpath
 
 def main():
@@ -46,13 +66,13 @@ def main():
     if len(filelist) == 0:
         print 'Warning: no files were found in %s' % srcloc
         raw_input('Press any key to exit...')
-        import sys; sys.exit(0)
+        sys.exit(1)
     print """
 Where are these files from?
   (1) CFNT  Cook Agronomy Farm, no-till
   (2) LIND  Lind Dryland Research Station
   (3) CFCT  Cook Agronomy Farm, conventional till
-  (4) MMTN  Moscow Mountain area site \n"""
+  (4) MMTN  Moscow Mountain area site"""
 
     choice = ''
     while choice not in ['1', '2', '3', '4', 'q', 'Q']:
@@ -63,11 +83,60 @@ Where are these files from?
     if choice.lower() == 'q':
         import sys; sys.exit(0)
     
-    arb = find_batch_file(_codelist[choice])
-    print 'using batch file: ', arb
+    arbfile = find_batch_file(_codelist[choice])
+    print '\nUsing batch file: ', arbfile
+    cpydst = dstloc % _codelist[choice]
+    print 'Target directory: ', cpydst
+    
+    confirm = raw_input('Are these settings OK? C=continue, else quit: ')
+    if not confirm.strip().lower() == 'c':
+        raw_input('Press any key to exit...')
+        sys.exit(0)
+    print
 
-    print 'put files in: ', dstloc % _codelist[choice]
+    print ' * Renaming image files...',
+    cmd = antexe + antarg % (arbfile, srcloc)
+    rc = subprocess.check_call(cmd, shell=True)
+    if rc:
+        print ' Error: Ant Renamer exited with code %s' % rc
+        raw_input('Press any key to exit...')
+        sys.exit(4)
+    else:
+        print 'done.'
 
+    print ' * Copying files to destination... ',
+    cmd = cpyexe % (srcloc, cpydst)
+    rc = subprocess.check_call(cmd, shell=True)
+    if rc:
+        print ' Error: Unable to copy files to destination'
+        raw_input('Press any key to exit...')
+        sys.exit(5)
+    # xcopy prints equivalent 'done.' statement to stdout
+    
+    ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
+    print
+    if ask.strip().lower() == 'y':
+        filelist = os.listdir(srcloc)
+        print ' * Emptying source directory...',
+        for file in filelist:
+            try:
+                os.remove(os.path.join(srcloc, file))
+            except WindowsError as err:
+                print ' Error: unable to remove %s (%s) ' % (file, err)
+        print 'done.'
+    else:
+        print ' * Source files NOT deleted from card'
+    
+    print ' * Finished transferring files.'
+    
+    ask = raw_input('\nAttempt to eject source directory? Y=yes, else no: ')
+    if ask.strip().lower() == 'y':
+        try:
+            drive = os.path.splitdrive(srcloc)[0].strip(':')
+            subprocess.check_call(ejtcmd % drive, shell=True)
+        except subprocess.SubprocessError as err:
+            print 'Unable to eject source drive: %s' % err
+    
     raw_input('Press any key to exit...')
 
 if __name__ == '__main__':
