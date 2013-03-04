@@ -28,12 +28,14 @@ _codelist = {'1' : 'CFNT',
 
 def check_for_ant_renamer():
     if not os.path.isfile(antexe):
-        raise IOError, 'Could not locate Ant Renamer install path'
+        print 'Error: could not locate Ant Renamer installation directory'
+        raw_input('Press any key to continue...')
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
     if not os.path.isfile(arbpath):
-        raise IOError, 'Could not locate Ant Renamer batch files'
+        print 'Error: could not locate appropriate Ant Renamer batch file'
+        raw_input('Press any key to continue...')
     return arbpath
 
 def main():
@@ -41,19 +43,25 @@ def main():
     print 'Source directory: %s \nCounting files...' % srcloc, 
     filelist = os.listdir(srcloc)
     print "%d files found" % len(filelist)
+    if len(filelist) == 0:
+        print 'Warning: no files were found in %s' % srcloc
+        raw_input('Press any key to exit...')
+        import sys; sys.exit(0)
     print """
 Where are these files from?
   (1) CFNT  Cook Agronomy Farm, no-till
   (2) LIND  Lind Dryland Research Station
   (3) CFCT  Cook Agronomy Farm, conventional till
-  (4) MMTN  Moscow Mountain area site """
+  (4) MMTN  Moscow Mountain area site \n"""
 
     choice = ''
-    while not (choice.isdigit() or choice == 'q'):
-        choice = raw_input("Choose 1-4 or q to quit: ")
-    if choice == 'q':
-        import sys
-        sys.exit(0)
+    while choice not in ['1', '2', '3', '4', 'q', 'Q']:
+        choice = raw_input("Choose 1-4, <o> to open 1st file, <q> to quit: ")
+        if choice.lower() == 'o':
+            smpfile = os.path.join(srcloc, filelist[0])
+            subprocess.call(smpfile, shell=True)
+    if choice.lower() == 'q':
+        import sys; sys.exit(0)
     
     arb = find_batch_file(_codelist[choice])
     print 'using batch file: ', arb
