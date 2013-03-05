@@ -145,4 +145,6 @@ if __name__ == '__main__':
         print 'This application requires a Windows environment.'
         raw_input('Press any key to quit...')
         sys.exit(6)
+    if len(sys.argv) > 1:
+        srcloc = sys.argv[1]
     main()
