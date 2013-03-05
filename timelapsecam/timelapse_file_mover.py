@@ -8,6 +8,7 @@ Exit codes
     3   Ant Renamer batch file not found
     4   An error occurred running Ant Renamer
     5   An error occurred running xcopy
+    6   Run outside Windows environment
 
 @author Patrick O'Keeffe <pokeeffe@wsu.edu>
 """
@@ -140,4 +141,8 @@ Where are these files from?
     raw_input('Press any key to exit...')
 
 if __name__ == '__main__':
+    if 'nt' not in os.name:
+        print 'This application requires a Windows environment.'
+        raw_input('Press any key to quit...')
+        sys.exit(6)
     main()
