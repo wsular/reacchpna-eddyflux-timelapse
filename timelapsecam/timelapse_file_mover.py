@@ -135,7 +135,7 @@ Where are these files from?
         try:
             drive = os.path.splitdrive(srcloc)[0].strip(':')
             subprocess.check_call(ejtcmd % drive, shell=True)
-        except subprocess.SubprocessError as err:
+        except subprocess.CalledProcessError as err:
             print 'Unable to eject source drive: %s' % err
     
     raw_input('Press any key to exit...')
