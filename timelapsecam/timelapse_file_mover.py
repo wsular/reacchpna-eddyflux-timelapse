@@ -113,6 +113,7 @@ Where are these files from?
         raw_input('Press any key to exit...')
         sys.exit(5)
     # xcopy prints equivalent 'done.' statement to stdout
+    print ' * Finished transferring files.'
     
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
     print
@@ -128,7 +129,6 @@ Where are these files from?
     else:
         print ' * Source files NOT deleted from card'
     
-    print ' * Finished transferring files.'
     
     ask = raw_input('\nAttempt to eject source directory? Y=yes, else no: ')
     if ask.strip().lower() == 'y':
