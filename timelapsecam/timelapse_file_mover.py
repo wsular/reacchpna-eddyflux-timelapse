@@ -129,7 +129,6 @@ Where are these files from?
     else:
         print ' * Source files NOT deleted from card'
     
-    
     ask = raw_input('\nAttempt to eject source directory? Y=yes, else no: ')
     if ask.strip().lower() == 'y':
         try:
@@ -138,7 +137,7 @@ Where are these files from?
         except subprocess.CalledProcessError as err:
             print 'Unable to eject source drive: %s' % err
     
-    raw_input('Press any key to exit...')
+    raw_input('Press <enter> to exit...')
 
 if __name__ == '__main__':
     if 'nt' not in os.name:
