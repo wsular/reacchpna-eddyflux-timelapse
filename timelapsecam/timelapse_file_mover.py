@@ -31,10 +31,10 @@ antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 arbloc = r'%s timelapse file namer.arb'
 cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
-    # XCOPY source <destination> 
+    # XCOPY source <destination>
     #   /C      continue, even on error
     #   /K      copies attributes (default is reset)
-    #   /V      verify each new file 
+    #   /V      verify each new file
     #   /Q      do not display file names while copying
     #   /X      copies file audit settings (incl ownership/ACL)
     #   /Y      suppresses prompt to overwrite existing file
@@ -83,12 +83,12 @@ Where are these files from?
             subprocess.call(smpfile, shell=True)
     if choice.lower() == 'q':
         import sys; sys.exit(0)
-    
+
     arbfile = find_batch_file(_codelist[choice])
     print '\nUsing batch file: ', arbfile
     cpydst = dstloc % _codelist[choice]
     print 'Target directory: ', cpydst
-    
+
     confirm = raw_input('Are these settings OK? C=continue, else quit: ')
     if not confirm.strip().lower() == 'c':
         raw_input('Press any key to exit...')
@@ -114,7 +114,7 @@ Where are these files from?
         sys.exit(5)
     # xcopy prints equivalent 'done.' statement to stdout
     print ' * Finished transferring files.'
-    
+
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
     print
     if ask.strip().lower() == 'y':
@@ -128,7 +128,7 @@ Where are these files from?
         print 'done.'
     else:
         print ' * Source files NOT deleted from card'
-    
+
     ask = raw_input('\nAttempt to eject source directory? Y=yes, else no: ')
     if ask.strip().lower() == 'y':
         try:
@@ -136,8 +136,6 @@ Where are these files from?
             subprocess.check_call(ejtcmd % drive, shell=True)
         except subprocess.CalledProcessError as err:
             print 'Unable to eject source drive: %s' % err
-    
-    raw_input('Press <enter> to exit...')
 
 if __name__ == '__main__':
     if 'nt' not in os.name:
@@ -147,3 +145,4 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         srcloc = sys.argv[1]
     main()
+    raw_input('Press <enter> to exit...')
