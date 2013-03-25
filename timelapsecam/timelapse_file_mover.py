@@ -136,7 +136,6 @@ Where are these files from?
         raw_input('Press <enter> to exit...')
         sys.exit(RC_CPYERR)
     # xcopy prints equivalent 'done.' statement to stdout
-    print ' * Finished transferring files.'
 
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
     print
