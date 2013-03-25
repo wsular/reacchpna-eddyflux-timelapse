@@ -26,7 +26,7 @@ splashscreen = """\
 =========================================================
 """
 srcloc = r'F:\DCIM\100_WSCT'
-dstloc = r'C:\SHARES\2011_REACCH\tower_%s\photos_timelapsecam'
+dstloc = r'C:\SHARES\proj\2011_REACCH\tower_%s\photos_timelapsecam'
 antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 arbloc = r'%s timelapse file namer.arb'
