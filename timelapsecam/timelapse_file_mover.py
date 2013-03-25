@@ -80,7 +80,12 @@ if __name__ == '__main__':
 
     print splashscreen
     print 'Source directory: %s \nCounting files...' % srcloc,
-    filelist = os.listdir(srcloc)
+    try:
+        filelist = os.listdir(srcloc)
+    except WindowsError as err:
+        print 'Warning: no disk found in %s' % os.path.splitdrive(srcloc)[0]
+        raw_input('Press <enter> to exit...')
+        sys.exit(RC_NOSRCDIR)
     print "%d files found" % len(filelist)
     if len(filelist) == 0:
         print 'Warning: no files were found in %s' % srcloc
