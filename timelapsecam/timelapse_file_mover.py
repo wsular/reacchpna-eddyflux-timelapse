@@ -57,14 +57,14 @@ RC_ENVERR = 7
 def check_for_ant_renamer():
     if not os.path.isfile(antexe):
         print 'Error: could not locate Ant Renamer installation directory'
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_NOANTEXE)
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
     if not os.path.isfile(arbpath):
         print 'Error: could not locate appropriate Ant Renamer batch file'
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_NOBATCH)
     return arbpath
 
@@ -72,7 +72,7 @@ def find_batch_file(codestr):
 if __name__ == '__main__':
     if 'nt' not in os.name:
         print 'This application requires a Windows environment.'
-        raw_input('Press any key to quit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_ENVERR)
     if len(sys.argv) > 1:
         srcloc = sys.argv[1]
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     print "%d files found" % len(filelist)
     if len(filelist) == 0:
         print 'Warning: no files were found in %s' % srcloc
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_NOFILES)
     print """
 Where are these files from?
@@ -113,7 +113,7 @@ Where are these files from?
 
     confirm = raw_input('Are these settings OK? C=continue, else quit: ')
     if not confirm.strip().lower() == 'c':
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit()
     print
 
@@ -122,17 +122,18 @@ Where are these files from?
     rc = subprocess.check_call(cmd, shell=True)
     if rc:
         print ' Error: Ant Renamer exited with code %s' % rc
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_ANTERR)
     else:
         print 'done.'
 
+    # TODO check if files of same name exist in destination folder b4 copying
     print ' * Copying files to destination... ',
     cmd = cpyexe % (srcloc, cpydst)
     rc = subprocess.check_call(cmd, shell=True)
     if rc:
         print ' Error: Unable to copy files to destination'
-        raw_input('Press any key to exit...')
+        raw_input('Press <enter> to exit...')
         sys.exit(RC_CPYERR)
     # xcopy prints equivalent 'done.' statement to stdout
     print ' * Finished transferring files.'
