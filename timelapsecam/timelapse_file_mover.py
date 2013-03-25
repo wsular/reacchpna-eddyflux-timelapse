@@ -3,12 +3,13 @@
 
 Exit codes
     0   No errors
-    1   No files found in source directory
-    2   Ant Renamer executable not found
-    3   Ant Renamer batch file not found
-    4   An error occurred running Ant Renamer
-    5   An error occurred running xcopy
-    6   Run outside Windows environment
+    1   No source directory found
+    2   No files found in source directory
+    3   Ant Renamer executable not found
+    4   Ant Renamer batch file not found
+    5   An error occurred running Ant Renamer
+    6   An error occurred running xcopy
+    7   Run outside Windows environment
 
 @author Patrick O'Keeffe <pokeeffe@wsu.edu>
 """
@@ -45,18 +46,27 @@ _codelist = {'1' : 'CFNT',
              '3' : 'CFCT',
              '4' : 'MMTN' }
 
+RC_NOERRS = 0
+RC_NOSRCDIR = 1
+RC_NOFILES = 2
+RC_NOANTEXE= 3
+RC_NOBATCH = 4
+RC_ANTERR = 5
+RC_CPYERR = 6
+RC_ENVERR = 7
+
 def check_for_ant_renamer():
     if not os.path.isfile(antexe):
         print 'Error: could not locate Ant Renamer installation directory'
         raw_input('Press any key to exit...')
-        sys.exit(2)
+        sys.exit(RC_NOANTEXE)
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
     if not os.path.isfile(arbpath):
         print 'Error: could not locate appropriate Ant Renamer batch file'
         raw_input('Press any key to exit...')
-        sys.exit(3)
+        sys.exit(RC_NOBATCH)
     return arbpath
 
 
@@ -64,7 +74,7 @@ if __name__ == '__main__':
     if 'nt' not in os.name:
         print 'This application requires a Windows environment.'
         raw_input('Press any key to quit...')
-        sys.exit(6)
+        sys.exit(RC_ENVERR)
     if len(sys.argv) > 1:
         srcloc = sys.argv[1]
 
@@ -75,7 +85,7 @@ if __name__ == '__main__':
     if len(filelist) == 0:
         print 'Warning: no files were found in %s' % srcloc
         raw_input('Press any key to exit...')
-        sys.exit(1)
+        sys.exit(RC_NOFILES)
     print """
 Where are these files from?
   (1) CFNT  Cook Agronomy Farm, no-till
@@ -90,7 +100,7 @@ Where are these files from?
             smpfile = os.path.join(srcloc, filelist[0])
             subprocess.call(smpfile, shell=True)
     if choice.lower() == 'q':
-        import sys; sys.exit(0)
+        import sys; sys.exit(RC_NOERRS)
 
     arbfile = find_batch_file(_codelist[choice])
     print '\nUsing batch file: ', arbfile
@@ -100,7 +110,7 @@ Where are these files from?
     confirm = raw_input('Are these settings OK? C=continue, else quit: ')
     if not confirm.strip().lower() == 'c':
         raw_input('Press any key to exit...')
-        sys.exit(0)
+        sys.exit(RC_NOERRS)
     print
 
     print ' * Renaming image files...',
@@ -109,7 +119,7 @@ Where are these files from?
     if rc:
         print ' Error: Ant Renamer exited with code %s' % rc
         raw_input('Press any key to exit...')
-        sys.exit(4)
+        sys.exit(RC_ANTERR)
     else:
         print 'done.'
 
@@ -119,7 +129,7 @@ Where are these files from?
     if rc:
         print ' Error: Unable to copy files to destination'
         raw_input('Press any key to exit...')
-        sys.exit(5)
+        sys.exit(RC_CPYERR)
     # xcopy prints equivalent 'done.' statement to stdout
     print ' * Finished transferring files.'
 
