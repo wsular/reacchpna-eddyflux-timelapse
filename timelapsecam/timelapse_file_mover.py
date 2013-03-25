@@ -156,3 +156,4 @@ Where are these files from?
             print 'Unable to eject source drive: %s' % err
 
     raw_input('Press <enter> to exit...')
+    sys.exit(RC_NOERRS)
