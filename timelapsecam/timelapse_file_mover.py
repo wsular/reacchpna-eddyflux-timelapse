@@ -46,7 +46,6 @@ _codelist = {'1' : 'CFNT',
              '3' : 'CFCT',
              '4' : 'MMTN' }
 
-RC_NOERRS = 0
 RC_NOSRCDIR = 1
 RC_NOFILES = 2
 RC_NOANTEXE= 3
@@ -105,7 +104,7 @@ Where are these files from?
             smpfile = os.path.join(srcloc, filelist[0])
             subprocess.call(smpfile, shell=True)
     if choice.lower() == 'q':
-        import sys; sys.exit(RC_NOERRS)
+        import sys; sys.exit()
 
     arbfile = find_batch_file(_codelist[choice])
     print '\nUsing batch file: ', arbfile
@@ -115,7 +114,7 @@ Where are these files from?
     confirm = raw_input('Are these settings OK? C=continue, else quit: ')
     if not confirm.strip().lower() == 'c':
         raw_input('Press any key to exit...')
-        sys.exit(RC_NOERRS)
+        sys.exit()
     print
 
     print ' * Renaming image files...',
@@ -161,4 +160,4 @@ Where are these files from?
             print 'Unable to eject source drive: %s' % err
 
     raw_input('Press <enter> to exit...')
-    sys.exit(RC_NOERRS)
+    sys.exit()
