@@ -59,9 +59,17 @@ def find_batch_file(codestr):
         sys.exit(3)
     return arbpath
 
-def main():
-    print splashscreen 
-    print 'Source directory: %s \nCounting files...' % srcloc, 
+
+if __name__ == '__main__':
+    if 'nt' not in os.name:
+        print 'This application requires a Windows environment.'
+        raw_input('Press any key to quit...')
+        sys.exit(6)
+    if len(sys.argv) > 1:
+        srcloc = sys.argv[1]
+
+    print splashscreen
+    print 'Source directory: %s \nCounting files...' % srcloc,
     filelist = os.listdir(srcloc)
     print "%d files found" % len(filelist)
     if len(filelist) == 0:
@@ -137,12 +145,4 @@ Where are these files from?
         except subprocess.CalledProcessError as err:
             print 'Unable to eject source drive: %s' % err
 
-if __name__ == '__main__':
-    if 'nt' not in os.name:
-        print 'This application requires a Windows environment.'
-        raw_input('Press any key to quit...')
-        sys.exit(6)
-    if len(sys.argv) > 1:
-        srcloc = sys.argv[1]
-    main()
     raw_input('Press <enter> to exit...')
