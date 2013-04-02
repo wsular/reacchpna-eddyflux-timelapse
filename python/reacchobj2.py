@@ -92,71 +92,12 @@ site_sernos = [x.SN for x in site_list]
 code2sn = dict([[x.code,x.SN] for x in site_list])
 sn2code = dict([[x.SN,x.code] for x in site_list])
 
-def push_new_downloads():
-    """Copy raw downloads to the FTP server directory
     
-    Synchronizes current versions of the downloaded data files 
-    
-    """
-    import time, os, subprocess, glob
-    logfile = open(log_paths['push_test'], 'a')
-    
-    src = download_dir
-    def log(msg, logfile=logfile):
-        print >> logfile, time.strftime('%Y-%m-%d %H:%M:%S  ')+str(msg)
-    if not os.path.isdir(src):
-        log('! Download directory could not be found: %s' % src)
-        quit()
-    os.chdir(src)
-    for site in site_list:
-        dest = site.raw_downloads_dir
-        if not os.path.isdir(dest):
-            log('! Target directory could not be found: %s' % dest)
-            continue
-        sites_backup_files = glob.iglob(os.path.join(src,site.code+'*.backup'))
-        for fname in sorted(sites_backup_files):
-            older, newer = fname, fname.replace('.backup','')
-            if os.path.isfile(newer):
-                log('* Merging download files: %s %s' % (older, newer))
-                merge_download_files(older, newer)
-            else:
-                log('* Found orphaned .backup file: %s' % older)
-        sites_current_files = glob.iglob(os.path.join(src,site.code+'*.dat'))
-        for fname in sorted(sites_current_files):
-            cmd = 'xcopy "%s" "%s" /C /D /K /V /X /Y' % (fname, dest)
-            # XCOPY source <destination> 
-            #   /C      continue, even on error
-            #   /D      only copy files newer than at destination
-            #   /K      copies attributes (default is reset)
-            #   /V      verify each new file 
-            #   /X      copies file audit settings (incl ownership/ACL)
-            #   /Y      suppresses prompt to overwrite existing file
-            #   /L  *   for testing, only lists files it would move
-            #   /W  *   prompt for confirmation for each file
-            print cmd
-            try:
-                #rc = subprocess.call(cmd)
-                #log('> Copying file: '+fname+' (retcode: '+str(rc)+')')
-                log('> Copying file: %s' % fname)
-            except OSError:
-                log('# OSError encountered while copying: %s' % fname)
-    log('Finished syncing active downloads.')
-    logfile.close()
-                
                     
 
-def merge_download_files(oldfile, newfile):
-    """merge download files together"""
-    print oldfile, newfile
 
 
 
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) > 1:
-        if sys.argv[1] == '-pushdls':
-            push_new_downloads()
-        
 
 
 
