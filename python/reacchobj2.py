@@ -1,0 +1,163 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep 14 08:09:41 2012
+
+@author: pokeeffe
+"""
+
+__version_info__ = (0, 1, '20120917')
+__version__ = '.'.join(str(x) for x in __version_info__)
+
+home_dir = r'C:\DATA\REACCH'
+download_dir = r'C:\Campbellsci\Loggernet'
+card_dir = r'D:'
+
+log_paths = {'pushed_dls' : r'C:\DATA\_admin\reacch_logs\downloads_sync_log.txt',
+             'push_test'  : r'C:\DATA\_admin\reacch_logs\downloads_sync_test.txt'}
+
+
+class FieldSite(object):
+    """Represent an objective 2 field site
+    
+    Class represents an Objective 2 (GHG monitoring) field site of the 
+    Regional Approaches to Climate Change project. Defines commonly-used data 
+    about each site and define common methods for manipulating that data.
+    """
+    
+    def __init__(self, name, code, serno, local_IP=None, remote_IP=None):
+        """Return new instance of the FieldSite class
+        
+        Args:
+            name: full name of the field site as a string
+            code: four-character unique designation for the site
+            serno: serial number of the datalogger at the site as integer
+            
+        Keyword args:
+            local_IP: IP address of the datalogger's ethernet adapater 
+            remote_IP: IP address of the broadband modem at the site
+            
+        Returns: new instance of the FieldSite class
+        
+        """
+        self._name = name
+        self._code = str(code)
+        self._sta_serialno = int(serno)
+        self._local_IP = local_IP
+        self._remote_IP = remote_IP
+        
+    @property
+    def name(self):
+        """full name of site"""
+        return self._name
+        
+    @property
+    def code(self):
+        """four-character unique site designation"""
+        return self._code
+        
+    @property
+    def SN(self):
+        """serial number of datalogger at site"""
+        return self._sta_serialno
+
+    @property
+    def local_IP(self):
+        """IP address of the datalogger's ethernet adapter"""
+        return self._local_IP
+        
+    @property
+    def remote_IP(self):
+        """IP address of the broadband modem at the site"""
+        return self._remote_IP
+    
+    @property
+    def raw_downloads_dir(self):
+        """full path to raw downloads directory"""
+        import os
+        return os.path.join(home_dir,
+                            self.code.upper(),
+                            'L0_raw_downloads')
+
+        
+cfnt = FieldSite('Cook Farm no-till','CFNT',6034)
+lind = FieldSite('Lind Dryland Research Station','LIND',6035)
+cfct = FieldSite('Cook Farm conventional till','CFCT',6503)
+mmtn = FieldSite('Moscow Mountain','MMTN',6504)
+
+site_list = [cfnt, lind, cfct, mmtn]
+
+site_codes = [x.code for x in site_list]
+site_sernos = [x.SN for x in site_list]
+
+code2sn = dict([[x.code,x.SN] for x in site_list])
+sn2code = dict([[x.SN,x.code] for x in site_list])
+
+def push_new_downloads():
+    """Copy raw downloads to the FTP server directory
+    
+    Synchronizes current versions of the downloaded data files 
+    
+    """
+    import time, os, subprocess, glob
+    logfile = open(log_paths['push_test'], 'a')
+    
+    src = download_dir
+    def log(msg, logfile=logfile):
+        print >> logfile, time.strftime('%Y-%m-%d %H:%M:%S  ')+str(msg)
+    if not os.path.isdir(src):
+        log('! Download directory could not be found: %s' % src)
+        quit()
+    os.chdir(src)
+    for site in site_list:
+        dest = site.raw_downloads_dir
+        if not os.path.isdir(dest):
+            log('! Target directory could not be found: %s' % dest)
+            continue
+        sites_backup_files = glob.iglob(os.path.join(src,site.code+'*.backup'))
+        for fname in sorted(sites_backup_files):
+            older, newer = fname, fname.replace('.backup','')
+            if os.path.isfile(newer):
+                log('* Merging download files: %s %s' % (older, newer))
+                merge_download_files(older, newer)
+            else:
+                log('* Found orphaned .backup file: %s' % older)
+        sites_current_files = glob.iglob(os.path.join(src,site.code+'*.dat'))
+        for fname in sorted(sites_current_files):
+            cmd = 'xcopy "%s" "%s" /C /D /K /V /X /Y' % (fname, dest)
+            # XCOPY source <destination> 
+            #   /C      continue, even on error
+            #   /D      only copy files newer than at destination
+            #   /K      copies attributes (default is reset)
+            #   /V      verify each new file 
+            #   /X      copies file audit settings (incl ownership/ACL)
+            #   /Y      suppresses prompt to overwrite existing file
+            #   /L  *   for testing, only lists files it would move
+            #   /W  *   prompt for confirmation for each file
+            print cmd
+            try:
+                #rc = subprocess.call(cmd)
+                #log('> Copying file: '+fname+' (retcode: '+str(rc)+')')
+                log('> Copying file: %s' % fname)
+            except OSError:
+                log('# OSError encountered while copying: %s' % fname)
+    log('Finished syncing active downloads.')
+    logfile.close()
+                
+                    
+
+def merge_download_files(oldfile, newfile):
+    """merge download files together"""
+    print oldfile, newfile
+
+
+
+if __name__ == '__main__':
+    import sys
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '-pushdls':
+            push_new_downloads()
+        
+
+
+
+
