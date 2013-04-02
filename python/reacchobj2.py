@@ -5,7 +5,7 @@ Created on Fri Sep 14 08:09:41 2012
 @author: pokeeffe
 """
 
-__version_info__ = (0, 1, '20120917')
+__version_info__ = (0, 1, '20130401')
 __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
@@ -27,81 +27,75 @@ paths['rawbinary'] = paths['home'] + r'tower_%s\L0_raw_binary'
 paths['rawascii'] = paths['home'] + r'tower_%s\L0_raw_ascii'
 paths['stddaily'] = paths['home'] + r'tower_%s\L0_std_daily'
 
-class FieldSite(object):
-    """Represent an objective 2 field site
+
+class Site(object):
+    """Represent an objective 2 monitoring site"""
     
-    Class represents an Objective 2 (GHG monitoring) field site of the 
-    Regional Approaches to Climate Change project. Defines commonly-used data 
-    about each site and define common methods for manipulating that data.
-    """
-    
-    def __init__(self, name, code, serno, local_IP=None, remote_IP=None):
-        """Return new instance of the FieldSite class
+    def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
+        """Return new instance of the Site class
         
         Args:
-            name: full name of the field site as a string
-            code: four-character unique designation for the site
-            serno: serial number of the datalogger at the site as integer
+            name: str
+                full name of the field site as a string                
+            code: str
+                four-character unique designation for the site
+            serial_num: int
+                serial number of the datalogger at the site as integer
             
         Keyword args:
-            local_IP: IP address of the datalogger's ethernet adapater 
-            remote_IP: IP address of the broadband modem at the site
+            local_IP: str
+                IP address of the datalogger's ethernet adapater 
+            remote_IP: str
+                IP address of the broadband modem at the site
             
         Returns: new instance of the FieldSite class
-        
         """
-        self._name = name
-        self._code = str(code)
-        self._sta_serialno = int(serno)
-        self._local_IP = local_IP
-        self._remote_IP = remote_IP
-        
-    @property
-    def name(self):
-        """full name of site"""
-        return self._name
-        
-    @property
-    def code(self):
-        """four-character unique site designation"""
-        return self._code
-        
-    @property
-    def SN(self):
-        """serial number of datalogger at site"""
-        return self._sta_serialno
+        self.name = name
+        self.code = str(code).upper()
+        self.serial_num = int(serial_num)
+        self.local_IP = local_IP
+        self.remote_IP = remote_IP
+        self.SN = self.serial_num
 
-    @property
-    def local_IP(self):
-        """IP address of the datalogger's ethernet adapter"""
-        return self._local_IP
-        
-    @property
-    def remote_IP(self):
-        """IP address of the broadband modem at the site"""
-        return self._remote_IP
-    
-    @property
-    def raw_downloads_dir(self):
-        """full path to raw downloads directory"""
-        import os
-        return os.path.join(home_dir,
-                            self.code.upper(),
-                            'L0_raw_downloads')
-
-        
-cfnt = FieldSite('Cook Farm no-till','CFNT',6034)
-lind = FieldSite('Lind Dryland Research Station','LIND',6035)
-cfct = FieldSite('Cook Farm conventional till','CFCT',6503)
-mmtn = FieldSite('Moscow Mountain','MMTN',6504)
+"""Premade site objects available upon import"""        
+cfnt = Site('Cook Farm no-till',
+            'CFNT',
+            6034,
+            '192.168.174.30',
+            '123.456.789.012')
+lind = Site('Lind Dryland Research Station',
+            'LIND',
+            6035,'192.168.174.31',
+            '123.456.789.012')
+cfct = Site('Cook Farm conventional till',
+            'CFCT',
+            6503,
+            '192.168.174.32',
+            '123.456.789.012')
+mmtn = Site('Moscow Mountain',
+            'MMTN',
+            6504,
+            '192.168.174.33',
+            '123.456.789.012')
 
 site_list = [cfnt, lind, cfct, mmtn]
+"""List of Site objects to iterate through"""
 
 site_codes = [x.code for x in site_list]
-site_sernos = [x.SN for x in site_list]
+"""List of four-character site codes"""
+
+site_SNs = [x.SN for x in site_list]
+"""List of serial numbers at the sites"""
 
 code2sn = dict([[x.code,x.SN] for x in site_list])
+"""Dictionary to look up serial number from site code"""
+
 sn2code = dict([[x.SN,x.code] for x in site_list])
+"""Dictionary to look up site code from serial number"""
+
+code2site = {s.code : s for s in site_list}
+"""Dictionary to get Site objects based on string site code"""
+
 
     
                     
