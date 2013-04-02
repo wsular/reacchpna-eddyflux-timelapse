@@ -8,13 +8,24 @@ Created on Fri Sep 14 08:09:41 2012
 __version_info__ = (0, 1, '20120917')
 __version__ = '.'.join(str(x) for x in __version_info__)
 
-home_dir = r'C:\DATA\REACCH'
-download_dir = r'C:\Campbellsci\Loggernet'
-card_dir = r'D:'
+from copy import copy
 
-log_paths = {'pushed_dls' : r'C:\DATA\_admin\reacch_logs\downloads_sync_log.txt',
-             'push_test'  : r'C:\DATA\_admin\reacch_logs\downloads_sync_test.txt'}
 
+paths = {
+    # these paths are generally only good for the workstation in Dana lab
+    # housing the share server; they are for the scripts' benefit anyway
+    'home' : r'C:\SHARES\proj\2011_REACCH',
+    'downloads' : r'C:\Campbellsci\Loggernet',
+    'cf_card' : r'D:', 
+    'sd_card' : r'F:', 
+    'scriptlogs' : r'C:\SHARES\proj\2011_REACCH\scripts\logs',
+    # network services (http, ftp, sftp, ...) 
+    'nethome' : r'/proj/2011_REACCH/'}
+# be sure to substitute the 4-char site code for %s
+paths['telemetry'] = paths['home'] + r'tower_%s\L0_telemetry'
+paths['rawbinary'] = paths['home'] + r'tower_%s\L0_raw_binary'
+paths['rawascii'] = paths['home'] + r'tower_%s\L0_raw_ascii'
+paths['stddaily'] = paths['home'] + r'tower_%s\L0_std_daily'
 
 class FieldSite(object):
     """Represent an objective 2 field site
