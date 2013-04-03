@@ -1077,7 +1077,7 @@ def verify_colalias():
     Return truth of whether column lookup table is free of missing data
     """
     errs = ''
-    _log('Verifying column alias dictionary...\n')
+    print ('Verifying column alias dictionary...\n')
     for (st, sc) in sorted(col_alias):
         try:
             dt, dc = current_names(st, sc)
@@ -1085,12 +1085,12 @@ def verify_colalias():
             errs = errs + ('- unable to complete lookup for table:column '
                 '"%s:%s"\n' % (st, sc))
             continue
-        _log(('%s:%s' % (st, sc)).ljust(39) + ('%s:%s\n' % (dt,dc)))
+        print (('%s:%s' % (st, sc)).ljust(39) + ('%s:%s\n' % (dt,dc)))
     if errs: 
-        _warn('\nWARNINGS:\n'+errs+'\n')
+        print ('\nWARNINGS:\n'+errs+'\n')
         return False
     else:
-        _log('No warnings.\n\n')
+        print ('No warnings.\n\n')
         return True
         
         
@@ -1100,7 +1100,7 @@ def verify_headers():
     Return truth of whether all defined headers are current based on col_alias
     """
     errmsg = ''
-    _log('Verifying column order defintions...\n')
+    print ('Verifying column order defintions...\n')
     for tbl in df_hdr:
         for col in df_hdr[tbl]:
             try:
@@ -1109,15 +1109,15 @@ def verify_headers():
                 errmsg = errmsg + ('- header definition "%s:%s" not found in '
                     'lookup table\n' % (tbl, col))
                 continue
-            _log(('%s:%s' % (tbl, col)).ljust(39) + ('%s:%s\n' % (t,c)))
+            print (('%s:%s' % (tbl, col)).ljust(39) + ('%s:%s\n' % (t,c)))
             if (t != tbl) or (c != col):
                 errmsg = errmsg + ('- header definition "%s:%s" does not '
                     'match lookup table "%s:%s"\n' % (tbl, col, t, c))
     if errmsg:
-        _warn('WARNINGS:\n'+errmsg+'\n')
+        print ('WARNINGS:\n'+errmsg+'\n')
         return False
     else:
-        _log('No warnings.\n\n')
+        print ('No warnings.\n\n')
         return True
 
 
