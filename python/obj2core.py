@@ -59,7 +59,7 @@ class Site(object):
         self.SN = self.serial_num
 
 """Premade site objects available upon import"""        
-cfnt = Site('Cook Farm no-till',
+cfnt = Site('Cook Agronomy Farm no-till',
             'CFNT',
             6034,
             '192.168.174.30',
@@ -68,7 +68,7 @@ lind = Site('Lind Dryland Research Station',
             'LIND',
             6035,'192.168.174.31',
             '123.456.789.012')
-cfct = Site('Cook Farm conventional till',
+cfct = Site('Cook Agronomy Farm conventional till',
             'CFCT',
             6503,
             '192.168.174.32',
@@ -1120,4 +1120,4 @@ def verify_headers():
         print ('No warnings.\n\n')
         return True
 
-
+           
