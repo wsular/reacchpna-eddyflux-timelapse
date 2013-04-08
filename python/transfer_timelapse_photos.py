@@ -18,7 +18,7 @@ import os
 import subprocess
 import sys
 
-from obj2core import paths, 
+from obj2core import PATHTO_SD_CARD_TIMELAPSE_PHOTOS, PATHTO_TIMELAPSE_PHOTOS
 
 splashscreen = """\
 =========================================================
@@ -28,8 +28,8 @@ splashscreen = """\
 =               Washington State University             =
 =========================================================
 """
-srcloc = paths['sd_card_timelapse_source']
-dstloc = paths['timelapsephotos']
+srcloc = PATHTO_SD_CARD_TIMELAPSE_PHOTOS
+dstloc = PATHTO_TIMELAPSE_PHOTOS
 antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 arbloc = r'timelapse\%s timelapse AntRenamer batch file.arb'

@@ -11,24 +11,32 @@ __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
 
+_TWR_FLDR = r'\tower_%s'
 
-paths = {
-    # these paths are generally only good for the workstation in Dana lab
-    # housing the share server; they are for the scripts' benefit anyway
-    'home' : r'C:\SHARES\proj\2011_REACCH',
-    'downloads' : r'C:\Campbellsci\Loggernet',
-    'cf_card' : r'D:', 
-    'sd_card' : r'F:', 
-    'sd_card_timelapse_source' : r'F:\DCIM\100_WSCT',
-    'scriptlogs' : r'C:\SHARES\proj\2011_REACCH\scripts\logs',
-    # network services (http, ftp, sftp, ...) 
-    'nethome' : r'/proj/2011_REACCH/'}
-# be sure to substitute the 4-char site code for %s
-paths['telemetry'] = paths['home'] + r'tower_%s\L0_telemetry'
-paths['rawbinary'] = paths['home'] + r'tower_%s\L0_raw_binary'
-paths['rawascii'] = paths['home'] + r'tower_%s\L0_raw_ascii'
-paths['stddaily'] = paths['home'] + r'tower_%s\L0_std_daily'
-paths['timelapsephotos'] = paths['home'] + r'tower_%s\photos_timelapsecam'
+PATHTO_HOME = r'C:\SHARES\proj\2011_REACCH'
+"""Base project directory on share server"""
+PATHTO_NETHOME = r'/proj/2011_REACCH/'
+"""Base project directory with respect to network addresses"""
+PATHTO_CF_CARD = r'D:'
+"""CompactFlash card reader drive on share server workstation"""
+PATHTO_SD_CARD = r'F:'
+"""SD card reader drive on share server workstation"""
+PATHTO_SD_CARD_TIMELAPSE_PHOTOS = r'F:\DCIM\100_WSCT'
+"""Storage location of photos on SD cards by timelapse camera"""
+PATHTO_DOWNLOADS = r'C:\Campbellsci\Loggernet'
+"""Default downloaded files location used by Campbellsci Loggernet"""
+PATHTO_SCRIPT_LOGS = PATHTO_HOME + r'\scripts\logs'
+"""Location scripts may write log files in"""
+PATHTO_RAW_ASCII = PATHTO_HOME + _TWR_FLDR + r'\L0_raw_ascii'
+"""Location of human-readable, unprocessed data files"""
+PATHTO_RAW_BINARY = PATHTO_HOME + _TWR_FLDR + r'\L0_raw_binary'
+"""Location of binary, unprocessed data files"""
+PATHTO_TELEMETRY = PATHTO_HOME + _TWR_FLDR + r'\L0_telemetry'
+"""Location of data retrieved via telemetry (downloads)"""
+PATHTO_TIMELAPSE_PHOTOS = PATHTO_HOME + _TWR_FLDR + r'\photos_timelapsecam'
+"""Location of photos taken by the site's timelapse camera"""
+PATHTO_STD_DAILY = PATHTO_HOME + _TWR_FLDR + r'\L0_std_daily'
+"""Location of unprocessed, ASCII data chopped into daily files"""
 
 
 class Site(object):
@@ -61,20 +69,25 @@ class Site(object):
         self.SN = self.serial_num
         
     @property
-    def telemetry_path(self):
-        return paths['telemetry'] % self.code
+    def PATHTO_TELEMETRY(self):
+        """Location of data retrieved via telemetry (downloads)"""
+        return PATHTO_TELEMETRY % self.code
     @property
-    def rawbinary_path(self):
-        return paths['rawbinary'] % self.code
+    def PATHTO_RAW_BINARY(self):
+        """Location of binary, unprocessed data files"""
+        return PATHTO_RAW_BINARY % self.code
     @property
-    def rawascii_path(self):
-        return paths['rawascii'] % self.code
+    def PATHTO_RAW_ASCII(self):
+        """Location of human-readable, unprocessed data files"""
+        return PATHTO_RAW_ASCII % self.code
     @property
-    def stddaily_path(self):
-        return paths['stddaily'] % self.code
+    def PATHTO_STD_DAILY(self):
+        """Location of unprocessed, ASCII data broke into daily files"""
+        return PATHTO_STD_DAILY % self.code
     @property
-    def timelapsephotos_path(self):
-        return paths['telemetry'] % self.code
+    def PATHTO_TIMELAPSE_PHOTOS(self):
+        """Location of photos taken by site's timelapse camera"""
+        return PATHTO_TIMELAPSE_PHOTOS % self.code
 
 """Premade site objects available upon import"""        
 cfnt = Site('Cook Agronomy Farm no-till',
