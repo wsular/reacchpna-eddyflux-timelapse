@@ -19,6 +19,7 @@ paths = {
     'downloads' : r'C:\Campbellsci\Loggernet',
     'cf_card' : r'D:', 
     'sd_card' : r'F:', 
+    'sd_card_timelapse_source' : r'F:\DCIM\100_WSCT',
     'scriptlogs' : r'C:\SHARES\proj\2011_REACCH\scripts\logs',
     # network services (http, ftp, sftp, ...) 
     'nethome' : r'/proj/2011_REACCH/'}
@@ -27,6 +28,7 @@ paths['telemetry'] = paths['home'] + r'tower_%s\L0_telemetry'
 paths['rawbinary'] = paths['home'] + r'tower_%s\L0_raw_binary'
 paths['rawascii'] = paths['home'] + r'tower_%s\L0_raw_ascii'
 paths['stddaily'] = paths['home'] + r'tower_%s\L0_std_daily'
+paths['timelapsephotos'] = paths['home'] + r'tower_%s\photos_timelapsecam'
 
 
 class Site(object):
@@ -70,6 +72,9 @@ class Site(object):
     @property
     def stddaily_path(self):
         return paths['stddaily'] % self.code
+    @property
+    def timelapsephotos_path(self):
+        return paths['telemetry'] % self.code
 
 """Premade site objects available upon import"""        
 cfnt = Site('Cook Agronomy Farm no-till',
