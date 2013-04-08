@@ -18,6 +18,8 @@ import os
 import subprocess
 import sys
 
+from obj2core import PATHTO_SD_CARD_TIMELAPSE_PHOTOS, PATHTO_TIMELAPSE_PHOTOS
+
 splashscreen = """\
 =========================================================
 =        Timelapse camera photo transfer utility        =
@@ -26,8 +28,8 @@ splashscreen = """\
 =               Washington State University             =
 =========================================================
 """
-srcloc = r'F:\DCIM\100_WSCT'
-dstloc = r'C:\SHARES\proj\2011_REACCH\tower_%s\photos_timelapsecam'
+srcloc = PATHTO_SD_CARD_TIMELAPSE_PHOTOS
+dstloc = PATHTO_TIMELAPSE_PHOTOS
 antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 arbloc = r'timelapse\%s timelapse AntRenamer batch file.arb'
