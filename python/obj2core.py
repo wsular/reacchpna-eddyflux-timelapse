@@ -57,6 +57,19 @@ class Site(object):
         self.local_IP = local_IP
         self.remote_IP = remote_IP
         self.SN = self.serial_num
+        
+    @property
+    def telemetry_path(self):
+        return paths['telemetry'] % self.code
+    @property
+    def rawbinary_path(self):
+        return paths['rawbinary'] % self.code
+    @property
+    def rawascii_path(self):
+        return paths['rawascii'] % self.code
+    @property
+    def stddaily_path(self):
+        return paths['stddaily'] % self.code
 
 """Premade site objects available upon import"""        
 cfnt = Site('Cook Agronomy Farm no-till',
