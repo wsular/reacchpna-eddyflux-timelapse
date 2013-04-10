@@ -97,7 +97,8 @@ cfnt = Site('Cook Agronomy Farm no-till',
             '123.456.789.012')
 lind = Site('Lind Dryland Research Station',
             'LIND',
-            6035,'192.168.174.31',
+            6035,
+            '192.168.174.31',
             '123.456.789.012')
 cfct = Site('Cook Agronomy Farm conventional till',
             'CFCT',
