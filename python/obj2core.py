@@ -582,7 +582,7 @@ col_alias = {
     
     
     ########## 20120330_CFNT - 20120727_LIND ###############################
-    ('stats30_soil', 'TIMESTAMP') : (None, None), 
+    ('stats30_soil', 'TIMESTAMP') : (None, None), # merged into stats30 table
     ('stats30_soil', 'RECORD') : (None, None),
     ('stats30_soil', 'soil_5TM_ID5_epsilon_Avg') : ('stats30', ''), #20120810_LIND
     ('stats30_soil', 'soil_5TM_ID5_T_Avg') : ('stats30', ''), # all are affected
@@ -604,8 +604,8 @@ col_alias = {
     ('stats30_soil', 'soil_hfp2_heat_flux_Avg') : ('stats30_hfp', ''),
     ('stats30_soil', 'soil_hfp2_sensitivity') : ('stats30_hfp', ''),
 
-    ('stats5_soil', 'TIMESTAMP') : (None, None), 
     ('stats5_soil', 'RECORD') : (None, None), 
+    ('stats5_soil', 'TIMESTAMP') : (None, None), # merged into stats5 table
     ('stats5_soil', 'soil_5TM_ID5_epsilon_Avg') : ('stats5', ''), #20120810_LIND
     ('stats5_soil', 'soil_5TM_ID5_T_Avg') : ('stats5', ''), # all are affected
     ('stats5_soil', 'soil_5TM_ID5_VWC_Avg') : ('stats5', ''), 
