@@ -11,6 +11,10 @@ __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
 
+from pandas import DataFrame
+from pandas.tseries.offsets import Day, MonthBegin, YearBegin
+
+
 _TWR_FLDR = r'\tower_%s' #sub in site code (CFNT, CFCT, LIND, MMTN, ...)
 _RAW_STD_FLDR = r'\L0_%s' # sub in table base name (tsdata, stats5, ...)
 
@@ -1102,6 +1106,33 @@ def current_names(table, column):
         return current_names(tbl, col)
 
 
+def raw_std_balers(tbl_name):
+    """Defines size of standardized raw ascii files
+
+    Yes it's messy. It may become a subclass of pandas.DateOffset somehow"""
+    if tbl_name == 'tsdata':
+        grpbykey = lambda x: x.day
+        def get_start_end(df):
+            start = df.index[0].date()
+            return start, start+Day()
+    elif tbl_name in ['stats5', 'stats30']:
+        grpbykey = lambda x: x.month
+        def get_start_end(df):
+            offset = MonthBegin()
+            start = offset.rollback(df.index[0]).date()
+            return start, start+offset
+    elif tbl_name == 'site_daily':
+        grpbykey = lambda x: x.year
+        def get_start_end(df):
+            offset = YearBegin()
+            start = offset.rollback(df.index[0]).date()
+            return start, start+offset
+    else:
+        print '!!!!! BAD CASE ~~~~~~'
+        grpbykey = lambda x: x
+        def get_start_end(df):
+            return df.index[0], df.index[-1]
+    return grpbykey, get_start_end
 
 
 def verify_colalias():
