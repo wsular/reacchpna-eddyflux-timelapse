@@ -263,21 +263,7 @@ df_hdr = {
                        'lgr_n2o', 
                        'lgr_co'], 
 
-    'stats30_n2o_co' : ['TIMESTAMP', 
-                        'RECORD',
-                        'lgr_n2o_Avg',
-                        'lgr_n2o_Std',
-                        'lgr_co_Avg',
-                        'lgr_co_Std',
-                        'lgr_n2o_co_uptime'], 
-
-    'stats5_n2o_co' : ['TIMESTAMP', 
                        'RECORD',
-                       'lgr_n2o_Avg',
-                       'lgr_n2o_Std',
-                       'lgr_co_Avg',
-                       'lgr_co_Std',
-                       'lgr_n2o_co_uptime']
 
 }
 """This dict holds lists describing the order of file headers because the
