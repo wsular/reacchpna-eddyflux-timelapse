@@ -202,6 +202,12 @@ df_hdr = {
                  'soil_5TM_ID9_E_Avg',
                  'soil_5TM_ID9_T_Avg',
                  'soil_5TM_ID9_VWC_Avg',
+                 'soil_hfp1_heat_flux_Avg',
+                 'soil_hfp1_sensitivity',
+                 'soil_hfp1_uptime',
+                 'soil_hfp2_heat_flux_Avg',
+                 'soil_hfp2_sensitivity',
+                 'soil_hfp2_uptime',
                  'panel_tmpr_Avg',
                  'batt_volt_Avg',               
                  ],
@@ -222,17 +228,6 @@ df_hdr = {
                       'dec_6rad_dnlook_Avg(5)',
                       'dec_6rad_dnlook_Avg(6)',
                       'tblcalls_Tot'],
-
-    # definition for stat5_hfp below dict def.
-    'stats30_hfp' : ['TIMESTAMP', 
-                     'RECORD',
-                     'soil_hfp1_heat_flux_Avg',
-                     'soil_hfp1_sensitivity',
-                     'soil_hfp2_heat_flux_Avg',
-                     'soil_hfp2_sensitivity',
-                     'hfp1_samples_Tot', 
-                     'hfp2_samples_Tot',
-                     'tblcalls_Tot'],
 
     'site_daily' : ['TIMESTAMP', 
                     'RECORD',
@@ -289,31 +284,30 @@ df_hdr = {
    look-up dict cannot hold that information in a straightforward way. """
 df_hdr['stats5'] = copy(df_hdr['stats30'])
 df_hdr['stats5_6rad'] = copy(df_hdr['stats30_6rad'])
-df_hdr['stats5_hfp'] = copy(df_hdr['stats30_hfp'])
 
 
 col_alias = {
 
     ########## 20120810_LIND - CURRENT #####################################
-    ('stats30_hfp', 'TIMESTAMP') : ('', ''),
-    ('stats30_hfp', 'RECORD') : ('', ''),
-    ('stats30_hfp', 'soil_hfp1_heat_flux_Avg') : ('', ''),
-    ('stats30_hfp', 'soil_hfp1_sensitivity') : ('', ''),
-    ('stats30_hfp', 'soil_hfp2_heat_flux_Avg') : ('', ''),
-    ('stats30_hfp', 'soil_hfp2_sensitivity') : ('', ''),
-    ('stats30_hfp', 'hfp1_samples_Tot') : ('', ''), # 20120824_LIND
-    ('stats30_hfp', 'hfp2_samples_Tot') : ('', ''), # 20120824_LIND
-    ('stats30_hfp', 'tblcalls_Tot') : ('', ''),
+    ('stats30_hfp', 'TIMESTAMP') : (None, None),
+    ('stats30_hfp', 'RECORD') : (None, None),
+    ('stats30_hfp', 'soil_hfp1_heat_flux_Avg') : ('stats30', ''),
+    ('stats30_hfp', 'soil_hfp1_sensitivity') : ('stats30', ''),
+    ('stats30_hfp', 'soil_hfp2_heat_flux_Avg') : ('stats30', ''),
+    ('stats30_hfp', 'soil_hfp2_sensitivity') : ('stats30', ''),
+    ('stats30_hfp', 'hfp1_samples_Tot') : (None, None), # 20120824_LIND
+    ('stats30_hfp', 'hfp2_samples_Tot') : (None, None), # 20120824_LIND
+    ('stats30_hfp', 'tblcalls_Tot') : (None, None),
 
-    ('stats5_hfp', 'TIMESTAMP') : ('', ''),
-    ('stats5_hfp', 'RECORD') : ('', ''),
-    ('stats5_hfp', 'soil_hfp1_heat_flux_Avg') : ('', ''),
-    ('stats5_hfp', 'soil_hfp1_sensitivity') : ('', ''),
-    ('stats5_hfp', 'soil_hfp2_heat_flux_Avg') : ('', ''),
-    ('stats5_hfp', 'soil_hfp2_sensitivity') : ('', ''),
-    ('stats5_hfp', 'hfp1_samples_Tot') : ('', ''), # 20120824_LIND
-    ('stats5_hfp', 'hfp2_samples_Tot') : ('', ''), # 20120824_LIND
-    ('stats5_hfp', 'tblcalls_Tot') : ('', ''),
+    ('stats5_hfp', 'TIMESTAMP') : (None, None),
+    ('stats5_hfp', 'RECORD') : (None, None),
+    ('stats5_hfp', 'soil_hfp1_heat_flux_Avg') : ('stats5', ''),
+    ('stats5_hfp', 'soil_hfp1_sensitivity') : ('stats5', ''),
+    ('stats5_hfp', 'soil_hfp2_heat_flux_Avg') : ('stats5', ''),
+    ('stats5_hfp', 'soil_hfp2_sensitivity') : ('stats5', ''),
+    ('stats5_hfp', 'hfp1_samples_Tot') : (None, None), # 20120824_LIND
+    ('stats5_hfp', 'hfp2_samples_Tot') : (None, None), # 20120824_LIND
+    ('stats5_hfp', 'tblcalls_Tot') : (None, None),
     ########################################################################
 
 
@@ -488,6 +482,12 @@ col_alias = {
     ('stats30', 'soil_5TM_ID9_E_Avg') : ('', ''),
     ('stats30', 'soil_5TM_ID9_T_Avg') : ('', ''),
     ('stats30', 'soil_5TM_ID9_VWC_Avg') : ('', ''),
+    ('stats30', 'soil_hfp1_heat_flux_Avg') : ('', ''),
+    ('stats30', 'soil_hfp1_sensitivity') : ('', ''),
+    ('stats30', 'soil_hfp1_uptime') : ('', ''),
+    ('stats30', 'soil_hfp2_heat_flux_Avg') : ('', ''),
+    ('stats30', 'soil_hfp2_sensitivity') : ('', ''),
+    ('stats30', 'soil_hfp2_uptime') : ('', ''),
     ('stats30', 'panel_tmpr_Avg') : ('', ''),
     ('stats30', 'batt_volt_Avg') : ('', ''),
 
@@ -553,6 +553,12 @@ col_alias = {
     ('stats5', 'soil_5TM_ID9_E_Avg') : ('', ''), 
     ('stats5', 'soil_5TM_ID9_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_VWC_Avg') : ('', ''),
+    ('stats5', 'soil_hfp1_heat_flux_Avg') : ('', ''),
+    ('stats5', 'soil_hfp1_sensitivity') : ('', ''),
+    ('stats5', 'soil_hfp1_uptime') : ('', ''),
+    ('stats5', 'soil_hfp2_heat_flux_Avg') : ('', ''),
+    ('stats5', 'soil_hfp2_sensitivity') : ('', ''),
+    ('stats5', 'soil_hfp2_uptime') : ('', ''),
     ('stats5', 'panel_tmpr_Avg') : ('', ''),
     ('stats5', 'batt_volt_Avg') : ('', ''),
 
