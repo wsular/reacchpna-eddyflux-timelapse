@@ -11,7 +11,8 @@ __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
 
-_TWR_FLDR = r'\tower_%s'
+_TWR_FLDR = r'\tower_%s' #sub in site code (CFNT, CFCT, LIND, MMTN, ...)
+_RAW_STD_FLDR = r'\L0_%s' # sub in table base name (tsdata, stats5, ...)
 
 PATHTO_HOME = r'C:\SHARES\proj\2011_REACCH'
 """Base project directory on share server"""
@@ -35,8 +36,8 @@ PATHTO_TELEMETRY = PATHTO_HOME + _TWR_FLDR + r'\L0_telemetry'
 """Location of data retrieved via telemetry (downloads)"""
 PATHTO_TIMELAPSE_PHOTOS = PATHTO_HOME + _TWR_FLDR + r'\photos_timelapsecam'
 """Location of photos taken by the site's timelapse camera"""
-PATHTO_STD_DAILY = PATHTO_HOME + _TWR_FLDR + r'\L0_std_daily'
-"""Location of unprocessed, ASCII data chopped into daily files"""
+PATHTO_RAW_STD = PATHTO_HOME + _TWR_FLDR + _RAW_STD_FLDR
+"""Location of unprocessed, ASCII data chopped into daily/monthly files"""
 
 
 class Site(object):
@@ -81,9 +82,9 @@ class Site(object):
         """Location of human-readable, unprocessed data files"""
         return PATHTO_RAW_ASCII % self.code
     @property
-    def PATHTO_STD_DAILY(self):
+    def PATHTO_RAW_STD(self):
         """Location of unprocessed, ASCII data broke into daily files"""
-        return PATHTO_STD_DAILY % self.code
+        return PATHTO_RAW_STD % self.code
     @property
     def PATHTO_TIMELAPSE_PHOTOS(self):
         """Location of photos taken by site's timelapse camera"""
