@@ -1129,9 +1129,8 @@ def raw_std_balers(tbl_name):
             return start, start+offset
     else:
         print '!!!!! BAD CASE ~~~~~~'
-        grpbykey = lambda x: x
-        def get_start_end(df):
-            return df.index[0], df.index[-1]
+        grpbykey = None
+        get_start_end = None
     return grpbykey, get_start_end
 
 
