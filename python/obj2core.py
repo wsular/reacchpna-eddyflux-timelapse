@@ -41,24 +41,24 @@ PATHTO_STD_DAILY = PATHTO_HOME + _TWR_FLDR + r'\L0_std_daily'
 
 class Site(object):
     """Represent an objective 2 monitoring site"""
-    
+
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
         """Return new instance of the Site class
-        
+
         Args:
             name: str
-                full name of the field site as a string                
+                full name of the field site as a string
             code: str
                 four-character unique designation for the site
             serial_num: int
                 serial number of the datalogger at the site as integer
-            
+
         Keyword args:
             local_IP: str
-                IP address of the datalogger's ethernet adapater 
+                IP address of the datalogger's ethernet adapater
             remote_IP: str
                 IP address of the broadband modem at the site
-            
+
         Returns: new instance of the FieldSite class
         """
         self.name = name
@@ -67,7 +67,7 @@ class Site(object):
         self.local_IP = local_IP
         self.remote_IP = remote_IP
         self.SN = self.serial_num
-        
+
     @property
     def PATHTO_TELEMETRY(self):
         """Location of data retrieved via telemetry (downloads)"""
@@ -89,7 +89,7 @@ class Site(object):
         """Location of photos taken by site's timelapse camera"""
         return PATHTO_TIMELAPSE_PHOTOS % self.code
 
-"""Premade site objects available upon import"""        
+"""Premade site objects available upon import"""
 cfnt = Site('Cook Agronomy Farm no-till',
             'CFNT',
             6034,
@@ -130,23 +130,23 @@ code2site = {s.code : s for s in site_list}
 
 
 df_hdr = {
-    'tsdata' : ['TIMESTAMP', 
-                'RECORD', 
-                'Ux', 
-                'Uy', 
-                'Uz', 
-                'Ts', 
-                'diag_sonic', 
-                'CO2', 
-                'H2O', 
-                'diag_irga', 
-                'amb_tmpr', 
-                'amb_press', 
-                'CO2_signal', 
+    'tsdata' : ['TIMESTAMP',
+                'RECORD',
+                'Ux',
+                'Uy',
+                'Uz',
+                'Ts',
+                'diag_sonic',
+                'CO2',
+                'H2O',
+                'diag_irga',
+                'amb_tmpr',
+                'amb_press',
+                'CO2_signal',
                 'H2O_signal'],
-    
+
     # definition for stats5 after end of initial dict def.
-    'stats30' : ['TIMESTAMP', 
+    'stats30' : ['TIMESTAMP',
                  'RECORD',
                  'L',
                  'u_star',
@@ -162,29 +162,29 @@ df_hdr = {
                  'rslt_wnd_spd',
                  'rslt_wnd_dir',
                  'std_wnd_dir',
-                 'sonic_uptime', 
+                 'sonic_uptime',
                  'CO2_ppm_Avg',
                  'CO2_mg_m3_Avg',
                  'CO2_mg_m3_Std',
                  'CO2_signal_Avg',
-                 'H2O_g_kg_Avg', 
+                 'H2O_g_kg_Avg',
                  'H2O_g_m3_Avg',
                  'H2O_g_m3_Std',
                  'H2O_signal_Avg',
-                 'amb_tmpr_Avg', 
+                 'amb_tmpr_Avg',
                  'amb_press_Avg',
-                 'irga_uptime', 
+                 'irga_uptime',
                  'T_hmp_Avg',
                  'RH_hmp_Avg',
-                 'e_hmp_Avg', 
-                 'e_sat_hmp_Avg', 
+                 'e_hmp_Avg',
+                 'e_sat_hmp_Avg',
                  'Rn_Avg',
                  'Rn_meas_Avg',
                  'PAR_totflx_Tot',
                  'PAR_flxdens_Avg',
                  'Met1_wnd_spd',
                  'Met1_rslt_wnd_spd',
-                 'Met1_rslt_wnd_dir', 
+                 'Met1_rslt_wnd_dir',
                  'Met1_std_wnd_dir',
                  'Rain_mm_Tot',
                  'soil_5TM_ID5_E_Avg',
@@ -209,11 +209,11 @@ df_hdr = {
                  'soil_hfp2_sensitivity',
                  'soil_hfp2_uptime',
                  'panel_tmpr_Avg',
-                 'batt_volt_Avg',               
+                 'batt_volt_Avg',
                  ],
 
     # definition for stats5_6rad below dict def.
-    'stats30_6rad' : ['TIMESTAMP', 
+    'stats30_6rad' : ['TIMESTAMP',
                       'RECORD',
                       'dec_6rad_uplook_Avg(1)',
                       'dec_6rad_uplook_Avg(2)',
@@ -229,19 +229,19 @@ df_hdr = {
                       'dec_6rad_dnlook_Avg(6)',
                       'tblcalls_Tot'],
 
-    'site_daily' : ['TIMESTAMP', 
+    'site_daily' : ['TIMESTAMP',
                     'RECORD',
-                    'latitude_Med', 
+                    'latitude_Med',
                     'longitude_Med',
-                    'magnetic_variation_Med', 
+                    'magnetic_variation_Med',
                     'nmbr_satellites_Avg',
-                    'altitude_Med', 
+                    'altitude_Med',
                     'altitude_Avg',
                     'gps_ready_Min',
                     'max_clock_change',
                     'nmbr_clock_change'],
-                    
-    'site_info' : ['TIMESTAMP', 
+
+    'site_info' : ['TIMESTAMP',
                    'RECORD',
                    'UTC_offset',
                    'sonic_azimuth',
@@ -253,17 +253,15 @@ df_hdr = {
                    'CardStatus',
                    'RunSig',
                    'ProgSig',
-                   'Dec_6rad_installed',  
-                   'LGR_n2o_co_installed', 
+                   'Dec_6rad_installed',
+                   'LGR_n2o_co_installed',
                    'Pic_co2_ch4_installed',
                    'hfp_installed'],
 
-    'tsdata_n2o_co' : ['TIMESTAMP', 
-                       'RECORD', 
-                       'lgr_n2o', 
-                       'lgr_co'], 
-
+    'tsdata_n2o_co' : ['TIMESTAMP',
                        'RECORD',
+                       'lgr_n2o',
+                       'lgr_co'],
 
 }
 """This dict holds lists describing the order of file headers because the
@@ -311,13 +309,13 @@ col_alias = {
     ('site_info', 'RunSig') : ('', ''),
     ('site_info', 'ProgSig') : ('', ''),
     ('site_info', 'SENSOR_DEC_5TM') : (None, None), # 20120810_LIND
-    ('site_info', 'SENSOR_DEC_6RAD') : ('', 'Dec_6rad_installed'), 
-    ('site_info', 'Dec_6rad_installed') : ('', ''), 
-    ('site_info', 'SENSOR_LGR_N2OCO') : ('', 'LGR_n2o_co_installed'), 
+    ('site_info', 'SENSOR_DEC_6RAD') : ('', 'Dec_6rad_installed'),
+    ('site_info', 'Dec_6rad_installed') : ('', ''),
+    ('site_info', 'SENSOR_LGR_N2OCO') : ('', 'LGR_n2o_co_installed'),
     ('site_info', 'LGR_n2o_co_installed') : ('', ''),
-    ('site_info', 'SENSOR_PIC_CO2CH4') : ('', 'Pic_co2_ch4_installed'), 
+    ('site_info', 'SENSOR_PIC_CO2CH4') : ('', 'Pic_co2_ch4_installed'),
     ('site_info', 'Pic_co2_ch4_installed') : ('', ''),
-    ('site_info', 'SENSOR_HFP01SC') : ('', 'hfp_installed'), 
+    ('site_info', 'SENSOR_HFP01SC') : ('', 'hfp_installed'),
     ('site_info', 'hfp_installed') : ('', ''),
     ########################################################################
 
@@ -355,8 +353,8 @@ col_alias = {
     ('stats5_6rad', 'dec_6rad_dnlook_Avg(6)') : ('', ''),
     ('stats5_6rad', 'tblcalls_Tot') : ('', ''), # add 20120824_LIND
     #######################################################################
-    
-    
+
+
     ########## 20120427_CFNT  #############################################
     ##('stats30_6rad', 'TIMESTAMP') : ('', ''),
     ##('stats30_6rad', 'RECORD') : ('', ''),
@@ -391,20 +389,20 @@ col_alias = {
 
 
     ########## 20120309_LIND - CURRENT #####################################
-    ('tsdata', 'TIMESTAMP') : ('', ''), 
-    ('tsdata', 'RECORD') : ('', ''), 
-    ('tsdata', 'Ux') : ('', ''), 
-    ('tsdata', 'Uy') : ('', ''), 
-    ('tsdata', 'Uz') : ('', ''), 
-    ('tsdata', 'Ts') : ('', ''), 
-    ('tsdata', 'diag_sonic') : ('', ''), 
-    ('tsdata', 'CO2') : ('', ''), 
-    ('tsdata', 'H2O') : ('', ''), 
-    ('tsdata', 'diag_irga') : ('', ''), 
-    ('tsdata', 'amb_tmpr') : ('', ''), 
-    ('tsdata', 'amb_press') : ('', ''), 
-    ('tsdata', 'CO2_signal') : ('', ''), 
-    ('tsdata', 'H2O_signal') : ('', ''), 
+    ('tsdata', 'TIMESTAMP') : ('', ''),
+    ('tsdata', 'RECORD') : ('', ''),
+    ('tsdata', 'Ux') : ('', ''),
+    ('tsdata', 'Uy') : ('', ''),
+    ('tsdata', 'Uz') : ('', ''),
+    ('tsdata', 'Ts') : ('', ''),
+    ('tsdata', 'diag_sonic') : ('', ''),
+    ('tsdata', 'CO2') : ('', ''),
+    ('tsdata', 'H2O') : ('', ''),
+    ('tsdata', 'diag_irga') : ('', ''),
+    ('tsdata', 'amb_tmpr') : ('', ''),
+    ('tsdata', 'amb_press') : ('', ''),
+    ('tsdata', 'CO2_signal') : ('', ''),
+    ('tsdata', 'H2O_signal') : ('', ''),
 
     ('stats30', 'TIMESTAMP') : ('', ''),
     ('stats30', 'RECORD') : ('', ''),
@@ -445,7 +443,7 @@ col_alias = {
     ('stats30', 'Met1_wnd_spd') : ('', ''),
     ('stats30', 'Met1_rslt_wnd_spd') : ('', ''),
     ('stats30', 'Met1_wnd_dir') : ('', 'Met1_rslt_wnd_dir'),#20120316_CFNT
-    ('stats30', 'Met1_rslt_wnd_dir') : ('', ''), 
+    ('stats30', 'Met1_rslt_wnd_dir') : ('', ''),
     ('stats30', 'Met1_std_wnd_dir') : ('', ''),
     ('stats30', 'Rain_mm_Tot') : ('', ''),
     ('stats30', 'soil_5TM_ID5_epsilon_Avg') : ('', 'soil_5TM_ID5_E_Avg'),#20120824_LIND
@@ -516,7 +514,7 @@ col_alias = {
     ('stats5', 'Met1_wnd_spd') : ('', ''),
     ('stats5', 'Met1_rslt_wnd_spd') : ('', ''),
     ('stats5', 'Met1_wnd_dir') : ('', 'Met1_rslt_wnd_dir'),#20120316_CFNT
-    ('stats5', 'Met1_rslt_wnd_dir') : ('', ''), 
+    ('stats5', 'Met1_rslt_wnd_dir') : ('', ''),
     ('stats5', 'Met1_std_wnd_dir') : ('', ''),
     ('stats5', 'Rain_mm_Tot') : ('', ''),
     ('stats5', 'soil_5TM_ID5_epsilon_Avg') : ('', 'soil_5TM_ID5_E_Avg'),#20120824_LIND
@@ -524,11 +522,11 @@ col_alias = {
     ('stats5', 'soil_5TM_ID5_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID5_VWC_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID6_epsilon_Avg') : ('', 'soil_5TM_ID6_E_Avg'),#20120824_LIND
-    ('stats5', 'soil_5TM_ID6_E_Avg') : ('', ''), 
+    ('stats5', 'soil_5TM_ID6_E_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID6_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID6_VWC_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID7_epsilon_Avg') : ('', 'soil_5TM_ID7_E_Avg'),#20120824_LIND
-    ('stats5', 'soil_5TM_ID7_E_Avg') : ('', ''), 
+    ('stats5', 'soil_5TM_ID7_E_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID7_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID7_VWC_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID8_epsilon_Avg') : ('', 'soil_5TM_ID8_E_Avg'),#20120824_LIND
@@ -536,7 +534,7 @@ col_alias = {
     ('stats5', 'soil_5TM_ID8_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID8_VWC_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_epsilon_Avg') : ('', 'soil_5TM_ID9_E_Avg'),#20120824_LIND
-    ('stats5', 'soil_5TM_ID9_E_Avg') : ('', ''), 
+    ('stats5', 'soil_5TM_ID9_E_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_VWC_Avg') : ('', ''),
     ('stats5', 'soil_hfp1_heat_flux_Avg') : ('', ''),
@@ -571,24 +569,24 @@ col_alias = {
     ('site_daily', 'RunSig') : (None, None), # 20120627_CFCT
     ('site_daily', 'ProgSig') : (None, None), # 20120627_CFCT
     ########################################################################
-    
-    
+
+
     ########## 20120330_CFNT - 20120727_LIND ###############################
-    ('stats30_soil', 'TIMESTAMP') : (None, None), 
+    ('stats30_soil', 'TIMESTAMP') : (None, None),
     ('stats30_soil', 'RECORD') : (None, None),
     ('stats30_soil', 'soil_5TM_ID5_epsilon_Avg') : ('stats30', ''), #20120810_LIND
     ('stats30_soil', 'soil_5TM_ID5_T_Avg') : ('stats30', ''), # all are affected
-    ('stats30_soil', 'soil_5TM_ID5_VWC_Avg') : ('stats30', ''), 
-    ('stats30_soil', 'soil_5TM_ID6_epsilon_Avg') : ('stats30', ''), 
+    ('stats30_soil', 'soil_5TM_ID5_VWC_Avg') : ('stats30', ''),
+    ('stats30_soil', 'soil_5TM_ID6_epsilon_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID6_T_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID6_VWC_Avg') : ('stats30', ''),
-    ('stats30_soil', 'soil_5TM_ID7_epsilon_Avg') : ('stats30', ''), 
+    ('stats30_soil', 'soil_5TM_ID7_epsilon_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID7_T_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID7_VWC_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID8_epsilon_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID8_T_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID8_VWC_Avg') : ('stats30', ''),
-    ('stats30_soil', 'soil_5TM_ID9_epsilon_Avg') : ('stats30', ''), 
+    ('stats30_soil', 'soil_5TM_ID9_epsilon_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID9_T_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_5TM_ID9_VWC_Avg') : ('stats30', ''),
     ('stats30_soil', 'soil_hfp1_heat_flux_Avg') : ('stats30_hfp', ''),
@@ -596,21 +594,21 @@ col_alias = {
     ('stats30_soil', 'soil_hfp2_heat_flux_Avg') : ('stats30_hfp', ''),
     ('stats30_soil', 'soil_hfp2_sensitivity') : ('stats30_hfp', ''),
 
-    ('stats5_soil', 'TIMESTAMP') : (None, None), 
-    ('stats5_soil', 'RECORD') : (None, None), 
+    ('stats5_soil', 'TIMESTAMP') : (None, None),
+    ('stats5_soil', 'RECORD') : (None, None),
     ('stats5_soil', 'soil_5TM_ID5_epsilon_Avg') : ('stats5', ''), #20120810_LIND
     ('stats5_soil', 'soil_5TM_ID5_T_Avg') : ('stats5', ''), # all are affected
-    ('stats5_soil', 'soil_5TM_ID5_VWC_Avg') : ('stats5', ''), 
-    ('stats5_soil', 'soil_5TM_ID6_epsilon_Avg') : ('stats5', ''), 
+    ('stats5_soil', 'soil_5TM_ID5_VWC_Avg') : ('stats5', ''),
+    ('stats5_soil', 'soil_5TM_ID6_epsilon_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID6_T_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID6_VWC_Avg') : ('stats5', ''),
-    ('stats5_soil', 'soil_5TM_ID7_epsilon_Avg') : ('stats5', ''), 
+    ('stats5_soil', 'soil_5TM_ID7_epsilon_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID7_T_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID7_VWC_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID8_epsilon_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID8_T_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID8_VWC_Avg') : ('stats5', ''),
-    ('stats5_soil', 'soil_5TM_ID9_epsilon_Avg') : ('stats5', ''), 
+    ('stats5_soil', 'soil_5TM_ID9_epsilon_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID9_T_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_5TM_ID9_VWC_Avg') : ('stats5', ''),
     ('stats5_soil', 'soil_hfp1_heat_flux_Avg') : ('stats5_hfp', ''),
@@ -622,10 +620,10 @@ col_alias = {
 
     ###### 20120504_LIND, 20120628_CFNT and 20120720_CFNT #################
     # TODO what to do with LGR data?
-    ('tsdata_n2o_co', 'TIMESTAMP') : ('', ''), 
-    ('tsdata_n2o_co', 'RECORD') : ('', ''), 
-    ('tsdata_n2o_co', 'lgr_n2o') : ('', ''), 
-    ('tsdata_n2o_co', 'lgr_co') : ('', ''), 
+    ('tsdata_n2o_co', 'TIMESTAMP') : ('', ''),
+    ('tsdata_n2o_co', 'RECORD') : ('', ''),
+    ('tsdata_n2o_co', 'lgr_n2o') : ('', ''),
+    ('tsdata_n2o_co', 'lgr_co') : ('', ''),
 
     ('stats30_n2o_co', 'TIMESTAMP') : ('', ''),
     ('stats30_n2o_co', 'RECORD') : ('', ''),
@@ -649,13 +647,13 @@ col_alias = {
     ('stats5_n2o_co', 'cov_co_Uz') : (None, None), # cfnt update
     ('stats5_n2o_co', 'lgr_n2o_co_uptime') : ('', ''), # cfnt update
     ########################################################################
-    
-    
+
+
     ########## 20120420_LIND only ##########################################
-    ('tsdata_extra', 'TIMESTAMP') : ('tsdata_n2o_co', ''), 
-    ('tsdata_extra', 'RECORD') : ('tsdata_n2o_co', ''), 
-    ('tsdata_extra', 'lgr_n2o') : ('tsdata_n2o_co', ''), 
-    ('tsdata_extra', 'lgr_co') : ('tsdata_n2o_co', ''), 
+    ('tsdata_extra', 'TIMESTAMP') : ('tsdata_n2o_co', ''),
+    ('tsdata_extra', 'RECORD') : ('tsdata_n2o_co', ''),
+    ('tsdata_extra', 'lgr_n2o') : ('tsdata_n2o_co', ''),
+    ('tsdata_extra', 'lgr_co') : ('tsdata_n2o_co', ''),
 
     ('stats30_extra', 'TIMESTAMP') : ('stats30_n2o_co', ''),
     ('stats30_extra', 'RECORD') : ('stats30_n2o_co', ''),
@@ -677,8 +675,8 @@ col_alias = {
     ('stats5_extra', 'cov_n2o_Uz') : ('stats5_n2o_co', ''), # 20120504_LIND
     ('stats5_extra', 'cov_co_Uz') : ('stats5_n2o_co', ''), # 20120504_LIND
     ########################################################################
-    
-    
+
+
     ########## 20120210_CFNT - 20120309_CFNT ###############################
     ('CFNT_tsdata', 'TIMESTAMP') : ('tsdata', ''), #20120309_LIND
     ('CFNT_tsdata', 'RECORD') : ('tsdata', ''), #20120309_LIND
@@ -694,7 +692,7 @@ col_alias = {
     ('CFNT_tsdata', 'amb_press') : ('tsdata', ''),  #20120309_LIND
     ('CFNT_tsdata', 'CO2_signal') : ('tsdata', ''),  #20120309_LIND
     ('CFNT_tsdata', 'H2O_signal') : ('tsdata', ''), #20120309_LIND
-    
+
     ('CFNT_stats30', 'TIMESTAMP') : ('stats30', ''), #20120309_LIND
     ('CFNT_stats30', 'RECORD') : ('stats30', ''), #20120309_LIND
     ('CFNT_stats30', 'L') : ('stats30', ''), #20120309_LIND
@@ -732,7 +730,7 @@ col_alias = {
     ('CFNT_stats30', 'RH_hmp_Avg') : ('stats30', ''), #20120309_LIND
     ('CFNT_stats30', 'e_hmp_Avg') : ('stats30', ''), # added 20120215_CFNT
     ('CFNT_stats30', 'e_sat_hmp_Avg') : ('stats30', ''), # added 20120215_CFNT
-    ('CFNT_stats30', 'hmp_uptime') : (None, None), # only in 20120224_LIND 
+    ('CFNT_stats30', 'hmp_uptime') : (None, None), # only in 20120224_LIND
     ('CFNT_stats30', 'Rn_Avg') : ('stats30', ''), #20120309_LIND
     ('CFNT_stats30', 'Rn_meas_Avg') : ('stats30', ''), #20120309_LIND
     ('CFNT_stats30', 'PAR_totflx_Tot') : ('stats30', ''), #20120309_LIND
@@ -796,7 +794,7 @@ col_alias = {
     ('CFNT_stats5', 'Rain_mm_Tot') : ('stats5', ''), #20120309_LIND
     ('CFNT_stats5', 'panel_tmpr_Avg') : ('stats5', ''), #20120309_LIND
     ('CFNT_stats5', 'batt_volt_Avg') : ('stats5', ''), #20120309_LIND
-    
+
     ('CFNT_site_daily', 'TIMESTAMP') : ('site_daily', ''), #20120309_LIND
     ('CFNT_site_daily', 'RECORD') : ('site_daily', ''), #20120309_LIND
     ('CFNT_site_daily', 'sonic_azimuth') : ('site_daily', ''), #add 20120215_CFNT
@@ -1019,11 +1017,11 @@ col_alias = {
     ('flux', 'WS_ms_WVc(1)') : ('', '034b_ws'), # 20111011_CFNT
     ('flux', '034b_ws') : ('CFNT_stats30', 'Met1_wnd_spd'), # 20120210_CFNT
     ('flux', 'WS_ms_WVc(2)') : ('', '034b_wd'), # 20111011_CFNT
-    ('flux', '034b_wd') : (None, None), # 20120210_CFNT 
+    ('flux', '034b_wd') : (None, None), # 20120210_CFNT
     ('flux', 'WS_ms_WVc(3)') : ('', '034b_stdwd'), # 20111011_CFNT
     ('flux', '034b_stdwd') : (None, None), # 20120210_CFNT
     ('flux', 'ati_azimuth') : (None, None), # found in CFNT_20110923.1655_flux.dat
-    ('flux', 'ati_ws') : (None, None), # found in CFNT_20110923.1655_flux.dat    
+    ('flux', 'ati_ws') : (None, None), # found in CFNT_20110923.1655_flux.dat
     ('flux', 'ati_wd') : (None, None), # found in CFNT_20110923.1655_flux.dat
     ('flux', 'ati_stdwd') : (None, None), # found in CFNT_20110923.1655_flux.dat
     ('flux', 'atiUavg') : (None, None), # found in CFNT_20110923.1655_flux.dat
@@ -1054,17 +1052,17 @@ col_alias = {
 }
 """Column name aliases
 
-Dictionary keys & values are tuples of the form (table name, column name). 
+Dictionary keys & values are tuples of the form (table name, column name).
 All current/prior table and column pairs are described by keys; superceding
-pairs are described by the values. A value tuple of (None, None) indicates 
-the column is no longer recorded in data tables. A blank string in the value 
-tuple means that item in the tuple is the same as the corresponding item in 
-the key (ie remains unchanged). 
+pairs are described by the values. A value tuple of (None, None) indicates
+the column is no longer recorded in data tables. A blank string in the value
+tuple means that item in the tuple is the same as the corresponding item in
+the key (ie remains unchanged).
 
 For example:
-    
+
     col_alias[('flux', 'gps_ready')] => (None, None) # no longer recorded
-    
+
     col_alias[('flux', 'WS_ms_WVc(1)')] => ('', '034b_ws') --->
     col_alias[('flux', '034b_ws')] => ('CFNT_stats30', 'Met1_wnd_spd') --->
     col_alias[('CFNT_stats30', 'Met1_wnd_wpd')] => ('stats30', '') --->
@@ -1074,8 +1072,8 @@ For example:
 
 def current_names(table, column):
     """Get current (table, column) names from historical aliases
-    
-    Return current value of data column's table name and column name. If 
+
+    Return current value of data column's table name and column name. If
     arguments are most current, they are returned unchanged. If column is no
     longer included in data tables, (None, None) is returned.
     """
@@ -1096,7 +1094,7 @@ def current_names(table, column):
 
 def verify_colalias():
     """Follow all past column names to current name to verify lookup table
-    
+
     Return truth of whether column lookup table is free of missing data
     """
     errs = ''
@@ -1109,17 +1107,17 @@ def verify_colalias():
                 '"%s:%s"\n' % (st, sc))
             continue
         print (('%s:%s' % (st, sc)).ljust(39) + ('%s:%s\n' % (dt,dc)))
-    if errs: 
+    if errs:
         print ('\nWARNINGS:\n'+errs+'\n')
         return False
     else:
         print ('No warnings.\n\n')
         return True
-        
-        
+
+
 def verify_headers():
-    """Attempt to look up each column in header definition 
-    
+    """Attempt to look up each column in header definition
+
     Return truth of whether all defined headers are current based on col_alias
     """
     errmsg = ''
@@ -1143,4 +1141,4 @@ def verify_headers():
         print ('No warnings.\n\n')
         return True
 
-           
+
