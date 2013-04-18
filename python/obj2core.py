@@ -15,33 +15,93 @@ from pandas import DataFrame
 from pandas.tseries.offsets import Day, MonthBegin, YearBegin
 
 
-_TWR_FLDR = r'\tower_%s' #sub in site code (CFNT, CFCT, LIND, MMTN, ...)
-_RAW_STD_FLDR = r'\L0_%s' # sub in table base name (tsdata, stats5, ...)
+class pathto():
+    """Object containing up-to-date directory locations
 
-PATHTO_HOME = r'C:\SHARES\proj\2011_REACCH'
-"""Base project directory on share server"""
-PATHTO_NETHOME = r'/proj/2011_REACCH/'
-"""Base project directory with respect to network addresses"""
-PATHTO_CF_CARD = r'D:'
-"""CompactFlash card reader drive on share server workstation"""
-PATHTO_SD_CARD = r'F:'
-"""SD card reader drive on share server workstation"""
-PATHTO_SD_CARD_TIMELAPSE_PHOTOS = r'F:\DCIM\100_WSCT'
-"""Storage location of photos on SD cards by timelapse camera"""
-PATHTO_DOWNLOADS = r'C:\Campbellsci\Loggernet'
-"""Default downloaded files location used by Campbellsci Loggernet"""
-PATHTO_SCRIPT_LOGS = PATHTO_HOME + r'\scripts\logs'
-"""Location scripts may write log files in"""
-PATHTO_RAW_ASCII = PATHTO_HOME + _TWR_FLDR + r'\L0_raw_ascii'
-"""Location of human-readable, unprocessed data files"""
-PATHTO_RAW_BINARY = PATHTO_HOME + _TWR_FLDR + r'\L0_raw_binary'
-"""Location of binary, unprocessed data files"""
-PATHTO_TELEMETRY = PATHTO_HOME + _TWR_FLDR + r'\L0_telemetry'
-"""Location of data retrieved via telemetry (downloads)"""
-PATHTO_TIMELAPSE_PHOTOS = PATHTO_HOME + _TWR_FLDR + r'\photos_timelapsecam'
-"""Location of photos taken by the site's timelapse camera"""
-PATHTO_RAW_STD = PATHTO_HOME + _TWR_FLDR + _RAW_STD_FLDR
-"""Location of unprocessed, ASCII data chopped into daily/monthly files"""
+    There are several well-defined directories that various scripts may
+    need to access. This object provides a high-level interface that
+    insulates the user from changes and minute details.
+
+    These directories are all with-respect-to the share workstation local
+    environment. You might want to write an analogous function for your
+    own workstation to override these paths.
+
+    Paths are available as attributes:  ``pathto.home`` or ``pathto.cf_card``
+
+    +---------------------+-----------------------------------------------+
+    | Attribute           | Path description                              |
+    +=====================+===============================================+
+    | home                | Base project directory (root of share)        |
+    +---------------------+-----------------------------------------------+
+    | nethome             | Base project directory as used in network     |
+    |                     | addresses                                     |
+    +---------------------+-----------------------------------------------+
+    | cf_card             | CompactFlash card reader drive letter         |
+    +---------------------+-----------------------------------------------+
+    | sd_card             | SD card reader drive letter                   |
+    +---------------------+-----------------------------------------------+
+    | sd_card_photos      | Storage location of photos on SD cards by     |
+    |                     | timelapse cameras                             |
+    +---------------------+-----------------------------------------------+
+    | downloads           | Location data files retrieved via cellular    |
+    |                     | link are stored                               |
+    +---------------------+-----------------------------------------------+
+    | script_logs         | Location scripts should write log files to    |
+    +---------------------+-----------------------------------------------+
+    | raw_ascii           | Location of unprocessed, text-formatted data  |
+    |                     | files in Campbellsci long-header (TOA5)       |
+    |                     | format                                        |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code:  |
+    |                     | ``pathto.raw_ascii % 'CFNT'``                 |
+    +---------------------+-----------------------------------------------+
+    | raw_binary          | Location of unprocessed, binary data files in |
+    |                     | Campbellsci TOB3 format                       |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code:  |
+    |                     | ``pathto.raw_binary % 'MMTN'``                |
+    +---------------------+-----------------------------------------------+
+    | telemetry           | Location of unprocessed, cumulative 5- & 30-  |
+    |                     | minute statistics data files                  |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code:  |
+    |                     | ``pathto.telemetry % 'LIND'``                 |
+    +---------------------+-----------------------------------------------+
+    | timelapse_photos    | Location of photos taken by timelapse camera  |
+    |                     | at the site                                   |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code:  |
+    |                     | ``pathto.timelapse_photos % 'CFCT'``          |
+    +---------------------+-----------------------------------------------+
+    | raw_std             | Location of standardized data files in CSV    |
+    |                     | format.                                       |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code   |
+    |                     | as well as table name in that order:          |
+    |                     | ``pathto.raw_std % ('LIND', 'stats30')``      |
+    +---------------------+-----------------------------------------------+
+
+    """
+    _raw_std_subdir = r'\L0_%s' # substitute table name ('stats5', 'tsdata'...)
+    _raw_ascii_subdir = r'\L0_raw_ascii'
+    _raw_bin_subdir = r'\L0_raw_binary'
+    _tele_subdir = r'\L0_telemetry'
+    _tl_photo_subdir = r'\photos_timelapsecam'
+    _tl_video_subdir = r'\videos_timelapsecam'
+    _tower_subdir = r'\tower_%s' # substitute site code ('CFNT', 'LIND',...)
+
+    home = r'C:\SHARES\proj\2011_REACCH'
+    nethome = r'/proj/2011_REACCH/'
+    cf_card = r'D:'
+    sd_card = r'F:'
+    sd_card_photos = r'F:\DCIM\100_WSCT'
+    downloads = r'C:\Campbellsci\Loggernet'
+    script_logs = home + r'\scripts\logs'
+    raw_ascii = home + _tower_subdir + _raw_ascii_subdir
+    raw_binary = home + _tower_subdir + _raw_bin_subdir
+    telemetry = home + _tower_subdir + _tele_subdir
+    timelapse_photos = home + _tower_subdir + _tl_photo_subdir
+    raw_std = home + _tower_subdir + _raw_std_subdir
 
 
 def get_table_name(toa5_file):
