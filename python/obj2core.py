@@ -125,6 +125,47 @@ def get_table_name(toa5_file):
     return tblname
 
 
+def open_toa5(fname):
+    """Open TOA5 file and return pandas DataFrame
+
+    This function requires the ``pandas`` module and imports it as ``pd``
+
+    Parameters
+    ----------
+    fname : str
+        path to source TOA5 file
+
+    Returns
+    -------
+    pandas.DataFrame instance containing data from source file
+    """
+    import pandas as pd
+    try:
+        print "> Loading %s" % os.path.basename(fname)
+        df = pd.read_csv(fname,
+                         header=1,
+                         skiprows=[2,3],
+                         index_col=0,
+                         parse_dates=True,
+                         na_values=['"NAN"', 'NAN'])
+    except Exception as err:
+        print 'Serious problem!'
+        raise err
+    df.index.name = 'TIMESTAMP'
+    duptest = list(df.index.get_duplicates())
+    if len(duptest) > 1000:
+        print '  ! More than 1000 duplicate indices found! (Did the file ring?)'
+    elif len(duptest):
+        print '  ! Duplicate index values found:'
+        for each in duptest:
+            print '      ', each, len(df.ix[each]), 'rows'
+        print '  * Removing earliest duplicate indices...'
+    else:
+        return df #short-circuit if no dups
+    return df.groupby(df.index).last()
+
+
+
 class Site(object):
     """Represent an objective 2 monitoring site
 
