@@ -50,19 +50,19 @@ class Site(object):
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
         """Return new instance of the Site class
 
-        Args:
-            name: str
-                full name of the field site as a string
-            code: str
-                four-character unique designation for the site
-            serial_num: int
-                serial number of the datalogger at the site as integer
-
-        Keyword args:
-            local_IP: str
-                IP address of the datalogger's ethernet adapater
-            remote_IP: str
-                IP address of the broadband modem at the site
+        Parameters
+        ----------
+        name: str
+            full name of the field site
+        code: str
+            unique four-character designation for the site; will be
+            converted to upper-case
+        serial_num: int
+            serial number of the datalogger at the site
+        local_IP: str
+            IP address of the datalogger's ethernet adapter
+        remote_IP: str
+            internet-facing IP address of the broadband modem at the site
 
         Returns: new instance of the FieldSite class
         """
@@ -75,23 +75,33 @@ class Site(object):
 
     @property
     def PATHTO_TELEMETRY(self):
-        """Location of data retrieved via telemetry (downloads)"""
+        """Location of data retrieved via telemetry (downloads)
+
+        Expects single substitution of 4-character site code (CFNT, ...)"""
         return PATHTO_TELEMETRY % self.code
     @property
     def PATHTO_RAW_BINARY(self):
-        """Location of binary, unprocessed data files"""
+        """Location of binary, unprocessed data files
+
+        Expects single substitution of 4-character site code (CFNT, ...)"""
         return PATHTO_RAW_BINARY % self.code
     @property
     def PATHTO_RAW_ASCII(self):
-        """Location of human-readable, unprocessed data files"""
+        """Location of human-readable, unprocessed data files
+
+        Expects single substitution of 4-character site code (CFNT, ...)"""
         return PATHTO_RAW_ASCII % self.code
     @property
     def PATHTO_RAW_STD(self):
-        """Location of unprocessed, ASCII data broke into daily files"""
+        """Location of unprocessed, ASCII data broke into daily files
+
+        Expects single substitution of 4-character site code (CFNT, ...)"""
         return PATHTO_RAW_STD % self.code
     @property
     def PATHTO_TIMELAPSE_PHOTOS(self):
-        """Location of photos taken by site's timelapse camera"""
+        """Location of photos taken by site's timelapse camera
+
+        Expects single substitution of 4-character site code (CFNT, ...)"""
         return PATHTO_TIMELAPSE_PHOTOS % self.code
 
 """Premade site objects available upon import"""
