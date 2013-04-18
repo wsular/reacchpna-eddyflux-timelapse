@@ -126,27 +126,56 @@ def get_table_name(toa5_file):
 
 
 class Site(object):
-    """Represent an objective 2 monitoring site"""
+    """Represent an objective 2 monitoring site
+
+    Parameters
+    ----------
+    name: str
+        full name of the field site
+    code: str
+        unique four-character designation for the site; will be
+        converted to upper-case
+    serial_num: int
+        serial number of the datalogger at the site
+    local_IP: str
+        IP address of the datalogger's ethernet adapter
+    remote_IP: str
+        internet-facing IP address of the broadband modem at the site
+
+    Returns
+    -------
+    New instance of the FieldSite class
+
+    Class also contains object with some pre-populated site-specific paths:
+
+        ``Site.pathto.raw_ascii`` or ``Site.pathto.telemetry``
+
+    +---------------------+-----------------------------------------------+
+    | raw_ascii           | Location of unprocessed, text-formatted data  |
+    |                     | files in Campbellsci long-header (TOA5)       |
+    |                     | format                                        |
+    +---------------------+-----------------------------------------------+
+    | raw_binary          | Location of unprocessed, binary data files in |
+    |                     | Campbellsci TOB3 format                       |
+    +---------------------+-----------------------------------------------+
+    | telemetry           | Location of unprocessed, cumulative 5- & 30-  |
+    |                     | minute statistics data files                  |
+    +---------------------+-----------------------------------------------+
+    | timelapse_photos    | Location of photos taken by timelapse camera  |
+    |                     | at the site                                   |
+    +---------------------+-----------------------------------------------+
+    | raw_std             | Location of standardized data files in CSV    |
+    |                     | format.                                       |
+    |                     |                                               |
+    |                     | Expects user to substitute 4-char site code   |
+    |                     | as well as table name in that order:          |
+    |                     | ``pathto.raw_std % ('LIND', 'stats30')``      |
+    +---------------------+-----------------------------------------------+
+
+    """
 
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
-        """Parameters
-        ----------
-        name: str
-            full name of the field site
-        code: str
-            unique four-character designation for the site; will be
-            converted to upper-case
-        serial_num: int
-            serial number of the datalogger at the site
-        local_IP: str
-            IP address of the datalogger's ethernet adapter
-        remote_IP: str
-            internet-facing IP address of the broadband modem at the site
 
-        Returns
-        -------
-        New instance of the FieldSite class
-        """
         self.name = name
         self.code = str(code).upper()
         self.serial_num = int(serial_num)
@@ -154,36 +183,14 @@ class Site(object):
         self.remote_IP = remote_IP
         self.SN = self.serial_num
 
-    @property
-    def PATHTO_TELEMETRY(self):
-        """Location of data retrieved via telemetry (downloads)
+        class pathto2():
+            raw_ascii = pathto.raw_ascii % self.code
+            raw_binary = pathto.raw_binary % self.code
+            telemetry = pathto.telemetry % self.code
+            timelapse_photos = pathto.timelapse_photos % self.code
+            raw_std = pathto.raw_std % (self.code, '%s')
+        self.pathto = pathto2()
 
-        Expects single substitution of 4-character site code (CFNT, ...)"""
-        return PATHTO_TELEMETRY % self.code
-    @property
-    def PATHTO_RAW_BINARY(self):
-        """Location of binary, unprocessed data files
-
-        Expects single substitution of 4-character site code (CFNT, ...)"""
-        return PATHTO_RAW_BINARY % self.code
-    @property
-    def PATHTO_RAW_ASCII(self):
-        """Location of human-readable, unprocessed data files
-
-        Expects single substitution of 4-character site code (CFNT, ...)"""
-        return PATHTO_RAW_ASCII % self.code
-    @property
-    def PATHTO_RAW_STD(self):
-        """Location of unprocessed, ASCII data broke into daily files
-
-        Expects single substitution of 4-character site code (CFNT, ...)"""
-        return PATHTO_RAW_STD % self.code
-    @property
-    def PATHTO_TIMELAPSE_PHOTOS(self):
-        """Location of photos taken by site's timelapse camera
-
-        Expects single substitution of 4-character site code (CFNT, ...)"""
-        return PATHTO_TIMELAPSE_PHOTOS % self.code
 
 """Premade site objects available upon import"""
 cfnt = Site('Cook Agronomy Farm no-till',
