@@ -165,6 +165,29 @@ def open_toa5(fname):
     return df.groupby(df.index).last()
 
 
+def read_csv(file_name):
+    """Read DataFrame previously written to CSV file in standard format
+
+    Parameters
+    ----------
+    file_name : str
+        path to source CSV file
+
+    Returns
+    -------
+    pandas.DataFrame object
+    """
+    #try:
+    df = pd.read_csv(file_name,
+                     index_col=0,
+                     parse_dates=True,
+                     na_values=['NAN'])
+    df.index.name = 'TIMESTAMP'
+    #except IOError:
+    #    df = None
+    return df
+
+
 def write_csv(df, file_name):
     """Write DataFrame to CSV file in standard format
 
