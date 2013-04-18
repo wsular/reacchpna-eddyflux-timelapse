@@ -11,6 +11,9 @@ __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
 
+import pandas as pd
+import os
+
 from pandas import DataFrame
 from pandas.tseries.offsets import Day, MonthBegin, YearBegin
 
@@ -128,8 +131,6 @@ def get_table_name(toa5_file):
 def open_toa5(fname):
     """Open TOA5 file and return pandas DataFrame
 
-    This function requires the ``pandas`` module and imports it as ``pd``
-
     Parameters
     ----------
     fname : str
@@ -139,7 +140,6 @@ def open_toa5(fname):
     -------
     pandas.DataFrame instance containing data from source file
     """
-    import pandas as pd
     try:
         print "> Loading %s" % os.path.basename(fname)
         df = pd.read_csv(fname,
