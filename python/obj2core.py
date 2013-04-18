@@ -69,9 +69,7 @@ class Site(object):
     """Represent an objective 2 monitoring site"""
 
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
-        """Return new instance of the Site class
-
-        Parameters
+        """Parameters
         ----------
         name: str
             full name of the field site
@@ -85,7 +83,9 @@ class Site(object):
         remote_IP: str
             internet-facing IP address of the broadband modem at the site
 
-        Returns: new instance of the FieldSite class
+        Returns
+        -------
+        New instance of the FieldSite class
         """
         self.name = name
         self.code = str(code).upper()
