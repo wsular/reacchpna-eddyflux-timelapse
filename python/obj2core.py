@@ -59,7 +59,7 @@ def get_table_name(toa5_file):
     -------
     str : name of data table
     """
-    with open(file_name, mode='r') as f:
+    with open(toa5_file, mode='r') as f:
         l = f.readline().strip()
     tblname = l.split(',')[-1].strip('"')
     return tblname
