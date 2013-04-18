@@ -44,6 +44,27 @@ PATHTO_RAW_STD = PATHTO_HOME + _TWR_FLDR + _RAW_STD_FLDR
 """Location of unprocessed, ASCII data chopped into daily/monthly files"""
 
 
+def get_table_name(toa5_file):
+    """Return name of table given rel. or abs. file path to TOA5 file
+
+    Reads header of Campbell Scientific long-header (TOA5) formatted data
+    files and returns name of data table.
+
+    Parameters
+    ----------
+    file_name : file-like object
+        Source data file in CSI long-header (TOA5) format
+
+    Returns
+    -------
+    str : name of data table
+    """
+    with open(file_name, mode='r') as f:
+        l = f.readline().strip()
+    tblname = l.split(',')[-1].strip('"')
+    return tblname
+
+
 class Site(object):
     """Represent an objective 2 monitoring site"""
 
