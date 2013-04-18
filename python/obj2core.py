@@ -165,6 +165,36 @@ def open_toa5(fname):
     return df.groupby(df.index).last()
 
 
+def write_csv(df, file_name):
+    """Write DataFrame to CSV file in standard format
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        source dataframe to write to file
+    file_name : str
+        name of file to write to
+
+    Returns
+    -------
+    Nothing at the moment
+    """
+    der = os.path.dirname(file_name)
+    if der:
+        # this illogically logical try-except block brought to you by:
+        #    http://stackoverflow.com/a/14364249
+        try:
+            os.makedirs(der)
+        except OSError:
+            if not os.path.isdir(der):
+                raise
+    print '>>> writing to csv: %s ...' % file_name,
+    df.to_csv(file_name,
+              na_rep='NAN',
+              float_format='%.3f',
+              index_label='TIMESTAMP')
+    print 'done.'
+
 
 class Site(object):
     """Represent an objective 2 monitoring site
