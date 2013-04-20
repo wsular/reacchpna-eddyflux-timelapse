@@ -240,11 +240,16 @@ class Site(object):
     -------
     New instance of the FieldSite class
 
+    Details
+    -------
+
     Class also contains object with some pre-populated site-specific paths:
 
         ``Site.pathto.raw_ascii`` or ``Site.pathto.telemetry``
 
     +---------------------+-----------------------------------------------+
+    | Site.pathto.*       | Description                                   |
+    +=====================+===============================================+
     | raw_ascii           | Location of unprocessed, text-formatted data  |
     |                     | files in Campbellsci long-header (TOA5)       |
     |                     | format                                        |
@@ -261,13 +266,10 @@ class Site(object):
     | raw_std             | Location of standardized data files in CSV    |
     |                     | format.                                       |
     |                     |                                               |
-    |                     | Expects user to substitute 4-char site code   |
-    |                     | as well as table name in that order:          |
-    |                     | ``pathto.raw_std % ('LIND', 'stats30')``      |
+    |                     | Expects user to substitute table name:        |
+    |                     | ``Site.pathto.raw_std % 'stats30'``           |
     +---------------------+-----------------------------------------------+
-
     """
-
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
 
         self.name = name
