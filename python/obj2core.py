@@ -4,7 +4,7 @@ Core data used by a variety of scripts. Tread lightly.
 
 Created on Fri Sep 14 08:09:41 2012
 
-@author: pokeeffe
+@author: Patrick O'Keeffe <pokeeffe@wsu.edu
 """
 __version_info__ = (0, 1, '20130401')
 __version__ = '.'.join(str(x) for x in __version_info__)
