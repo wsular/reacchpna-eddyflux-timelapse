@@ -279,13 +279,13 @@ class Site(object):
         self.remote_IP = remote_IP
         self.SN = self.serial_num
 
-        class pathto2():
+        class _pathto2():
             raw_ascii = pathto.raw_ascii % self.code
             raw_binary = pathto.raw_binary % self.code
             telemetry = pathto.telemetry % self.code
             timelapse_photos = pathto.timelapse_photos % self.code
             raw_std = pathto.raw_std % (self.code, '%s')
-        self.pathto = pathto2()
+        self.pathto = _pathto2()
 
 
 """Premade site objects available upon import"""
