@@ -219,7 +219,7 @@ def write_csv(df, file_name):
     print 'done.'
 
 
-class Site(object):
+class FieldSite(object):
     """Represent an objective 2 monitoring site
 
     Parameters
@@ -289,26 +289,26 @@ class Site(object):
 
 
 """Premade site objects available upon import"""
-cfnt = Site('Cook Agronomy Farm no-till',
-            'CFNT',
-            6034,
-            '192.168.174.30',
-            '123.456.789.012')
-lind = Site('Lind Dryland Research Station',
-            'LIND',
-            6035,
-            '192.168.174.31',
-            '123.456.789.012')
-cfct = Site('Cook Agronomy Farm conventional till',
-            'CFCT',
-            6503,
-            '192.168.174.32',
-            '123.456.789.012')
-mmtn = Site('Moscow Mountain',
-            'MMTN',
-            6504,
-            '192.168.174.33',
-            '123.456.789.012')
+cfnt = FieldSite('Cook Agronomy Farm no-till',
+                 'CFNT',
+                 6034,
+                 '192.168.174.30',
+                 '123.456.789.012')
+lind = FieldSite('Lind Dryland Research Station',
+                 'LIND',
+                 6035,
+                 '192.168.174.31',
+                 '123.456.789.012')
+cfct = FieldSite('Cook Agronomy Farm conventional till',
+                 'CFCT',
+                 6503,
+                 '192.168.174.32',
+                 '123.456.789.012')
+mmtn = FieldSite('Moscow Mountain',
+                 'MMTN',
+                 6504,
+                 '192.168.174.33',
+                 '123.456.789.012')
 
 site_list = [cfnt, lind, cfct, mmtn]
 """List of Site objects to iterate through"""
