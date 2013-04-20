@@ -31,6 +31,14 @@ splashscreen = """\
 srcloc = pathto.sd_card_photos
 dstloc = pathto.timelapse_photos
 antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
+if not os.path.isfile(antexe):
+    antexe.replace(' (x86)','') # try x86 XP-style
+    if not os.path.isfile(antexe):
+        antexe.replace(' Files','s') # try Win7 style
+        if not os.path.isfile(antexe):
+            print 'Could not locate Ant Renamer in default locations'
+            raw_input('Press <enter> to exit...')
+            sys.exit(RC_NOANTEXE)
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 arbloc = r'timelapse\%s timelapse AntRenamer batch file.arb'
 cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
@@ -55,12 +63,6 @@ RC_NOBATCH = 4
 RC_ANTERR = 5
 RC_CPYERR = 6
 RC_ENVERR = 7
-
-def check_for_ant_renamer():
-    if not os.path.isfile(antexe):
-        print 'Error: could not locate Ant Renamer installation directory'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_NOANTEXE)
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
