@@ -231,10 +231,12 @@ class FieldSite(object):
         converted to upper-case
     serial_num: int
         serial number of the datalogger at the site
-    local_IP: str
-        IP address of the datalogger's ethernet adapter
-    remote_IP: str
-        internet-facing IP address of the broadband modem at the site
+    local_IP: str tuple
+        IP address and netmask of the datalogger's ethernet adapter
+        example: ('192.168.0.0','255.255.255.0')
+    remote_IP: str tuple
+        internet-facing IP address and netmask of the broadband modem
+        at the site in same format as `local_IP`
 
     Returns
     -------
@@ -271,7 +273,6 @@ class FieldSite(object):
     +---------------------+-----------------------------------------------+
     """
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
-
         self.name = name
         self.code = str(code).upper()
         self.serial_num = int(serial_num)
@@ -292,23 +293,23 @@ class FieldSite(object):
 cfnt = FieldSite('Cook Agronomy Farm no-till',
                  'CFNT',
                  6034,
-                 '192.168.174.30',
-                 '123.456.789.012')
+                 ('192.168.174.30','255.255.255.0'),
+                 ('123.456.789.012','255.255.255.0'))
 lind = FieldSite('Lind Dryland Research Station',
                  'LIND',
                  6035,
-                 '192.168.174.31',
-                 '123.456.789.012')
+                 ('192.168.174.31','255.255.255.0'),
+                 ('123.456.789.012','255.255.255.0'))
 cfct = FieldSite('Cook Agronomy Farm conventional till',
                  'CFCT',
                  6503,
-                 '192.168.174.32',
-                 '123.456.789.012')
+                ('192.168.174.32','255.255.255.0'),
+                 ('123.456.789.012','255.255.255.0'))
 mmtn = FieldSite('Moscow Mountain',
                  'MMTN',
                  6504,
-                 '192.168.174.33',
-                 '123.456.789.012')
+                 ('192.168.174.33','255.255.255.0'),
+                 ('123.456.789.012','255.255.255.0'))
 
 site_list = [cfnt, lind, cfct, mmtn]
 """List of Site objects to iterate through"""
