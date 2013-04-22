@@ -233,7 +233,8 @@ class FieldSite(object):
         unique four-character designation for the site; will be
         converted to upper-case
     serial_num: int
-        serial number of the datalogger at the site
+        serial number of the datalogger at the site. Retained as string
+        to avoid future incompatibilities -- convert to integer yourself
     local_IP: str tuple
         IP address and netmask of the datalogger's ethernet adapter
         example: ('192.168.0.0','255.255.255.0')
@@ -278,7 +279,7 @@ class FieldSite(object):
     def __init__(self, name, code, serial_num, local_IP=None, remote_IP=None):
         self.name = name
         self.code = str(code).upper()
-        self.serial_num = int(serial_num)
+        self.serial_num = serial_num
         self.local_IP = local_IP
         self.remote_IP = remote_IP
         self.SN = self.serial_num
@@ -295,22 +296,22 @@ class FieldSite(object):
 """Premade site objects available upon import"""
 cfnt = FieldSite('Cook Agronomy Farm no-till',
                  'CFNT',
-                 6034,
+                 '6034',
                  ('192.168.174.30','255.255.255.0'),
                  ('123.456.789.012','255.255.255.0'))
 lind = FieldSite('Lind Dryland Research Station',
                  'LIND',
-                 6035,
+                 '6035',
                  ('192.168.174.31','255.255.255.0'),
                  ('123.456.789.012','255.255.255.0'))
 cfct = FieldSite('Cook Agronomy Farm conventional till',
                  'CFCT',
-                 6503,
+                 '6503',
                 ('192.168.174.32','255.255.255.0'),
                  ('123.456.789.012','255.255.255.0'))
 mmtn = FieldSite('Moscow Mountain',
                  'MMTN',
-                 6504,
+                 '6504',
                  ('192.168.174.33','255.255.255.0'),
                  ('123.456.789.012','255.255.255.0'))
 
