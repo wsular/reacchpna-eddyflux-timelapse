@@ -18,6 +18,9 @@ from pandas import DataFrame
 from pandas.tseries.offsets import Day, MonthBegin, YearBegin
 
 
+MAX_RAW_FILE_SIZE = 200 * 1024 * 1024  #split raw data files > this, bytes
+
+
 class pathto():
     """Object containing up-to-date directory locations
 
