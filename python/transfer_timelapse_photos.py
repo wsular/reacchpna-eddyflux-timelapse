@@ -20,6 +20,14 @@ import sys
 
 from obj2core import pathto
 
+RC_NOSRCDIR = 1
+RC_NOFILES = 2
+RC_NOANTEXE= 3
+RC_NOBATCH = 4
+RC_ANTERR = 5
+RC_CPYERR = 6
+RC_ENVERR = 7
+
 splashscreen = """\
 =========================================================
 =        Timelapse camera photo transfer utility        =
@@ -30,13 +38,14 @@ splashscreen = """\
 """
 srcloc = pathto.sd_card_photos
 dstloc = pathto.timelapse_photos
-antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
-if not os.path.isfile(antexe):
-    antexe.replace(' (x86)','') # try x86 XP-style
-    if not os.path.isfile(antexe):
-        antexe.replace(' Files','s') # try Win7 style
-        if not os.path.isfile(antexe):
+antexe = r'"C:\Program Files (x86)\Ant Renamer\Renamer.exe"'
+if not os.path.isfile(antexe.strip('"')):
+    antexe = antexe.replace(' (x86)','') # try x86 XP-style
+    if not os.path.isfile(antexe.strip('"')):
+        antexe = antexe.replace(' Files','s') # try Win7 style
+        if not os.path.isfile(antexe.strip('"')):
             print 'Could not locate Ant Renamer in default locations'
+            print antexe
             raw_input('Press <enter> to exit...')
             sys.exit(RC_NOANTEXE)
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
@@ -55,14 +64,6 @@ _codelist = {'1' : 'CFNT',
              '2' : 'LIND',
              '3' : 'CFCT',
              '4' : 'MMTN' }
-
-RC_NOSRCDIR = 1
-RC_NOFILES = 2
-RC_NOANTEXE= 3
-RC_NOBATCH = 4
-RC_ANTERR = 5
-RC_CPYERR = 6
-RC_ENVERR = 7
 
 def find_batch_file(codestr):
     arbpath = arbloc % codestr
