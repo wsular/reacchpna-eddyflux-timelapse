@@ -334,7 +334,7 @@ code2site = {s.code : s for s in site_list}
 """Dictionary to get Site objects based on string site code"""
 
 
-df_hdr = {
+table_definitions = {
     'tsdata' : ['TIMESTAMP',
                 'RECORD',
                 'Ux',
@@ -471,8 +471,8 @@ df_hdr = {
 }
 """This dict holds lists describing the order of file headers because the
    look-up dict cannot hold that information in a straightforward way. """
-df_hdr['stats5'] = copy(df_hdr['stats30'])
-df_hdr['stats5_6rad'] = copy(df_hdr['stats30_6rad'])
+table_definitions['stats5'] = copy(table_definitions['stats30'])
+table_definitions['stats5_6rad'] = copy(table_definitions['stats30_6rad'])
 
 
 col_alias = {
@@ -1353,8 +1353,8 @@ def verify_headers():
     """
     errmsg = ''
     print ('Verifying column order defintions...\n')
-    for tbl in df_hdr:
-        for col in df_hdr[tbl]:
+    for tbl in table_definitions:
+        for col in table_definitions[tbl]:
             try:
                 t, c = current_names(tbl, col)
             except KeyError:
