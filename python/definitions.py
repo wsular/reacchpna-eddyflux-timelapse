@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
-"""
-Core data used by a variety of scripts. Tread lightly.
+"""Common settings location for REACCH Obj2 data scripts
+
+This module defines a host of common data and functions which are in turn
+used by nearly all other data scripts. Some of the stuff here includes:
+
+    Paths
+        There is an object ``pathto`` which contains a variety of string
+        attributes corresponding to relevant file/directory paths. For ex:
+
+        >>> from definitions import pathto
+        >>> pathto.raw_ascii
+        {ex1_results}
 
 Created on Fri Sep 14 08:09:41 2012
 
 @author: Patrick O'Keeffe <pokeeffe@wsu.edu
-"""
+""".format(ex1_results=lambda x: pathto.raw_ascii)
+
 __version_info__ = (0, 1, '20130401')
 __version__ = '.'.join(str(x) for x in __version_info__)
 
@@ -316,22 +327,29 @@ mmtn = FieldSite('Moscow Mountain',
                  ('123.456.789.012','255.255.255.0'))
 
 site_list = [cfnt, lind, cfct, mmtn]
-"""List of Site objects to iterate through"""
+"""List of Site objects to iterate through
 
-site_codes = [x.code for x in site_list]
-"""List of four-character site codes"""
+It's particularly useful to import this list as it contains all the objects
+and their attributes. Iteration is straightforward:
 
-site_SNs = [x.SN for x in site_list]
-"""List of serial numbers at the sites"""
-
-code2sn = dict([[x.code,x.SN] for x in site_list])
-"""Dictionary to look up serial number from site code"""
+    for site in site_list:
+        print site.name
+        srchdir = site.timelapse_photos
+        # find files, do something
+"""
 
 sn2code = dict([[x.SN,x.code] for x in site_list])
-"""Dictionary to look up site code from serial number"""
+"""Dictionary to look up site code from serial number
 
-code2site = {s.code : s for s in site_list}
-"""Dictionary to get Site objects based on string site code"""
+You can also get just the serial #s: sn2code.keys()
+Or just the site codes: sn2code.values()
+
+If you really need to get site SN based on 4char code, try using site_list:
+    [site.SN for site in site_list if site.code='XXXX'][0]
+or some similarly ridiculous alternative.
+"""
+
+
 
 
 table_definitions = {
