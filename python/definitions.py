@@ -1341,7 +1341,7 @@ def raw_std_balers(tbl_name):
     return grpbykey, get_start_end
 
 
-def verify_colalias():
+def _verify_col_alias():
     """Follow all past column names to current name to verify lookup table
 
     Return truth of whether column lookup table is free of missing data
@@ -1364,7 +1364,7 @@ def verify_colalias():
         return True
 
 
-def verify_headers():
+def _verify_table_definitions():
     """Attempt to look up each column in header definition
 
     Return truth of whether all defined headers are current based on col_alias
@@ -1390,4 +1390,14 @@ def verify_headers():
         print ('No warnings.\n\n')
         return True
 
+try:
+    _verify_col_alias()
+except Exception as ex:
+    print ('/*- A problem occurred while verifying the historical column '
+            'alias dictionary (``col_alias``): \n{err}'.format(err=ex))
+try:
+    _verify_table_definitions()
+except Exception as ex:
+    print ('/*- A problem occurred while verifying the table column '
+            'definitions (``table_definitions``): \n{err})'.format(err=ex))
 
