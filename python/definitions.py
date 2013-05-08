@@ -233,6 +233,54 @@ def write_csv(df, file_name):
     print 'done.'
 
 
+def current_names(table, column):
+    """Get current (table, column) names from historical aliases
+
+    Provides equivalent current table & column definitions for
+
+    TODO finish this docstring
+
+    Parameters
+    ----------
+    table : str
+        name of data table, as deployed, case-sensitive; can be found at the
+        end of the first line in files with original headers
+    column : str
+        name of data file column, as deployed, case-sensitive;
+
+    Dictionary keys & values are tuples of the form (table name, column name).
+All current/prior table and column pairs are described by keys; superceding
+pairs are described by the values. A value tuple of (None, None) indicates
+the column is no longer recorded in data tables. A blank string in the value
+tuple means that item in the tuple is the same as the corresponding item in
+the key (ie remains unchanged).
+
+For example:
+
+    col_alias[('flux', 'gps_ready')] => (None, None) # no longer recorded
+
+    col_alias[('flux', 'WS_ms_WVc(1)')] => ('', '034b_ws') --->
+    col_alias[('flux', '034b_ws')] => ('CFNT_stats30', 'Met1_wnd_spd') --->
+    col_alias[('CFNT_stats30', 'Met1_wnd_wpd')] => ('stats30', '') --->
+    col_alias[('stats30', 'Met1_wnd_spd')] => ('', '') # current tbl/col names
+
+    Return current value of data column's table name and column name. If
+    arguments are most current, they are returned unchanged. If column is no
+    longer included in data tables, (None, None) is returned.
+    """
+    tbl, col = col_alias[(table, column)]
+    if (tbl, col) == (None, None):
+        return (None, None)
+    elif (tbl, col) == ('', ''):
+        return (table, column)
+    elif tbl == '':
+        return current_names(table, col)
+    elif col == '':
+        return current_names(tbl, column)
+    else:
+        return current_names(tbl, col)
+
+
 class FieldSite(object):
     """Represent an objective 2 monitoring site
 
@@ -1293,24 +1341,7 @@ For example:
 
 """
 
-def current_names(table, column):
-    """Get current (table, column) names from historical aliases
 
-    Return current value of data column's table name and column name. If
-    arguments are most current, they are returned unchanged. If column is no
-    longer included in data tables, (None, None) is returned.
-    """
-    tbl, col = col_alias[(table, column)]
-    if (tbl, col) == (None, None):
-        return (None, None)
-    elif (tbl, col) == ('', ''):
-        return (table, column)
-    elif tbl == '':
-        return current_names(table, col)
-    elif col == '':
-        return current_names(tbl, column)
-    else:
-        return current_names(tbl, col)
 
 
 def raw_std_balers(tbl_name):
