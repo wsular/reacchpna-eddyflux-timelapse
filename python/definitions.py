@@ -142,41 +142,68 @@ def get_table_name(toa5_file):
     return tblname
 
 
+#def open_toa5(fname):
+#    """Open TOA5 file and return pandas DataFrame
+#
+#    Parameters
+#    ----------
+#    fname : str
+#        path to source TOA5 file
+#
+#    Returns
+#    -------
+#    pandas.DataFrame instance containing data from source file
+#    """
+#    try:
+#        print "> Loading %s" % os.path.basename(fname)
+#        df = pd.read_csv(fname,
+#                         header=1,
+#                         skiprows=[2,3],
+#                         index_col=0,
+#                         parse_dates=True,
+#                         na_values=['"NAN"', 'NAN'])
+#    except Exception as err:
+#        print 'Serious problem!'
+#        raise err
+#    df.index.name = 'TIMESTAMP'
+#    duptest = list(df.index.get_duplicates())
+#    if len(duptest) > 1000:
+#        print '  ! More than 1000 duplicate indices found! (Did the file ring?)'
+#    elif len(duptest):
+#        print '  ! Duplicate index values found:'
+#        for each in duptest:
+#            print '      ', each, len(df.ix[each]), 'rows'
+#        print '  * Removing earliest duplicate indices...'
+#    else:
+#        return df #short-circuit if no dups
+#    return df.groupby(df.index).last()
+
 def open_toa5(fname):
-    """Open TOA5 file and return pandas DataFrame
+    """Opens CSI TOA5-formatted data files in standard fashion
+
+    Loads data from TOA5-formatted data file into pandas.DataFrame object. The
+    timestamp column is used as the dataframe index (axis 0). Column names
+    are used for names along DF axis 1. Progam info (line 0), column units
+    (line 2) and record type (line 3) are ignored. Null values are recognized
+    ("NAN", NAN, -7999 and -2147483648) and set to np.nan
 
     Parameters
     ----------
     fname : str
-        path to source TOA5 file
+        path to TOA5 file to open
 
     Returns
     -------
-    pandas.DataFrame instance containing data from source file
+    pandas.DataFrame
     """
-    try:
-        print "> Loading %s" % os.path.basename(fname)
-        df = pd.read_csv(fname,
-                         header=1,
-                         skiprows=[2,3],
-                         index_col=0,
-                         parse_dates=True,
-                         na_values=['"NAN"', 'NAN'])
-    except Exception as err:
-        print 'Serious problem!'
-        raise err
+    df = pd.read_csv(fname,
+                     header=1,
+                     skiprows=[2,3],
+                     index_col=0,
+                     parse_dates=True,
+                     na_values=['"NAN"', 'NAN', -7999, -2147483648])
     df.index.name = 'TIMESTAMP'
-    duptest = list(df.index.get_duplicates())
-    if len(duptest) > 1000:
-        print '  ! More than 1000 duplicate indices found! (Did the file ring?)'
-    elif len(duptest):
-        print '  ! Duplicate index values found:'
-        for each in duptest:
-            print '      ', each, len(df.ix[each]), 'rows'
-        print '  * Removing earliest duplicate indices...'
-    else:
-        return df #short-circuit if no dups
-    return df.groupby(df.index).last()
+    return df
 
 
 def read_csv(file_name):
