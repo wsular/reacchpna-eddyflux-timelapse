@@ -525,6 +525,19 @@ table_definitions = {
                       'dec_6rad_dnlook_Avg(6)',
                       'tblcalls_Tot'],
 
+    # definitions for stats5_ui below dictionary definition
+    'stats30_ui' : ['TIMESTAMP',
+                    'RECORD',
+                    'dec_ndvi_up1_Avg',
+                    'dec_ndvi_up2_Avg',
+                    'dec_ndvi_dn1_Avg',
+                    'dec_ndvi_dn2_Avg',
+                    'dec_pri_up1_Avg',
+                    'dec_pri_up2_Avg',
+                    'dec_pri_dn1_Avg',
+                    'dec_pri_dn2_Avg',
+                    'tblcalls_Tot'],
+
     'site_daily' : ['TIMESTAMP',
                     'RECORD',
                     'latitude_Med',
@@ -554,19 +567,116 @@ table_definitions = {
                    'Pic_co2_ch4_installed',
                    'hfp_installed'],
 
-    'tsdata_n2o_co' : ['TIMESTAMP',
-                       'RECORD',
-                       'lgr_n2o',
-                       'lgr_co'],
+    'diagnostics' : ['TIMESTAMP',
+                     'RECORD',
+                     'total_scans',
+                     'scans_1hz',
+                     'scans_5s',
+                     'skipped_10hz_scans',
+                     'skipped_1hz_scans',
+                     'skipped_5s_scans',
+                     'watchdog_errors'],
 
+    'tsdata_extra' : ['TIMESTAMP',
+                      'RECORD',
+                      'lgr_n2o',
+                      'lgr_co',
+                      'lgr_h2o',
+                      'pic_co2',
+                      'pic_ch4',
+                      'pic_h2o'],
+    
+    'extra_info' : ['TIMESTAMP',
+                    'RECORD',
+                    'Decagon_NDVI_installed',
+                    'Decagon_PRI_installed',
+                    'LGR_n2oco_installed',
+                    'lgr_n2o_mult',
+                    'lgr_n2o_offset',
+                    'lgr_co_mult',
+                    'lgr_co_offset',
+                    'lgr_h2o_mult',
+                    'lgr_h2o_offset',
+                    'Picarro_co2ch4_installed',
+                    'pic_co2_mult',
+                    'pic_co2_offset',
+                    'pic_ch4_mult',
+                    'pic_ch4_offset',
+                    'pic_h2o_mult',
+                    'pic_h2o_offset']
 }
 """This dict holds lists describing the order of columns because the
    look-up dict cannot hold that information in a straightforward way. """
 table_definitions['stats5'] = copy(table_definitions['stats30'])
 table_definitions['stats5_6rad'] = copy(table_definitions['stats30_6rad'])
+table_definitions['stats5_ui'] = copy(table_definitions['stats30_ui'])
 
 
 col_alias = {
+    ########## 20130507_XXXX - CURRENT #####################################
+    ('stats30_ui', 'TIMESTAMP') : ('', ''),
+    ('stats30_ui', 'RECORD') : ('', ''),
+    ('stats30_ui', 'dec_ndvi_up1_Avg') : ('', ''),
+    ('stats30_ui', 'dec_ndvi_up2_Avg') : ('', ''),
+    ('stats30_ui', 'dec_ndvi_dn1_Avg') : ('', ''),
+    ('stats30_ui', 'dec_ndvi_dn2_Avg') : ('', ''),
+    ('stats30_ui', 'dec_pri_up1_Avg') : ('', ''),
+    ('stats30_ui', 'dec_pri_up2_Avg') : ('', ''),
+    ('stats30_ui', 'dec_pri_dn1_Avg') : ('', ''),
+    ('stats30_ui', 'dec_pri_dn2_Avg') : ('', ''),
+    ('stats30_ui', 'tblcalls_Tot') : ('', ''),
+
+    ('stats5_ui', 'TIMESTAMP') : ('', ''),
+    ('stats5_ui', 'RECORD') : ('', ''),
+    ('stats5_ui', 'dec_ndvi_up1_Avg') : ('', ''),
+    ('stats5_ui', 'dec_ndvi_up2_Avg') : ('', ''),
+    ('stats5_ui', 'dec_ndvi_dn1_Avg') : ('', ''),
+    ('stats5_ui', 'dec_ndvi_dn2_Avg') : ('', ''),
+    ('stats5_ui', 'dec_pri_up1_Avg') : ('', ''),
+    ('stats5_ui', 'dec_pri_up2_Avg') : ('', ''),
+    ('stats5_ui', 'dec_pri_dn1_Avg') : ('', ''),
+    ('stats5_ui', 'dec_pri_dn2_Avg') : ('', ''),
+    ('stats5_ui', 'tblcalls_Tot') : ('', ''),
+
+    ('diagnostics', 'TIMESTAMP') : ('', ''),
+    ('diagnostics', 'RECORD') : ('', ''),
+    ('diagnostics', 'total_scans') : ('', ''),
+    ('diagnostics', 'scans_1hz') : ('', ''),
+    ('diagnostics', 'scans_5s') : ('', ''),
+    ('diagnostics', 'skipped_10hz_scans') : ('', ''),
+    ('diagnostics', 'skipped_1hz_scans') : ('', ''),
+    ('diagnostics', 'skipped_5s_scans') : ('', ''),
+    ('diagnostics', 'watchdog_errors') : ('', ''),
+
+    ('tsdata_extra', 'TIMESTAMP') : ('', ''),
+    ('tsdata_extra', 'RECORD') : ('', ''),
+    ('tsdata_extra', 'lgr_n2o') : ('', ''),
+    ('tsdata_extra', 'lgr_co') : ('', ''),
+    ('tsdata_extra', 'lgr_h2o') : ('', ''),
+    ('tsdata_extra', 'pic_co2') : ('', ''),
+    ('tsdata_extra', 'pic_ch4') : ('', ''),
+    ('tsdata_extra', 'pic_h2o') : ('', ''),
+
+    ('extra_info', 'TIMESTAMP') : ('', ''),
+    ('extra_info', 'RECORD') : ('', ''),
+    ('extra_info', 'Decagon_NDVI_installed') : ('', ''),
+    ('extra_info', 'Decagon_PRI_installed') : ('', ''),
+    ('extra_info', 'LGR_n2oco_installed') : ('', ''),
+    ('extra_info', 'lgr_n2o_mult') : ('', ''),
+    ('extra_info', 'lgr_n2o_offset') : ('', ''),
+    ('extra_info', 'lgr_co_mult') : ('', ''),
+    ('extra_info', 'lgr_co_offset') : ('', ''),
+    ('extra_info', 'lgr_h2o_mult') : ('', ''),
+    ('extra_info', 'lgr_h2o_offset') : ('', ''),
+    ('extra_info', 'Picarro_co2ch4_installed') : ('', ''),
+    ('extra_info', 'pic_co2_mult') : ('', ''),
+    ('extra_info', 'pic_co2_offset') : ('', ''),
+    ('extra_info', 'pic_ch4_mult') : ('', ''),
+    ('extra_info', 'pic_ch4_offset') : ('', ''),
+    ('extra_info', 'pic_h2o_mult') : ('', ''),
+    ('extra_info', 'pic_h2o_offset') : ('', ''),
+    ########################################################################
+
 
     ########## 20120810_LIND - CURRENT #####################################
     ('stats30_hfp', 'TIMESTAMP') : (None, None),
@@ -862,6 +972,14 @@ col_alias = {
     # TODO figure out how to integrate disparate time-base variables like runsig
     ('site_daily', 'RunSig') : (None, None), # 20120627_CFCT
     ('site_daily', 'ProgSig') : (None, None), # 20120627_CFCT
+    ('site_daily', 'batt_volt_Min') : ('', ''), # add 20130507_XXXX
+    ('site_daily', 'batt_volt_TMn') : ('', ''), #
+    ('site_daily', 'batt_volt_Max') : ('', ''), #
+    ('site_daily', 'batt_volt_Tmx') : ('', ''), #  ..
+    ('site_daily', 'T_hmp_Min') : ('', ''), #
+    ('site_daily', 'T_hmp_Tmn') : ('', ''), #
+    ('site_daily', 'T_hmp_Max') : ('', ''), #
+    ('site_daily', 'T_hmp_Tmx') : ('', ''), # add 20130507_XXXX
     ########################################################################
 
 
@@ -914,10 +1032,10 @@ col_alias = {
 
     ###### 20120504_LIND, 20120628_CFNT and 20120720_CFNT #################
     # TODO what to do with LGR data?
-    ('tsdata_n2o_co', 'TIMESTAMP') : ('', ''),
-    ('tsdata_n2o_co', 'RECORD') : ('', ''),
-    ('tsdata_n2o_co', 'lgr_n2o') : ('', ''),
-    ('tsdata_n2o_co', 'lgr_co') : ('', ''),
+    ('tsdata_n2o_co', 'TIMESTAMP') : (None, None),
+    ('tsdata_n2o_co', 'RECORD') : (None, None),
+    ('tsdata_n2o_co', 'lgr_n2o') : ('tsdata_extra', 'lgr_n2o'),
+    ('tsdata_n2o_co', 'lgr_co') : ('tsdata_extra', 'lgr_co'),
 
     ('stats30_n2o_co', 'TIMESTAMP') : ('', ''),
     ('stats30_n2o_co', 'RECORD') : ('', ''),
@@ -1361,7 +1479,6 @@ For example:
     col_alias[('flux', '034b_ws')] => ('CFNT_stats30', 'Met1_wnd_spd') --->
     col_alias[('CFNT_stats30', 'Met1_wnd_wpd')] => ('stats30', '') --->
     col_alias[('stats30', 'Met1_wnd_spd')] => ('', '') # current tbl/col names
-
 """
 
 
