@@ -652,8 +652,8 @@ col_alias = {
 
 
     ########## 20120427_CFNT  #############################################
-    ##('stats30_6rad', 'TIMESTAMP') : ('', ''),
-    ##('stats30_6rad', 'RECORD') : ('', ''),
+    ('stats30_6rad', 'TIMESTAMP') : (None, None),
+    ('stats30_6rad', 'RECORD') : (None, None),
     ('stats30_6rad', 'dec_6rad_up_Avg(1)') : ('', 'dec_6rad_uplook_Avg(1)'),
     ('stats30_6rad', 'dec_6rad_up_Avg(2)') : ('', 'dec_6rad_uplook_Avg(2)'),
     ('stats30_6rad', 'dec_6rad_up_Avg(3)') : ('', 'dec_6rad_uplook_Avg(3)'),
@@ -667,8 +667,8 @@ col_alias = {
     ('stats30_6rad', 'dec_6rad_dn_Avg(5)') : ('', 'dec_6rad_dnlook_Avg(5)'),
     ('stats30_6rad', 'dec_6rad_dn_Avg(6)') : ('', 'dec_6rad_dnlook_Avg(6)'),
 
-    ##('stats5_6rad', 'TIMESTAMP') : ('', ''),
-    ##('stats5_6rad', 'RECORD') : ('', ''),
+    ('stats5_6rad', 'TIMESTAMP') : (None, None),
+    ('stats5_6rad', 'RECORD') : (None, None),
     ('stats5_6rad', 'dec_6rad_up_Avg(1)') : ('', 'dec_6rad_uplook_Avg(1)'),
     ('stats5_6rad', 'dec_6rad_up_Avg(2)') : ('', 'dec_6rad_uplook_Avg(2)'),
     ('stats5_6rad', 'dec_6rad_up_Avg(3)') : ('', 'dec_6rad_uplook_Avg(3)'),
