@@ -560,7 +560,7 @@ table_definitions = {
                        'lgr_co'],
 
 }
-"""This dict holds lists describing the order of file headers because the
+"""This dict holds lists describing the order of columns because the
    look-up dict cannot hold that information in a straightforward way. """
 table_definitions['stats5'] = copy(table_definitions['stats30'])
 table_definitions['stats5_6rad'] = copy(table_definitions['stats30_6rad'])
