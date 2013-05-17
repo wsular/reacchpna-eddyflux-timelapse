@@ -606,6 +606,7 @@ col_alias = {
     ('site_info', 'ProgSig') : ('', ''),
     ('site_info', 'SENSOR_DEC_5TM') : (None, None), # 20120810_LIND
     ('site_info', 'SENSOR_DEC_6RAD') : ('', 'Dec_6rad_installed'),
+    # XXX should these *installed variables be retained somehow?
     ('site_info', 'Dec_6rad_installed') : ('', ''),
     ('site_info', 'SENSOR_LGR_N2OCO') : ('', 'LGR_n2o_co_installed'),
     ('site_info', 'LGR_n2o_co_installed') : ('', ''),
@@ -858,6 +859,7 @@ col_alias = {
     ('site_daily', 'gps_ready_Min') : ('', ''),
     ('site_daily', 'max_clock_change') : ('', ''),
     ('site_daily', 'nmbr_clock_change') : ('', ''),
+    # TODO figure out how to integrate disparate time-base variables like runsig
     ('site_daily', 'RunSig') : (None, None), # 20120627_CFCT
     ('site_daily', 'ProgSig') : (None, None), # 20120627_CFCT
     ########################################################################
