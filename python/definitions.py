@@ -502,10 +502,8 @@ table_definitions = {
                  'soil_5TM_ID9_VWC_Avg',
                  'soil_hfp1_heat_flux_Avg',
                  'soil_hfp1_sensitivity',
-                 'soil_hfp1_uptime',
                  'soil_hfp2_heat_flux_Avg',
                  'soil_hfp2_sensitivity',
-                 'soil_hfp2_uptime',
                  'panel_tmpr_Avg',
                  'batt_volt_Avg',
                  ],
@@ -764,12 +762,10 @@ col_alias = {
     ('stats30', 'soil_5TM_ID9_E_Avg') : ('', ''),
     ('stats30', 'soil_5TM_ID9_T_Avg') : ('', ''),
     ('stats30', 'soil_5TM_ID9_VWC_Avg') : ('', ''),
-    ('stats30', 'soil_hfp1_heat_flux_Avg') : ('', ''),
-    ('stats30', 'soil_hfp1_sensitivity') : ('', ''),
-    ('stats30', 'soil_hfp1_uptime') : ('', ''),
-    ('stats30', 'soil_hfp2_heat_flux_Avg') : ('', ''),
-    ('stats30', 'soil_hfp2_sensitivity') : ('', ''),
-    ('stats30', 'soil_hfp2_uptime') : ('', ''),
+    ('stats30', 'soil_hfp1_heat_flux_Avg') : ('', ''), # 20130507_XXXX
+    ('stats30', 'soil_hfp1_sensitivity') : ('', ''), # 20130507_XXXX
+    ('stats30', 'soil_hfp2_heat_flux_Avg') : ('', ''), # 20130507_XXXX
+    ('stats30', 'soil_hfp2_sensitivity') : ('', ''), # 20130507_XXXX
     ('stats30', 'panel_tmpr_Avg') : ('', ''),
     ('stats30', 'batt_volt_Avg') : ('', ''),
 
@@ -835,12 +831,10 @@ col_alias = {
     ('stats5', 'soil_5TM_ID9_E_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_T_Avg') : ('', ''),
     ('stats5', 'soil_5TM_ID9_VWC_Avg') : ('', ''),
-    ('stats5', 'soil_hfp1_heat_flux_Avg') : ('', ''),
-    ('stats5', 'soil_hfp1_sensitivity') : ('', ''),
-    ('stats5', 'soil_hfp1_uptime') : ('', ''),
-    ('stats5', 'soil_hfp2_heat_flux_Avg') : ('', ''),
-    ('stats5', 'soil_hfp2_sensitivity') : ('', ''),
-    ('stats5', 'soil_hfp2_uptime') : ('', ''),
+    ('stats5', 'soil_hfp1_heat_flux_Avg') : ('', ''), # 20130507_XXXX
+    ('stats5', 'soil_hfp1_sensitivity') : ('', ''), # 20130507_XXXX
+    ('stats5', 'soil_hfp2_heat_flux_Avg') : ('', ''), # 20130507_XXXX
+    ('stats5', 'soil_hfp2_sensitivity') : ('', ''), # 20130507_XXXX
     ('stats5', 'panel_tmpr_Avg') : ('', ''),
     ('stats5', 'batt_volt_Avg') : ('', ''),
 
