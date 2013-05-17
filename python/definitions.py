@@ -1404,6 +1404,7 @@ def _verify_col_alias():
 
     Return truth of whether column lookup table is free of missing data
     """
+    # TODO make output shown only for errors
     errs = ''
     print ('Verifying column alias dictionary...\n')
     for (st, sc) in sorted(col_alias):
@@ -1427,6 +1428,7 @@ def _verify_table_definitions():
 
     Return truth of whether all defined headers are current based on col_alias
     """
+    # TODO make output shown only for errors
     errmsg = ''
     print ('Verifying column order defintions...\n')
     for tbl in table_definitions:
