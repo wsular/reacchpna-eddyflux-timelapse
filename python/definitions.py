@@ -445,6 +445,10 @@ class FieldSite(object):
             raw_std = pathto.raw_std % (self.code, '%s')
         self.pathto = _pathto2()
 
+    def __repr__(self):
+        return '<FieldSite: {name} [{code}]>'.format(name=self.name,
+                                                     code=self.code)
+
 
 """Premade site objects available upon import"""
 cfnt = FieldSite('Cook Agronomy Farm no-till',
