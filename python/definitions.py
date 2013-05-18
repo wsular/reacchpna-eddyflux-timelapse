@@ -381,10 +381,10 @@ class FieldSite(object):
 
     Class also contains object with some pre-populated site-specific paths:
 
-        ``Site.pathto.raw_ascii`` or ``Site.pathto.telemetry``
+        ``FieldSite.pathto.raw_ascii`` or ``FieldSite.pathto.telemetry``
 
     +---------------------+-----------------------------------------------+
-    | Site.pathto.*       | Description                                   |
+    | FieldSite.pathto.*  | Description                                   |
     +=====================+===============================================+
     | raw_ascii           | Location of unprocessed, text-formatted data  |
     |                     | files in Campbellsci long-header (TOA5)       |
