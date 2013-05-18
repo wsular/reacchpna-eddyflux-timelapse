@@ -1312,10 +1312,10 @@ col_alias = {
     ('ts_data', 'h2o_molar_density') : (None, None), # 20120210_CFNT
     ('ts_data', 'co2_mix_ratio') : ('', 'co2_molar_density'), # 20111024_CFNT
     ('ts_data', 'h2o_mix_ratio') : ('', 'h2o_molar_density'), # 20111024_CFNT
-    ('ts_data', 'n2o') : (None, None), # 20111024_CFNT
-    ('ts_data', 'c_monoxide') : (None, None), # 20111024_CFNT
-    ('ts_data', 'ch4') : (None, None), # 20111024_CFNT
-    ('ts_data', 'co2_picarro') : (None, None), # 20111024_CFNT
+    ('ts_data', 'n2o') : ('tsdata_extra', 'lgr_n2o'), # 20111024_CFNT
+    ('ts_data', 'c_monoxide') : ('tsdata_extra', 'lgr_co'), # 20111024_CFNT
+    ('ts_data', 'ch4') : ('tsdata_extra', 'pic_ch4'), # 20111024_CFNT
+    ('ts_data', 'co2_picarro') : ('tsdata_extra', 'pic_co2'), # 20111024_CFNT
     ('ts_data', 'CO2') : ('CFNT_tsdata', ''),  # 20120210_CFNT
     ('ts_data', 'H2O') : ('CFNT_tsdata', ''), # 20120210_CFNT
     ('ts_data', 'diag_irga') : ('CFNT_tsdata', ''),  # 20120210_CFNT
