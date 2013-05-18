@@ -41,7 +41,7 @@ from pandas.tseries.offsets import Day, MonthBegin, YearBegin
 MAX_RAW_FILE_SIZE = 200 * 1024 * 1024  #split raw data files > this, bytes
 
 
-class pathto():
+class pathto(object):
     """Object containing up-to-date directory locations
 
     There are several well-defined directories that various scripts may
@@ -414,7 +414,7 @@ class FieldSite(object):
         self.remote_IP = remote_IP
         self.SN = self.serial_num
 
-        class _pathto2():
+        class _pathto2(object):
             raw_ascii = pathto.raw_ascii % self.code
             raw_binary = pathto.raw_binary % self.code
             telemetry = pathto.telemetry % self.code
