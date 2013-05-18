@@ -12,6 +12,15 @@ used by nearly all other data scripts. Some of the stuff here includes:
         >>> pathto.raw_ascii
         {ex1_results}
 
+    Table/column name look-up
+        The function ``current_names`` will look up any pair of table and
+        column names from a valid EC tower data file and return the names
+        as defined in the most recent program release.
+
+        >>> from definitions import current_names
+        >>> current_names('flux', 'l')
+        ('stats30', 'L')
+
 Created on Fri Sep 14 08:09:41 2012
 
 @author: Patrick O'Keeffe <pokeeffe@wsu.edu
@@ -263,9 +272,10 @@ def write_csv(df, file_name):
 def current_names(table, column):
     """Get current (table, column) names from historical aliases
 
-    Provides equivalent current table & column definitions for
-
-    TODO finish this docstring
+    Provides the current table & column name for any given table & column
+    name from REACCH Objective 2 EC tower data files. If column is no longer
+    included, the tuple ``(None, None)`` is returned. See Details for an
+    explanation of how it works.
 
     Parameters
     ----------
@@ -275,25 +285,59 @@ def current_names(table, column):
     column : str
         name of data file column, as deployed, case-sensitive;
 
-    Dictionary keys & values are tuples of the form (table name, column name).
-All current/prior table and column pairs are described by keys; superceding
-pairs are described by the values. A value tuple of (None, None) indicates
-the column is no longer recorded in data tables. A blank string in the value
-tuple means that item in the tuple is the same as the corresponding item in
-the key (ie remains unchanged).
+    Returns
+    -------
+    Tuple of table name and column name according to present definitions or
+    ``(None, None)`` if column is no longer present.
 
-For example:
+    Examples
+    --------
 
-    col_alias[('flux', 'gps_ready')] => (None, None) # no longer recorded
+    The sonic diagnostic flags are no longer totaled:
 
-    col_alias[('flux', 'WS_ms_WVc(1)')] => ('', '034b_ws') --->
-    col_alias[('flux', '034b_ws')] => ('CFNT_stats30', 'Met1_wnd_spd') --->
-    col_alias[('CFNT_stats30', 'Met1_wnd_wpd')] => ('stats30', '') --->
-    col_alias[('stats30', 'Met1_wnd_spd')] => ('', '') # current tbl/col names
+        >>> current_names('flux', 'sonic_cal_err_f_Tot')
+        (None, None)
 
-    Return current value of data column's table name and column name. If
-    arguments are most current, they are returned unchanged. If column is no
-    longer included in data tables, (None, None) is returned.
+    Oldest data table columns are translated to current names:
+
+        >>> current_names('flux', 'l')
+        ('stats30', 'L')
+
+    But if it's a current set of names, the input is returned:
+
+        >>> current_names('stats30', 'L')
+        ('stats30', 'L')
+
+    Details
+    -------
+    Internally, ``current_names`` uses a dictionary whereby keys and values
+    are tuples of the form (table name, column name). All current and prior
+    table and column pairs are described a key. Table/column pairs which are
+    defined in the current data schema have values of ``('','')``. Those
+    columns which are dropped from the data schema have values of
+    ``(None, None)``. When a table and/or column name is changed, the
+    table/column key is retired by changing the corresponding tuple value(s)
+    to the new name(s); unless the column has been dropped, a new dictionary
+    entry must also be added with the new table/column name as the key and a
+    tuple of empty strings as the value.
+
+    By structuring the dictionary in this way, the actual look-up performed
+    by ``current_names`` happens recursively:
+
+        ('flux', 'WS_ms_WVc(1)')] => ('', '034b_ws') --->
+
+        ('flux', '034b_ws')] => ('CFNT_stats30', 'Met1_wnd_spd') --->
+
+        ('CFNT_stats30', 'Met1_wnd_wpd')] => ('stats30', '') --->
+
+        ('stats30', 'Met1_wnd_spd')] => ('', '') # current tbl/col names
+
+    This mimics how you might actually figure out what the current table and
+    column name of a given column is. So long as the dictionary is correct,
+    things are gravy, and despite being long, the dictionary is simple.
+    Additionally, there are internal functions for checking the validity of
+    the dictionary -- run (double-click) the source file to use them, they
+    take too long to be suitable for running upon import.
     """
     tbl, col = col_alias[(table, column)]
     if (tbl, col) == (None, None):
@@ -585,7 +629,7 @@ table_definitions = {
                       'pic_co2',
                       'pic_ch4',
                       'pic_h2o'],
-    
+
     'extra_info' : ['TIMESTAMP',
                     'RECORD',
                     'Decagon_NDVI_installed',
