@@ -21,6 +21,29 @@ used by nearly all other data scripts. Some of the stuff here includes:
         >>> current_names('flux', 'l')
         ('stats30', 'L')
 
+    File I/O
+        Several functions offer a standard way to interact with data files:
+
+            * ``open_toa5``
+            * ``write_csv``
+            * ``open_csv``
+
+    Field site data
+        The list ``site_list`` contains ``FieldSite`` objects named after
+        each site's four-character code which have properties describing
+        aspects of that site. For instance:
+
+            >>> from definitions import site_list
+            >>> for site in site_list:
+            ...     print site.name
+            ...
+            Cook Agronomy Farm no-till
+            Lind Dryland Research Station
+            Cook Agronomy Farm conventional till
+            Moscow Mountain
+
+        See the FieldSite help/docstring for details about what's available.
+
 Created on Fri Sep 14 08:09:41 2012
 
 @author: Patrick O'Keeffe <pokeeffe@wsu.edu
