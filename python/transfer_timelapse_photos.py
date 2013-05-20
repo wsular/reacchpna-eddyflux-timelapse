@@ -49,7 +49,6 @@ if not os.path.isfile(antexe.strip('"')):
             raw_input('Press <enter> to exit...')
             sys.exit(RC_NOANTEXE)
 antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
-arbloc = r'timelapse\%s timelapse AntRenamer batch file.arb'
 cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
     # XCOPY source <destination>
     #   /C      continue, even on error
@@ -64,14 +63,6 @@ _codelist = {'1' : 'CFNT',
              '2' : 'LIND',
              '3' : 'CFCT',
              '4' : 'MMTN' }
-
-def find_batch_file(codestr):
-    arbpath = arbloc % codestr
-    if not os.path.isfile(arbpath):
-        print 'Error: could not locate appropriate Ant Renamer batch file'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_NOBATCH)
-    return arbpath
 
 
 if __name__ == '__main__':
