@@ -64,6 +64,18 @@ _codelist = {'1' : 'CFNT',
              '3' : 'CFCT',
              '4' : 'MMTN' }
 
+_arbtemplate = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<AntRenamer Version="2.10.0" Date="2013-02-04">
+ <Batch>
+  <Exif Mask="{site}_%datetimeoriginal%%ext%"/>
+  <StrRepl Search="-00." Repl="." AllOccurences="-1" CaseSensitive="0" IncludeExt="-1" OnlyExt="0"/>
+  <StrRepl Search="-" Repl="" AllOccurences="-1" CaseSensitive="0" IncludeExt="0" OnlyExt="0"/>
+  <StrRepl Search=" " Repl="." AllOccurences="-1" CaseSensitive="0" IncludeExt="0" OnlyExt="0"/>
+  <ChangeCase Option="3" AfterChars="- .+(" UseLocale="0" IncludeExt="0" OnlyExt="-1"/>
+ </Batch>
+</AntRenamer>
+"""
 
 if __name__ == '__main__':
     if 'nt' not in os.name:
