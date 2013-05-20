@@ -18,6 +18,8 @@ import os
 import subprocess
 import sys
 
+from glob import glob
+
 from obj2core import pathto
 
 RC_NOSRCDIR = 1
@@ -48,8 +50,8 @@ if not os.path.isfile(antexe.strip('"')):
             print antexe
             raw_input('Press <enter> to exit...')
             sys.exit(RC_NOANTEXE)
-cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
 antarg = ' -b "{arb}" -afr "{src}" -g -x' #batch file name, source dir
+cpyexe = r'xcopy "{src}" "{dst}\" /C /K /V /Q /X /Y' #src, dest
     # XCOPY source <destination>
     #   /C      continue, even on error
     #   /K      copies attributes (default is reset)
@@ -123,11 +125,14 @@ Where are these files from?
     with open(tmparb, mode='w') as arbfile:
         arbfile.write(_arbtemplate.format(site=_codelist[choice]))
 
-    confirm = raw_input('Are these settings OK? C=continue, else quit: ')
-    if not confirm.strip().lower() == 'c':
+    print ' * Copying files to temporary destination... ',
+    cmd = cpyexe.format(src=srcloc, dst=tmpdir)
+    rc = subprocess.check_call(cmd, shell=True)
+    if rc:
+        print ' Error: Unable to copy files to destination'
         raw_input('Press <enter> to exit...')
-        sys.exit()
-    print
+        sys.exit(RC_CPYERR)
+    # xcopy prints equivalent 'done.' statement to stdout
 
     print ' * Renaming image files...',
     cmd = antexe + antarg.format(arb=os.path.normpath(tmparb), src=tmpdir)
@@ -141,14 +146,21 @@ Where are these files from?
     os.remove(tmparb) #delete renamer batch file
 
     # TODO check if files of same name exist in destination folder b4 copying
-    print ' * Copying files to destination... ',
-    cmd = cpyexe % (srcloc, cpydst)
-    rc = subprocess.check_call(cmd, shell=True)
-    if rc:
-        print ' Error: Unable to copy files to destination'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_CPYERR)
-    # xcopy prints equivalent 'done.' statement to stdout
+    print ' * Moving files to final destination... ',
+    for each in glob(os.path.join(tmpdir, '*.*')):
+        newname = os.path.join(os.pardir, os.path.basename(each))
+        try:
+            os.rename(each, newname)
+        except:
+            print ' ! Could not move: {name}'.format(name=newname)
+    if not os.listdir(tmpdir):
+        try:
+            os.rmdir(tmpdir)
+        except OSError:
+            print ' ! Temporary directory emptied but could not be removed'
+    else:
+        print ' ! Some files remain in the temporary directory ({dir})'.format(
+            dir=os.path.normpath(tmpdir))
 
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
     print
