@@ -48,8 +48,8 @@ if not os.path.isfile(antexe.strip('"')):
             print antexe
             raw_input('Press <enter> to exit...')
             sys.exit(RC_NOANTEXE)
-antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
 cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
+antarg = ' -b "{arb}" -afr "{src}" -g -x' #batch file name, source dir
     # XCOPY source <destination>
     #   /C      continue, even on error
     #   /K      copies attributes (default is reset)
@@ -114,10 +114,14 @@ Where are these files from?
     if choice.lower() == 'q':
         import sys; sys.exit()
 
-    arbfile = find_batch_file(_codelist[choice])
-    print '\nUsing batch file: ', arbfile
     cpydst = dstloc % _codelist[choice]
-    print 'Target directory: ', cpydst
+    print 'Using target directory: ', cpydst
+    confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
+
+    tmpdir = os.path.join(cpydst, 'imgs-to-rename')
+    tmparb = os.path.join(tmpdir, 'rename-actions.tmp~')
+    with open(tmparb, mode='w') as arbfile:
+        arbfile.write(_arbtemplate.format(site=_codelist[choice]))
 
     confirm = raw_input('Are these settings OK? C=continue, else quit: ')
     if not confirm.strip().lower() == 'c':
@@ -126,7 +130,7 @@ Where are these files from?
     print
 
     print ' * Renaming image files...',
-    cmd = antexe + antarg % (arbfile, srcloc)
+    cmd = antexe + antarg.format(arb=os.path.normpath(tmparb), src=tmpdir)
     rc = subprocess.check_call(cmd, shell=True)
     if rc:
         print ' Error: Ant Renamer exited with code %s' % rc
@@ -134,6 +138,7 @@ Where are these files from?
         sys.exit(RC_ANTERR)
     else:
         print 'done.'
+    os.remove(tmparb) #delete renamer batch file
 
     # TODO check if files of same name exist in destination folder b4 copying
     print ' * Copying files to destination... ',
