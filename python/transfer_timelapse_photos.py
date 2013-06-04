@@ -120,8 +120,12 @@ Where are these files from?
     print 'Using target directory: ', cpydst
     confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
 
-    tmpdir = os.path.join(cpydst, 'imgs-to-rename')
-    tmparb = os.path.join(tmpdir, 'rename-actions.tmp~')
+    tmpdir = os.path.join(cpydst, 'imgs_to_rename')
+    if not os.path.isdir(tmpdir):
+        os.mkdir(tmpdir)
+
+    tmparb = os.path.join(tmpdir, 'renameactions.tmp~')
+    #temp file name must not be modified by ant renamer (no dot, dash...)
     with open(tmparb, mode='w') as arbfile:
         arbfile.write(_arbtemplate.format(site=_codelist[choice]))
 
