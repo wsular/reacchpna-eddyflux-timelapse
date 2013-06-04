@@ -20,7 +20,7 @@ import sys
 
 from glob import glob
 
-from obj2core import pathto
+from definitions import pathto
 
 RC_NOSRCDIR = 1
 RC_NOFILES = 2
