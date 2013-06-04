@@ -138,7 +138,8 @@ Where are these files from?
         sys.exit(RC_CPYERR)
     # xcopy prints equivalent 'done.' statement to stdout
 
-    print ' * Renaming image files...',
+    #if successful, results of copy cmd ends in "\n " so no preceding space
+    print '* Renaming image files...',
     cmd = antexe + antarg.format(arb=os.path.normpath(tmparb), src=tmpdir)
     rc = subprocess.check_call(cmd, shell=True)
     if rc:
@@ -152,11 +153,15 @@ Where are these files from?
     # TODO check if files of same name exist in destination folder b4 copying
     overwrite = False
     confirm = '' #reset to known state
+    firstrenamefound = False
     print ' * Moving files to final destination... ',
     for tmppath in glob(os.path.join(tmpdir, '*.*')):
         fname = os.path.basename(tmppath)
         newpath = os.path.normpath(os.path.join(tmpdir, os.path.pardir, fname))
         if os.path.isfile(newpath):
+            if not firstrenamefound:
+                print '\n' #extra white space to draw attention to prompt
+                firstrenamefound = True
             if not overwrite:
                 msg = ('File exists at destination ({fname}). Overwrite? '
                        '[Y]es, Yes to [a]ll, else no: ')
@@ -175,9 +180,9 @@ Where are these files from?
         try:
             os.rmdir(tmpdir)
         except OSError:
-            print ' ! Temporary directory emptied but could not be removed'
+            print '\n ! Temporary directory emptied but could not be removed'
     else:
-        print ' ! Some files remain in the temporary directory ({dir})'.format(
+        print '\n ! Some files remain in the temporary directory ({dir})'.format(
             dir=os.path.normpath(tmpdir))
 
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
