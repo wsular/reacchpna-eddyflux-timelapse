@@ -150,13 +150,27 @@ Where are these files from?
     os.remove(tmparb) #delete renamer batch file
 
     # TODO check if files of same name exist in destination folder b4 copying
+    overwrite = False
+    confirm = '' #reset to known state
     print ' * Moving files to final destination... ',
-    for each in glob(os.path.join(tmpdir, '*.*')):
-        newname = os.path.join(os.pardir, os.path.basename(each))
+    for tmppath in glob(os.path.join(tmpdir, '*.*')):
+        fname = os.path.basename(tmppath)
+        newpath = os.path.normpath(os.path.join(tmpdir, os.path.pardir, fname))
+        if os.path.isfile(newpath):
+            if not overwrite:
+                msg = ('File exists at destination ({fname}). Overwrite? '
+                       '[Y]es, Yes to [a]ll, else no: ')
+                confirm = raw_input(msg.format(fname=fname))
+
+            if overwrite or confirm.lower() in ['y', 'a']:
+                os.remove(newpath)
+                if confirm.lower() == 'a': overwrite = True
+            else:
+                continue
         try:
-            os.rename(each, newname)
+            os.rename(tmppath, newpath)
         except:
-            print ' ! Could not move: {name}'.format(name=newname)
+            print ' ! Could not move: {name}'.format(name=tmppath)
     if not os.listdir(tmpdir):
         try:
             os.rmdir(tmpdir)
