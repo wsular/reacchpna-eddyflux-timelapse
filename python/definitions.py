@@ -471,8 +471,13 @@ mmtn = FieldSite('Moscow Mountain',
                  '6504',
                  ('192.168.174.33','255.255.255.0'),
                  ('123.456.789.012','255.255.255.0'))
+mslk = FieldSite('Moses Lake',
+                 'MSLK',
+                 '6505',
+                 ('192.168.174.36','255.255.255.0'),
+                 ('166.154.195.59','255.255.255.0'))
 
-site_list = [cfnt, lind, cfct, mmtn]
+site_list = [cfnt, lind, cfct, mmtn, mslk]
 """List of Site objects to iterate through
 
 It's particularly useful to import this list as it contains all the objects
