@@ -1608,7 +1608,7 @@ def _verify_col_alias():
             errs = errs + ('- unable to complete lookup for table:column '
                 '"%s:%s"\n' % (st, sc))
             continue
-        print (('%s:%s' % (st, sc)).ljust(39) + ('%s:%s\n' % (dt,dc)))
+        #print (('%s:%s' % (st, sc)).ljust(39) + ('%s:%s\n' % (dt,dc)))
     if errs:
         print ('\nWARNINGS:\n'+errs+'\n')
         return False
@@ -1633,7 +1633,7 @@ def _verify_table_definitions():
                 errmsg = errmsg + ('- header definition "%s:%s" not found in '
                     'lookup table\n' % (tbl, col))
                 continue
-            print (('%s:%s' % (tbl, col)).ljust(39) + ('%s:%s\n' % (t,c)))
+            #print (('%s:%s' % (tbl, col)).ljust(39) + ('%s:%s\n' % (t,c)))
             if (t != tbl) or (c != col):
                 errmsg = errmsg + ('- header definition "%s:%s" does not '
                     'match lookup table "%s:%s"\n' % (tbl, col, t, c))
