@@ -59,7 +59,7 @@ cpyexe = r'xcopy "{src}" "{dst}\" /C /K /V /Q /X /Y' #src, dest
     #   /Q      do not display file names while copying
     #   /X      copies file audit settings (incl ownership/ACL)
     #   /Y      suppresses prompt to overwrite existing file
-ejtcmd = r'"..\bin\usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
+ejtcmd = r'"usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
 
 _codelist = {'1' : 'CFNT',
              '2' : 'LIND',
