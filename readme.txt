@@ -3,8 +3,8 @@ Data management scripts for REACCH Objective 2 monitoring sites
 ===============================================================
 
 :Contact: pokeeffe@wsu.edu
-:Version: 0.1
-:Date: 2013-04-03
+:Version: 0.2
+:Date: 2013-06-04
 
 Overview
 ========
@@ -101,6 +101,20 @@ subfolder to hold each script's files.
 
 Release Notes
 =============
+
+Version 0.2
+-----------
+- Changes to CompactFlash Transfer Utility
+    * Now depends upon ``definitions.py`` for paths & site code definitions
+    * Breaks large files (>200MB) into smaller ones (~100MB)
+    * Sets read-only+archive attributes on generated ASCII files too now
+    * FIX: path choices are no longer cleared if dialog is cancelled
+    * Prompts to confirm exit if source directory still contains files 
+- Changes to timelapse photo transfer script:
+    * No longer requires separate renaming batch script (but does still depend 
+      on objects in ``definitions.py``)
+    * Renames files on hard disk -- massive speed improvement
+    * Supports overwriting if files already exist in destination
 
 Version 0.1
 -----------
