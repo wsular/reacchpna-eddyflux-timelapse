@@ -139,8 +139,8 @@ class pathto(object):
     _tl_video_subdir = r'\videos_timelapsecam'
     _tower_subdir = r'\tower_%s' # substitute site code ('CFNT', 'LIND',...)
 
-    home = r'C:\SHARES\proj\2011_REACCH'
-    nethome = r'/proj/2011_REACCH/'
+    home = r'B:\projects\2011_REACCH'
+    nethome = r'/projects/2011_REACCH/'
     cf_card = r'D:'
     sd_card = r'F:'
     sd_card_photos = r'F:\DCIM\100_WSCT'
