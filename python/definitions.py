@@ -798,20 +798,33 @@ col_alias = {
     ('site_info', 'SENSOR_DEC_5TM') : (None, None), # 20120810_LIND
     ('site_info', 'SENSOR_DEC_6RAD') : ('', 'Dec_6rad_installed'),
     # XXX should these *installed variables be retained somehow?
-    ('site_info', 'Dec_6rad_installed') : ('', ''),
+    ('site_info', 'Dec_6rad_installed') : (None, None),
     ('site_info', 'SENSOR_LGR_N2OCO') : ('', 'LGR_n2o_co_installed'),
-    ('site_info', 'LGR_n2o_co_installed') : ('', ''),
+    ('site_info', 'LGR_n2o_co_installed') : ('extra_info', 'LGR_n2oco_installed'),
     ('site_info', 'SENSOR_PIC_CO2CH4') : ('', 'Pic_co2_ch4_installed'),
-    ('site_info', 'Pic_co2_ch4_installed') : ('', ''),
+    ('site_info', 'Pic_co2_ch4_installed') : ('extra_info', 'Picarro_co2ch4_installed'),
     ('site_info', 'SENSOR_HFP01SC') : ('', 'hfp_installed'),
     ('site_info', 'hfp_installed') : ('', ''),
     ########################################################################
 
 
     ########## 20120627_CFCT - CURRENT #####################################
+    ########## 20120427_CFNT  #############################################
     ('stats30_6rad', 'TIMESTAMP') : ('', ''),
     ('stats30_6rad', 'RECORD') : ('', ''),
-    ('stats30_6rad', 'dec_6rad_uplook_Avg(1)') : ('', ''),
+    ('stats30_6rad', 'dec_6rad_up_Avg(1)') : ('', 'dec_6rad_uplook_Avg(1)'),
+    ('stats30_6rad', 'dec_6rad_up_Avg(2)') : ('', 'dec_6rad_uplook_Avg(2)'),
+    ('stats30_6rad', 'dec_6rad_up_Avg(3)') : ('', 'dec_6rad_uplook_Avg(3)'),
+    ('stats30_6rad', 'dec_6rad_up_Avg(4)') : ('', 'dec_6rad_uplook_Avg(4)'),
+    ('stats30_6rad', 'dec_6rad_up_Avg(5)') : ('', 'dec_6rad_uplook_Avg(5)'),
+    ('stats30_6rad', 'dec_6rad_up_Avg(6)') : ('', 'dec_6rad_uplook_Avg(6)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(1)') : ('', 'dec_6rad_dnlook_Avg(1)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(2)') : ('', 'dec_6rad_dnlook_Avg(2)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(3)') : ('', 'dec_6rad_dnlook_Avg(3)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(4)') : ('', 'dec_6rad_dnlook_Avg(4)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(5)') : ('', 'dec_6rad_dnlook_Avg(5)'),
+    ('stats30_6rad', 'dec_6rad_dn_Avg(6)') : ('', 'dec_6rad_dnlook_Avg(6)'),
+    ('stats30_6rad', 'dec_6rad_uplook_Avg(1)') : ('', ''), # 20120627 - CURRENT
     ('stats30_6rad', 'dec_6rad_uplook_Avg(2)') : ('', ''),
     ('stats30_6rad', 'dec_6rad_uplook_Avg(3)') : ('', ''),
     ('stats30_6rad', 'dec_6rad_uplook_Avg(4)') : ('', ''),
@@ -827,40 +840,6 @@ col_alias = {
 
     ('stats5_6rad', 'TIMESTAMP') : ('', ''),
     ('stats5_6rad', 'RECORD') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(1)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(2)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(3)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(4)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(5)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_uplook_Avg(6)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(1)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(2)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(3)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(4)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(5)') : ('', ''),
-    ('stats5_6rad', 'dec_6rad_dnlook_Avg(6)') : ('', ''),
-    ('stats5_6rad', 'tblcalls_Tot') : ('', ''), # add 20120824_LIND
-    #######################################################################
-
-
-    ########## 20120427_CFNT  #############################################
-    ('stats30_6rad', 'TIMESTAMP') : (None, None),
-    ('stats30_6rad', 'RECORD') : (None, None),
-    ('stats30_6rad', 'dec_6rad_up_Avg(1)') : ('', 'dec_6rad_uplook_Avg(1)'),
-    ('stats30_6rad', 'dec_6rad_up_Avg(2)') : ('', 'dec_6rad_uplook_Avg(2)'),
-    ('stats30_6rad', 'dec_6rad_up_Avg(3)') : ('', 'dec_6rad_uplook_Avg(3)'),
-    ('stats30_6rad', 'dec_6rad_up_Avg(4)') : ('', 'dec_6rad_uplook_Avg(4)'),
-    ('stats30_6rad', 'dec_6rad_up_Avg(5)') : ('', 'dec_6rad_uplook_Avg(5)'),
-    ('stats30_6rad', 'dec_6rad_up_Avg(6)') : ('', 'dec_6rad_uplook_Avg(6)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(1)') : ('', 'dec_6rad_dnlook_Avg(1)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(2)') : ('', 'dec_6rad_dnlook_Avg(2)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(3)') : ('', 'dec_6rad_dnlook_Avg(3)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(4)') : ('', 'dec_6rad_dnlook_Avg(4)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(5)') : ('', 'dec_6rad_dnlook_Avg(5)'),
-    ('stats30_6rad', 'dec_6rad_dn_Avg(6)') : ('', 'dec_6rad_dnlook_Avg(6)'),
-
-    ('stats5_6rad', 'TIMESTAMP') : (None, None),
-    ('stats5_6rad', 'RECORD') : (None, None),
     ('stats5_6rad', 'dec_6rad_up_Avg(1)') : ('', 'dec_6rad_uplook_Avg(1)'),
     ('stats5_6rad', 'dec_6rad_up_Avg(2)') : ('', 'dec_6rad_uplook_Avg(2)'),
     ('stats5_6rad', 'dec_6rad_up_Avg(3)') : ('', 'dec_6rad_uplook_Avg(3)'),
@@ -873,6 +852,19 @@ col_alias = {
     ('stats5_6rad', 'dec_6rad_dn_Avg(4)') : ('', 'dec_6rad_dnlook_Avg(4)'),
     ('stats5_6rad', 'dec_6rad_dn_Avg(5)') : ('', 'dec_6rad_dnlook_Avg(5)'),
     ('stats5_6rad', 'dec_6rad_dn_Avg(6)') : ('', 'dec_6rad_dnlook_Avg(6)'),
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(1)') : ('', ''), # 20120627 - CURRENT
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(2)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(3)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(4)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(5)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_uplook_Avg(6)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(1)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(2)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(3)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(4)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(5)') : ('', ''),
+    ('stats5_6rad', 'dec_6rad_dnlook_Avg(6)') : ('', ''),
+    ('stats5_6rad', 'tblcalls_Tot') : ('', ''), # add 20120824_LIND
     #######################################################################
 
 
@@ -1056,11 +1048,11 @@ col_alias = {
     ('site_daily', 'batt_volt_Min') : ('', ''), # add 20130507_XXXX
     ('site_daily', 'batt_volt_TMn') : ('', ''), #
     ('site_daily', 'batt_volt_Max') : ('', ''), #
-    ('site_daily', 'batt_volt_Tmx') : ('', ''), #  ..
+    ('site_daily', 'batt_volt_TMx') : ('', ''), #  ..
     ('site_daily', 'T_hmp_Min') : ('', ''), #
-    ('site_daily', 'T_hmp_Tmn') : ('', ''), #
+    ('site_daily', 'T_hmp_TMn') : ('', ''), #
     ('site_daily', 'T_hmp_Max') : ('', ''), #
-    ('site_daily', 'T_hmp_Tmx') : ('', ''), # add 20130507_XXXX
+    ('site_daily', 'T_hmp_TMx') : ('', ''), # add 20130507_XXXX
     ########################################################################
 
 
@@ -1143,10 +1135,12 @@ col_alias = {
 
 
     ########## 20120420_LIND only ##########################################
-    ('tsdata_extra', 'TIMESTAMP') : ('tsdata_n2o_co', ''),
-    ('tsdata_extra', 'RECORD') : ('tsdata_n2o_co', ''),
-    ('tsdata_extra', 'lgr_n2o') : ('tsdata_n2o_co', ''),
-    ('tsdata_extra', 'lgr_co') : ('tsdata_n2o_co', ''),
+    ## re-adopted this format with 20130507_XXXX
+    #('tsdata_extra', 'TIMESTAMP') : ('tsdata_n2o_co', ''),
+    #('tsdata_extra', 'RECORD') : ('tsdata_n2o_co', ''),
+    #('tsdata_extra', 'lgr_n2o') : ('tsdata_n2o_co', ''),
+    #('tsdata_extra', 'lgr_co') : ('tsdata_n2o_co', ''),
+    ##
 
     ('stats30_extra', 'TIMESTAMP') : ('stats30_n2o_co', ''),
     ('stats30_extra', 'RECORD') : ('stats30_n2o_co', ''),
@@ -1613,7 +1607,7 @@ def _verify_col_alias():
         print ('\nWARNINGS:\n'+errs+'\n')
         return False
     else:
-        print ('No warnings.\n\n')
+        print ('No warnings.\n')
         return True
 
 
@@ -1641,7 +1635,7 @@ def _verify_table_definitions():
         print ('WARNINGS:\n'+errmsg+'\n')
         return False
     else:
-        print ('No warnings.\n\n')
+        print ('No warnings.\n')
         return True
 
 
