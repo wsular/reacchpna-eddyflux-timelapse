@@ -173,6 +173,30 @@ def get_table_name(toa5_file):
     tblname = l.split(',')[-1].strip('"') #last item, first row
     return tblname
 
+def get_site_code(toa5_file):
+    """Return text code of site where TOA5 data file was created
+    
+    Reads header of Campbell Scientific long-header (TOA5) formatted data 
+    files and returns four-character site code (e.g. CFNT, LIND, MMTN, etc)
+    
+    Parameters
+    ----------
+    toa5_file : file-like object
+        Source data file in CSI long-header (TOA5) format
+
+    Returns
+    -------
+    str : four character site code
+    """
+    with open(toa5_file, mode='r') as f:
+        l = f.readline().strip()
+    sn = l.split(',')[3].strip('"') #fourth item, first row
+    try:
+        sitecode = sn2code[sn]
+    except KeyError:
+        sitecode = None
+    return sitecode
+    
 
 #def open_toa5(fname):
 #    """Open TOA5 file and return pandas DataFrame
