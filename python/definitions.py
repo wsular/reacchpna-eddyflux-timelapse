@@ -161,7 +161,7 @@ def get_table_name(toa5_file):
 
     Parameters
     ----------
-    file_name : file-like object
+    toa5_file : file-like object
         Source data file in CSI long-header (TOA5) format
 
     Returns
@@ -170,7 +170,7 @@ def get_table_name(toa5_file):
     """
     with open(toa5_file, mode='r') as f:
         l = f.readline().strip()
-    tblname = l.split(',')[-1].strip('"')
+    tblname = l.split(',')[-1].strip('"') #last item, first row
     return tblname
 
 
