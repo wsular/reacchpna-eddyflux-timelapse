@@ -190,7 +190,7 @@ def get_site_code(toa5_file):
 
     Returns
     -------
-    str : four character site code
+    str : four character site code or None if not a valid table file
     """
     with open(toa5_file, mode='r') as f:
         l = f.readline().strip()
