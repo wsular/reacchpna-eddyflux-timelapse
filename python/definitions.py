@@ -245,7 +245,7 @@ def open_toa5(fname):
     timestamp column is used as the dataframe index (axis 0). Column names
     are used for names along DF axis 1. Progam info (line 0), column units
     (line 2) and record type (line 3) are ignored. Null values are recognized
-    ("NAN", NAN, -7999 and -2147483648) and set to np.nan
+    ("NAN", NAN, 7999, -7999 and -2147483648) and set to np.nan
 
     Parameters
     ----------
@@ -261,7 +261,7 @@ def open_toa5(fname):
                      skiprows=[2,3],
                      index_col=0,
                      parse_dates=True,
-                     na_values=['"NAN"', 'NAN', -7999, -2147483648])
+                     na_values=['"NAN"', 'NAN', 7999, -7999, -2147483648])
     df.index.name = 'TIMESTAMP'
     return df
 
