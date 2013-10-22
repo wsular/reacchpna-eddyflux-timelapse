@@ -386,7 +386,12 @@ def current_names(table, column):
     the dictionary -- run (double-click) the source file to use them, they
     take too long to be suitable for running upon import.
     """
-    tbl, col = col_alias[(table, column)]
+    try:
+        tbl, col = col_alias[(table, column)]
+    except KeyError:
+        #print ('>>>> Unable to find historical names for column "%s" of table "%s"' 
+        #        % (column, table))
+        raise ColumnNotFoundError
     if (tbl, col) == (None, None):
         return (None, None)
     elif (tbl, col) == ('', ''):
@@ -398,6 +403,8 @@ def current_names(table, column):
     else:
         return current_names(tbl, col)
 
+class ColumnNotFoundError(Exception):
+    pass
 
 class FieldSite(object):
     """Represent an objective 2 monitoring site
