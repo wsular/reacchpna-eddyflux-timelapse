@@ -1593,7 +1593,8 @@ For example:
     col_alias[('stats30', 'Met1_wnd_spd')] => ('', '') # current tbl/col names
 """
 
-
+# make list of all unique table names present in col_alias dict
+historical_table_names = set([ k[0] for (k,v) in col_alias.iteritems()])
 
 
 def raw_std_balers(tbl_name):
