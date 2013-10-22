@@ -166,11 +166,15 @@ def get_table_name(toa5_file):
 
     Returns
     -------
-    str : name of data table
+    str : name of data table or None if not a valid table file
     """
     with open(toa5_file, mode='r') as f:
-        l = f.readline().strip()
-    tblname = l.split(',')[-1].strip('"') #last item, first row
+        l = f.readline().strip().split(',')
+    try:
+        assert l[0] == '"TOA5"' # 1st item, 1st row must be "TOA5"
+        tblname = l[-1].strip('"') #last item, first row
+    except:
+        tblname = None
     return tblname
 
 def get_site_code(toa5_file):
