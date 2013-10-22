@@ -936,6 +936,7 @@ col_alias = {
     ('stats30', 'rslt_wnd_dir') : ('', ''),
     ('stats30', 'std_wnd_dir') : ('', ''),
     ('stats30', 'sonic_uptime') : ('', ''), # added 20120215_CFNT
+    ('stats30', 'CO2_ppm_Avg_Avg') : ('', 'CO2_ppm_Avg'), # FIX see 20131018_XXXX
     ('stats30', 'CO2_ppm_Avg') : ('', ''),
     ('stats30', 'CO2_mg_m3_Avg') : ('', ''),
     ('stats30', 'CO2_mg_m3_Std') : ('', ''),
@@ -1005,6 +1006,7 @@ col_alias = {
     ('stats5', 'rslt_wnd_dir') : ('', ''),
     ('stats5', 'std_wnd_dir') : ('', ''),
     ('stats5', 'sonic_uptime') : ('', ''), # added 20120215_CFNT
+    ('stats5', 'CO2_ppm_Avg_Avg') : ('', 'CO2_ppm_Avg'), # FIX see 20131018_XXXX
     ('stats5', 'CO2_ppm_Avg') : ('', ''),
     ('stats5', 'CO2_mg_m3_Avg') : ('', ''),
     ('stats5', 'CO2_mg_m3_Std') : ('', ''),
