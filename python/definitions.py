@@ -316,12 +316,12 @@ def write_csv(df, file_name):
         except OSError:
             if not os.path.isdir(der):
                 raise
-    print '>>> writing to csv: %s ...' % file_name,
+    #print '>>> writing to csv: %s ...' % file_name,
     df.to_csv(file_name,
               na_rep='NAN',
               float_format='%.3f',
               index_label='TIMESTAMP')
-    print 'done.'
+    #print 'done.'
 
 
 def current_names(table, column):
