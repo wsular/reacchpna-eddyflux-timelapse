@@ -180,10 +180,10 @@ def get_table_name(toa5_file):
 
 def get_site_code(toa5_file):
     """Return text code of site where TOA5 data file was created
-    
-    Reads header of Campbell Scientific long-header (TOA5) formatted data 
+
+    Reads header of Campbell Scientific long-header (TOA5) formatted data
     files and returns four-character site code (e.g. CFNT, LIND, MMTN, etc)
-    
+
     Parameters
     ----------
     toa5_file : file-like object
@@ -201,7 +201,7 @@ def get_site_code(toa5_file):
     except KeyError:
         sitecode = None
     return sitecode
-    
+
 
 #def open_toa5(fname):
 #    """Open TOA5 file and return pandas DataFrame
@@ -397,7 +397,7 @@ def current_names(table, column):
     try:
         tbl, col = col_alias[(table, column)]
     except KeyError:
-        #print ('>>>> Unable to find historical names for column "%s" of table "%s"' 
+        #print ('>>>> Unable to find historical names for column "%s" of table "%s"'
         #        % (column, table))
         raise ColumnNotFoundError
     if (tbl, col) == (None, None):
