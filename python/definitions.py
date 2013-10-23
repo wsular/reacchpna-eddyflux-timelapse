@@ -774,7 +774,7 @@ table_baleinfo = {
 
     'site_daily' : (None, lambda x: x.index.normalize()[0], None, '1D'),
 
-    'diagnostics' : (None, lambda x: x.index.normalize()[0], None, None),
+    'diagnostics' : (None, lambda x: x.index.normalize()[0], None, '5T'),
 
     'site_info' : (None, lambda x: x.index.normalize()[0], None, None),
 
