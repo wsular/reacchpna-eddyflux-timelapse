@@ -53,6 +53,7 @@ __version_info__ = (0, 1, '20130401')
 __version__ = '.'.join(str(x) for x in __version_info__)
 
 from copy import copy
+from warnings import warn
 
 import pandas as pd
 import os
@@ -262,6 +263,9 @@ def open_toa5(fname):
                      index_col=0,
                      parse_dates=True,
                      na_values=['"NAN"', 'NAN', 7999, -7999, -2147483648])
+    if len(df.index.get_duplicates()) or not df.index.is_monotonic:
+        warn('Warning: open_toa5 removed duplicate indices (%s)' % fname)
+        df = df.groupby(level=0).last()
     df.index.name = 'TIMESTAMP'
     return df
 
