@@ -1676,34 +1676,6 @@ For example:
 historical_table_names = set([ k[0] for (k,v) in col_alias.iteritems()])
 
 
-def raw_std_balers(tbl_name):
-    """Defines size of standardized raw ascii files
-
-    Yes it's messy. It may become a subclass of pandas.DateOffset somehow"""
-    if tbl_name == 'tsdata':
-        grpbykey = lambda x: x.day
-        def get_start_end(df):
-            start = df.index[0].date()
-            return start, start+Day()
-    elif tbl_name in ['stats5', 'stats30']:
-        grpbykey = lambda x: x.month
-        def get_start_end(df):
-            offset = MonthBegin()
-            start = offset.rollback(df.index[0]).date()
-            return start, start+offset
-    elif tbl_name == 'site_daily':
-        grpbykey = lambda x: x.year
-        def get_start_end(df):
-            offset = YearBegin()
-            start = offset.rollback(df.index[0]).date()
-            return start, start+offset
-    else:
-        print '!!!!! BAD CASE ~~~~~~'
-        grpbykey = None
-        get_start_end = None
-    return grpbykey, get_start_end
-
-
 def _verify_col_alias():
     """Follow all past column names to current name to verify lookup table
 
