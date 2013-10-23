@@ -732,6 +732,73 @@ table_definitions['stats5_6rad'] = copy(table_definitions['stats30_6rad'])
 table_definitions['stats5_ui'] = copy(table_definitions['stats30_ui'])
 
 
+table_baleinfo = {
+    # dictionary holds info necessary to write output files of specific size
+    #   outer key is name of existing table
+    #   outer value is tuple of file-specific info
+    #   tuple values, in order:
+    #       grpby - specify data grouping for export; by months, days or if not
+    #               broken up by dates, None
+    #       start - function to obtain first timestamp of 'proper' file; since
+    #               data column may not start at beginning of period (think
+    #               file starts @ 8am for daily, not midnight) calculate the
+    #               first timestamp
+    #       offset - pandas.tseries.offsets object corresponding to size of
+    #               desired output file or None if not splitting by date
+    #       freq - intended frequency of output (and input) files. required
+    #               and is used to properly pad output files; if table is
+    #               recorded to irregularly (eg site_info) then freq is None
+    #               and files are not padded to a standard frequency
+    'tsdata' : ( [lambda x: x.year, lambda x: x.month, lambda x: x.day],
+                 lambda x: x.index.normalize()[0],
+                 Day(),
+                 '100ms' ),
+
+    'stats30' : ( [lambda x: x.year, lambda x: x.month],
+                  lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                  MonthBegin(),
+                  '30T' ),
+
+    'stats5' : ( [lambda x: x.year, lambda x: x.month],
+                 lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                 MonthBegin(),
+                 '5T' ),
+
+    'site_daily' : (None, lambda x: x.index.normalize()[0], None, '1D'),
+
+    'diagnostics' : (None, lambda x: x.index.normalize()[0], None, None),
+
+    'site_info' : (None, lambda x: x.index.normalize()[0], None, None),
+
+    'extra_info' : (None, lambda x: x.index.normalize()[0], None, None),
+
+    'tsdata_extra' : ( [lambda x: x.year, lambda x: x.month, lambda x: x.day],
+                       lambda x: x.index.normalize()[0],
+                       Day(),
+                       '100ms' ),
+
+    'stats30_ui' : ( [lambda x: x.year, lambda x: x.month],
+                     lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                     MonthBegin(),
+                     '30T' ),
+
+    'stats5_ui' : ( [lambda x: x.year, lambda x: x.month],
+                    lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                    MonthBegin(),
+                    '5T' ),
+
+    'stats30_6rad' : ( [lambda x: x.year, lambda x: x.month],
+                       lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                       MonthBegin(),
+                       '30T' ),
+
+    'stats5_6rad' : ( [lambda x: x.year, lambda x: x.month],
+                      lambda x: MonthBegin().rollback(x.index.normalize()[0]),
+                      MonthBegin(),
+                      '5T' ),
+    }
+
+
 col_alias = {
     ########## 20130507_XXXX - CURRENT #####################################
     ('stats30_ui', 'TIMESTAMP') : ('', ''),
