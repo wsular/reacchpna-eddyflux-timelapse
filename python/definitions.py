@@ -264,9 +264,13 @@ def open_toa5(fname):
                      parse_dates=True,
                      na_values=['"NAN"', 'NAN', 7999, -7999, -2147483648])
 
-    if len(df.index.get_duplicates()) or not df.index.is_monotonic:
+    if len(df.index.get_duplicates()):
         warn('open_toa5 removed duplicate indices (%s)' % fname)
         df = df.groupby(level=0).last()
+
+    if not df.index.is_monotonic:
+        warn('open_toa5 sorted non-monotonic timestamps (%s)' % fname)
+        df.sort_index(inplace=True)
 
     if len(df[:'20110818']) or len(df['20161231':]):
         warn(('open_toa5 detected and removed data from outside duration of '
