@@ -772,7 +772,7 @@ table_baleinfo = {
                  MonthBegin(),
                  '5T' ),
 
-    'site_daily' : (None, lambda x: x.index.normalize()[0], None, '1D'),
+    'site_daily' : (None, lambda x: x.index.normalize()[0], None, 'D'),
 
     'diagnostics' : (None, lambda x: x.index.normalize()[0], None, '5T'),
 
