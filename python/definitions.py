@@ -178,6 +178,7 @@ def get_table_name(toa5_file):
         tblname = None
     return tblname
 
+
 def get_site_code(toa5_file):
     """Return text code of site where TOA5 data file was created
 
@@ -202,42 +203,6 @@ def get_site_code(toa5_file):
         sitecode = None
     return sitecode
 
-
-#def open_toa5(fname):
-#    """Open TOA5 file and return pandas DataFrame
-#
-#    Parameters
-#    ----------
-#    fname : str
-#        path to source TOA5 file
-#
-#    Returns
-#    -------
-#    pandas.DataFrame instance containing data from source file
-#    """
-#    try:
-#        print "> Loading %s" % os.path.basename(fname)
-#        df = pd.read_csv(fname,
-#                         header=1,
-#                         skiprows=[2,3],
-#                         index_col=0,
-#                         parse_dates=True,
-#                         na_values=['"NAN"', 'NAN'])
-#    except Exception as err:
-#        print 'Serious problem!'
-#        raise err
-#    df.index.name = 'TIMESTAMP'
-#    duptest = list(df.index.get_duplicates())
-#    if len(duptest) > 1000:
-#        print '  ! More than 1000 duplicate indices found! (Did the file ring?)'
-#    elif len(duptest):
-#        print '  ! Duplicate index values found:'
-#        for each in duptest:
-#            print '      ', each, len(df.ix[each]), 'rows'
-#        print '  * Removing earliest duplicate indices...'
-#    else:
-#        return df #short-circuit if no dups
-#    return df.groupby(df.index).last()
 
 def open_toa5(fname):
     """Opens CSI TOA5-formatted data files in standard fashion
@@ -552,9 +517,8 @@ or some similarly ridiculous alternative.
 """
 
 
-
-
 table_definitions = {
+    ### See docstring below definition ###
     'tsdata' : ['TIMESTAMP',
                 'RECORD',
                 'Ux',
@@ -737,7 +701,7 @@ table_definitions = {
                       'dec_6rad_dnlook_Avg(6)',
                       'tblcalls_Tot']
 }
-"""This dict holds lists describing the order of columns because the
+"""This dict holds lists describing the order of columns because the alias
    look-up dict cannot hold that information in a straightforward way. """
 table_definitions['stats5'] = copy(table_definitions['stats30'])
 table_definitions['stats5_6rad'] = copy(table_definitions['stats30_6rad'])
@@ -745,22 +709,7 @@ table_definitions['stats5_ui'] = copy(table_definitions['stats30_ui'])
 
 
 table_baleinfo = {
-    # dictionary holds info necessary to write output files of specific size
-    #   outer key is name of existing table
-    #   outer value is tuple of file-specific info
-    #   tuple values, in order:
-    #       grpby - specify data grouping for export; by months, days or if not
-    #               broken up by dates, None
-    #       start - function to obtain first timestamp of 'proper' file; since
-    #               data column may not start at beginning of period (think
-    #               file starts @ 8am for daily, not midnight) calculate the
-    #               first timestamp
-    #       offset - pandas.tseries.offsets object corresponding to size of
-    #               desired output file or None if not splitting by date
-    #       freq - intended frequency of output (and input) files. required
-    #               and is used to properly pad output files; if table is
-    #               recorded to irregularly (eg site_info) then freq is None
-    #               and files are not padded to a standard frequency
+    ### See docstring below definition ###
     'tsdata' : ( [lambda x: x.year, lambda x: x.month, lambda x: x.day],
                  lambda x: x.index.normalize()[0],
                  Day(),
@@ -808,10 +757,28 @@ table_baleinfo = {
                       lambda x: MonthBegin().rollback(x.index.normalize()[0]),
                       MonthBegin(),
                       '5T' ),
-    }
+}
+"""Dict holds info needed to 'time-bale' data files
+
+Keys are string data table names. Values are 4-tuples containing:
+    1) grpby   specify data grouping for export; by months, days or if not
+               broken up by dates, None
+    2) start   function to obtain first timestamp of 'proper' file; since
+               data column may not start at beginning of period (think
+               file starts @ 8am for daily, not midnight) calculate the
+               first timestamp
+    3) offset  pandas.tseries.offsets object corresponding to size of
+               desired output file or None if not splitting by date
+    4) freq    intended frequency of output (and input) files. required
+               and is used to properly pad output files; if table is
+               recorded to irregularly (eg site_info) then freq is None
+               and files are not padded to a standard frequency
+"""
 
 
 col_alias = {
+    ### See docstring below definition ###
+
     ########## 20130507_XXXX - CURRENT #####################################
     ('stats30_ui', 'TIMESTAMP') : ('', ''),
     ('stats30_ui', 'RECORD') : ('', ''),
