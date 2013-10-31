@@ -210,8 +210,11 @@ def open_toa5(fname):
     Loads data from TOA5-formatted data file into pandas.DataFrame object. The
     timestamp column is used as the dataframe index (axis 0). Column names
     are used for names along DF axis 1. Progam info (line 0), column units
-    (line 2) and record type (line 3) are ignored. Null values are recognized
-    ("NAN", NAN, 7999, -7999 and -2147483648) and set to np.nan
+    (line 2) and record type (line 3) are ignored. Several null values are
+    recognized and set to np.nan ("NAN")
+
+    Disabled "NAN"s: NAN, "INF", INF, "+INF", +INF, 65535,
+    7999, -7999, 2147483647, -2147483648, 2.147484e+09, and -2.147484e+09)
 
     Parameters
     ----------
@@ -221,13 +224,41 @@ def open_toa5(fname):
     Returns
     -------
     pandas.DataFrame
+
+    Details
+    -------
+    From the Campbell Scientific, Inc. CR3000 User Manual (rev7/11):
+
+    +------------+------+-------------+------------------------------------------------------------------+
+    |            |      |             |        Final Storage Data Type & Associated Stored Values        |
+    | Variable   | Test | Public/Dim  +-------+---------------+-------+-------------+------+-------------+
+    |    Type    | Expr |  Variables  |  FP2  |     IEEE4     | UINT2 |   STRING    | BOOL |    LONG     |
+    +------------+------+-------------+-------+---------------+-------+-------------+------+-------------+
+    | As Float   | 1/0  |     INF     |  INF  |      INF      | 65535 |    +INF     | TRUE |  2147483647 |
+    |            |      |             |       |               |       |             |      |             |
+    |            | 0/0  |     NAN     |  NAN  |      NAN      |   0   |     NAN     | TRUE | -2147483648 |
+    +------------+------+-------------+-------+---------------+-------+-------------+------+-------------+
+    | As LONG    | 1/0  |  2147483647 |  7999 |  2.147484e+09 | 65535 |  2147483647 | TRUE |  2147483647 |
+    |            |      |             |       |               |       |             |      |             |
+    |            | 0/0  | -2147783648 | -7999 | -2.147484e+09 |   0   | -2147483648 | TRUE | -2147483648 |
+    +------------+------+-------------+-------+---------------+-------+-------------+------+-------------+
+    | As Boolean | 1/0  |    TRUE     |  -1   |      -1       | 65535 |     -1      | TRUE |     -1      |
+    |            |      |             |       |               |       |             |      |             |
+    |            | 0/0  |    TRUE     |  -1   |      -1       | 65535 |     -1      | TRUE |     -1      |
+    +------------+------+-------------+-------+---------------+-------+-------------+------+-------------+
+    | As String  | 1/0  |    +INF     |  INF  |      INF      | 65535 |    +INF     | TRUE |  2147483647 |
+    |            |      |             |       |               |       |             |      |             |
+    |            | 0/0  |     NAN     |  NAN  |      NAN      |   0   |     NAN     | TRUE | -2147483648 |
+    +------------+------+-------------+-------+---------------+-------+-------------+------+-------------+
+
     """
     df = pd.read_csv(fname,
                      header=1,
                      skiprows=[2,3],
                      index_col=0,
                      parse_dates=True,
-                     na_values=['"NAN"', 'NAN', 7999, -7999, -2147483648])
+                     na_values=['"NAN"'],
+                     keep_default_na=False)
 
     if len(df.index.get_duplicates()):
         warn('open_toa5 removed duplicate indices (%s)' % fname)
