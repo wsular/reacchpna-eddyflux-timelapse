@@ -278,60 +278,6 @@ def open_toa5(fname):
     return df
 
 
-def read_csv(file_name):
-    """Read DataFrame previously written to CSV file in standard format
-
-    Parameters
-    ----------
-    file_name : str
-        path to source CSV file
-
-    Returns
-    -------
-    pandas.DataFrame object
-    """
-    #try:
-    df = pd.read_csv(file_name,
-                     index_col=0,
-                     parse_dates=True,
-                     na_values=['NAN'])
-    df.index.name = 'TIMESTAMP'
-    #except IOError:
-    #    df = None
-    return df
-
-
-def write_csv(df, file_name):
-    """Write DataFrame to CSV file in standard format
-
-    Parameters
-    ----------
-    df : pandas.DataFrame
-        source dataframe to write to file
-    file_name : str
-        name of file to write to
-
-    Returns
-    -------
-    Nothing at the moment
-    """
-    der = os.path.dirname(file_name)
-    if der:
-        # this illogically logical try-except block brought to you by:
-        #    http://stackoverflow.com/a/14364249
-        try:
-            os.makedirs(der)
-        except OSError:
-            if not os.path.isdir(der):
-                raise
-    #print '>>> writing to csv: %s ...' % file_name,
-    df.to_csv(file_name,
-              na_rep='NAN',
-              float_format='%.3f',
-              index_label='TIMESTAMP')
-    #print 'done.'
-
-
 def current_names(table, column):
     """Get current (table, column) names from historical aliases
 
