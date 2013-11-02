@@ -606,6 +606,7 @@ table_definitions = {
                      'skipped_5s_scans',
                      'watchdog_errors'],
 
+    # update homogenize_toa5 special case if modified
     'site_info' : ['TIMESTAMP',
                    'RECORD',
                    'UTC_offset',
