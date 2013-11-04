@@ -20,7 +20,7 @@ import sys
 
 from glob import glob
 
-from definitions import pathto
+from definitions import pathto, site_list
 
 RC_NOSRCDIR = 1
 RC_NOFILES = 2
@@ -61,10 +61,7 @@ cpyexe = r'xcopy "{src}" "{dst}\" /C /K /V /Q /X /Y' #src, dest
     #   /Y      suppresses prompt to overwrite existing file
 ejtcmd = r'"usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
 
-_codelist = {'1' : 'CFNT',
-             '2' : 'LIND',
-             '3' : 'CFCT',
-             '4' : 'MMTN' }
+_codelist = dict((str(i+1),s.code) for (i,s) in enumerate(site_list))
 
 _arbtemplate = """\
 <?xml version="1.0" encoding="UTF-8"?>
@@ -100,16 +97,13 @@ if __name__ == '__main__':
         print 'Warning: no files were found in %s' % srcloc
         raw_input('Press <enter> to exit...')
         sys.exit(RC_NOFILES)
-    print """
-Where are these files from?
-  (1) CFNT  Cook Agronomy Farm, no-till
-  (2) LIND  Lind Dryland Research Station
-  (3) CFCT  Cook Agronomy Farm, conventional till
-  (4) MMTN  Moscow Mountain area site"""
+    print """\nWhere are these files from?"""
+    for (i,s) in enumerate(site_list):
+        print '  (%d) %s  %s' % (i+1, s.code, s.name)
 
     choice = ''
-    while choice not in ['1', '2', '3', '4', 'q', 'Q']:
-        choice = raw_input("Choose 1-4, <o> to open 1st file, <q> to quit: ")
+    while choice not in _codelist.keys()+['q', 'Q']:
+        choice = raw_input("Choose #, <o> to open 1st file, <q> to quit: ")
         if choice.lower() == 'o':
             smpfile = os.path.join(srcloc, filelist[0])
             subprocess.call(smpfile, shell=True)
@@ -119,6 +113,12 @@ Where are these files from?
     cpydst = dstloc % _codelist[choice]
     print 'Using target directory: ', cpydst
     confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
+
+    try:
+        os.makedirs(cpydst)
+    except OSError:
+        if not os.path.isdir(cpydst):
+            raise
 
     tmpdir = os.path.join(cpydst, 'imgs_to_rename')
     if not os.path.isdir(tmpdir):
