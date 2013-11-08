@@ -716,7 +716,7 @@ table_baleinfo = {
     'tsdata_extra' : ( [lambda x: x.year, lambda x: x.month, lambda x: x.day],
                        lambda x: x.index.normalize()[0],
                        Day(),
-                       '100ms' ),
+                       '100L' ),
 
     'stats30_ui' : ( [lambda x: x.year, lambda x: x.month],
                      lambda x: MonthBegin().rollback(x.index.normalize()[0]),
