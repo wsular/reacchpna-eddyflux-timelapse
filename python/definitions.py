@@ -1680,16 +1680,16 @@ def _verify_table_definitions():
 
 
 if __name__ == '__main__':
-    if raw_input('Press "y" to test historical column alias dictionary; else to skip') in 'yY':
+    ans = raw_input('This module is not designed for standalone operation. '
+                    'Proceed with self-test routine? [Y]es else no:')
+    if ans and ans.strip() in 'yY':
         try:
             _verify_col_alias()
         except Exception as ex:
             print ('/*- A problem occurred while verifying the historical column '
                     'alias dictionary (``col_alias``): \n{err}'.format(err=ex))
-    if raw_input('Press "y" to test table column definitions; else to skip') in 'yY':
         try:
             _verify_table_definitions()
         except Exception as ex:
             print ('/*- A problem occurred while verifying the table column '
                     'definitions (``table_definitions``): \n{err})'.format(err=ex))
-    raw_input('Press <enter> to exit')
