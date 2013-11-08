@@ -56,10 +56,10 @@ from copy import copy
 from warnings import warn
 
 import pandas as pd
-import os
+#import os
 
-from pandas import DataFrame
-from pandas.tseries.offsets import Day, MonthBegin, YearBegin
+#from pandas import DataFrame
+from pandas.tseries.offsets import Day, MonthBegin#, YearBegin
 
 
 MAX_RAW_FILE_SIZE = 200 * 1024 * 1024  #split raw data files > this, bytes
@@ -141,16 +141,16 @@ class pathto(object):
     _raw_bin_subdir = r'\L0_raw_binary'
     _tele_subdir = r'\L0_telemetry'
     _tl_photo_subdir = r'\photos_timelapsecam'
-    _tl_video_subdir = r'\videos_timelapsecam'
+    #_tl_video_subdir = r'\videos_timelapsecam'
     _tower_subdir = r'\tower_%s' # substitute site code ('CFNT', 'LIND',...)
 
     home = r'B:\projects\2011_REACCH'
-    nethome = r'/projects/2011_REACCH/'
-    cf_card = r'D:'
-    sd_card = r'F:'
+    #nethome = r'/projects/2011_REACCH/'
+    #cf_card = r'D:'
+    #sd_card = r'F:'
     sd_card_photos = r'F:\DCIM\100_WSCT'
     downloads = r'C:\Campbellsci\Loggernet'
-    script_logs = home + r'\scripts\logs'
+    #script_logs = home + r'\scripts\logs'
     raw_ascii = home + _tower_subdir + _raw_ascii_subdir
     raw_binary = home + _tower_subdir + _raw_bin_subdir
     telemetry = home + _tower_subdir + _tele_subdir
