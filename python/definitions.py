@@ -136,7 +136,7 @@ class pathto(object):
     +---------------------+-----------------------------------------------+
 
     """
-    _raw_std_subdir = r'\L0_%s' # substitute table name ('stats5', 'tsdata'...)
+    _raw_std_subdir = r'\L0_standard_format'
     _raw_ascii_subdir = r'\L0_raw_ascii'
     _raw_bin_subdir = r'\L0_raw_binary'
     _tele_subdir = r'\L0_telemetry'
@@ -437,7 +437,7 @@ class FieldSite(object):
             raw_binary = pathto.raw_binary % self.code
             telemetry = pathto.telemetry % self.code
             timelapse_photos = pathto.timelapse_photos % self.code
-            raw_std = pathto.raw_std % (self.code, '%s')
+            raw_std = pathto.raw_std % self.code
         self.pathto = _pathto2()
 
     def __repr__(self):
