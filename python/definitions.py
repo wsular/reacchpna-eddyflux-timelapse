@@ -65,6 +65,10 @@ from pandas.tseries.offsets import Day, MonthBegin, YearBegin
 MAX_RAW_FILE_SIZE = 200 * 1024 * 1024  #split raw data files > this, bytes
 
 
+class ColumnNotFoundError(Exception): pass
+class HeaderMismatchError(Exception): pass
+
+
 class pathto(object):
     """Object containing up-to-date directory locations
 
@@ -365,8 +369,6 @@ def current_names(table, column):
     else:
         return current_names(tbl, col)
 
-class ColumnNotFoundError(Exception):
-    pass
 
 class FieldSite(object):
     """Represent an objective 2 monitoring site
