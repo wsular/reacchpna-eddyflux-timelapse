@@ -3,8 +3,8 @@ Data management scripts for REACCH Objective 2 monitoring sites
 ===============================================================
 
 :Contact: pokeeffe@wsu.edu
-:Version: 0.2
-:Date: 2013-06-04
+:Version: 0.3
+:Date: 2013-12-03
 
 Overview
 ========
@@ -16,8 +16,7 @@ scripts run at a scheduled time and may fail if improperly edited.
 .. [#] The share server is available online to users logged on to WSU networks 
    at ``ftp://`` and ``http://lar-d216-share.cee.wsu.edu``. Alternatively, the
    REACCH share folder can be added as a network drive; map a new drive to
-   ``\\lar-d216-share.cee.wsu.edu\reacch`` or 
-   ``\\lar-d216-share.cee.wsu.edu\proj\2011_REACCH``.
+   ``\\lar-d216-share.cee.wsu.edu\2011_REACCH``.
 
 Contributing
 ------------
@@ -61,21 +60,9 @@ use on their own workstation.
     =========       ========
     Folder          Contents
     ---------       --------
-    /bin            Binary executables including third-party programs
-    /doc            Documentation for users and researchers
     /igorpro        Procedure files written for use with Igor Pro
-    /logs           Log files from scripts *[not in DVCS]*
     /python         Scripts written in python and related auxilary files
     =========       ========
-
-/bin
-----
-The programs in here are used by a variety of scripts. Users are free to use 
-them too so long as the program (name included) is not modified at all.
-
-/doc
-----
-Documentation for users is in here. 
 
 /igorpro
 --------
@@ -83,13 +70,6 @@ Procedures written for Igor Pro should be saved as independent text files
 (*.ipf) and stored in this folder. This is not a place for experiments to be 
 saved; one exception might be where a set of rigorous tests for some procedure 
 are saved along with data and plots. 
-
-/logs
------
-This folder contains log files from various scripts. For clarity, name the log
-file so it's easily associated with the script generating it. 
-
-**The files in this folder are not checked in to version control.**
 
 /python
 -------
@@ -101,6 +81,15 @@ subfolder to hold each script's files.
 
 Release Notes
 =============
+
+Version 0.3
+-----------
+- Support added for new monitoring site 'MSLK'
+- Changes to CompactFlash Transfer Utility
+    * Applies standard formatting to plain-text files created by Card Convert
+    * Improved support for ejecting card
+- Changes to timelapse photo transfer script
+    * Site options now pulled from definitions, not hard-coded
 
 Version 0.2
 -----------
