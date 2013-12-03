@@ -18,33 +18,9 @@ import os
 import subprocess
 import sys
 
-splashscreen = """\
-=========================================================
-=        Timelapse camera photo transfer utility        =
-=                                                       =
-=  Regional Approaches to Climate Change | Objective 2  =
-=               Washington State University             =
-=========================================================
-"""
-srcloc = r'F:\DCIM\100_WSCT'
-dstloc = r'C:\SHARES\proj\2011_REACCH\tower_%s\photos_timelapsecam'
-antexe = r'"C:\Program Files (x86)\Ant Renamer\renamer.exe"'
-antarg = ' -b "%s" -afr "%s" -g -x' #batch file name, source dir
-arbloc = r'timelapse\%s timelapse AntRenamer batch file.arb'
-cpyexe = r'xcopy "%s" "%s\" /C /K /V /Q /X /Y' #src, dest
-    # XCOPY source <destination>
-    #   /C      continue, even on error
-    #   /K      copies attributes (default is reset)
-    #   /V      verify each new file
-    #   /Q      do not display file names while copying
-    #   /X      copies file audit settings (incl ownership/ACL)
-    #   /Y      suppresses prompt to overwrite existing file
-ejtcmd = r'"..\bin\usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
+from glob import glob
 
-_codelist = {'1' : 'CFNT',
-             '2' : 'LIND',
-             '3' : 'CFCT',
-             '4' : 'MMTN' }
+from definitions import pathto, site_list
 
 RC_NOSRCDIR = 1
 RC_NOFILES = 2
@@ -54,20 +30,51 @@ RC_ANTERR = 5
 RC_CPYERR = 6
 RC_ENVERR = 7
 
-def check_for_ant_renamer():
-    if not os.path.isfile(antexe):
-        print 'Error: could not locate Ant Renamer installation directory'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_NOANTEXE)
+splashscreen = """\
+=========================================================
+=        Timelapse camera photo transfer utility        =
+=                                                       =
+=  Regional Approaches to Climate Change | Objective 2  =
+=               Washington State University             =
+=========================================================
+"""
+srcloc = pathto.sd_card_photos
+dstloc = pathto.timelapse_photos
+antexe = r'"C:\Program Files (x86)\Ant Renamer\Renamer.exe"'
+if not os.path.isfile(antexe.strip('"')):
+    antexe = antexe.replace(' (x86)','') # try x86 XP-style
+    if not os.path.isfile(antexe.strip('"')):
+        antexe = antexe.replace(' Files','s') # try Win7 style
+        if not os.path.isfile(antexe.strip('"')):
+            print 'Could not locate Ant Renamer in default locations'
+            print antexe
+            raw_input('Press <enter> to exit...')
+            sys.exit(RC_NOANTEXE)
+antarg = ' -b "{arb}" -afr "{src}" -g -x' #batch file name, source dir
+cpyexe = r'xcopy "{src}" "{dst}\" /C /K /V /Q /X /Y' #src, dest
+    # XCOPY source <destination>
+    #   /C      continue, even on error
+    #   /K      copies attributes (default is reset)
+    #   /V      verify each new file
+    #   /Q      do not display file names while copying
+    #   /X      copies file audit settings (incl ownership/ACL)
+    #   /Y      suppresses prompt to overwrite existing file
+ejtcmd = r'"usb_disk_eject.exe" /REMOVELETTER %s' # srcloc drive letter
 
-def find_batch_file(codestr):
-    arbpath = arbloc % codestr
-    if not os.path.isfile(arbpath):
-        print 'Error: could not locate appropriate Ant Renamer batch file'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_NOBATCH)
-    return arbpath
+_codelist = dict((str(i+1),s.code) for (i,s) in enumerate(site_list))
 
+_arbtemplate = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<AntRenamer Version="2.10.0" Date="2013-02-04">
+ <Batch>
+  <Exif Mask="{site}_%datetimeoriginal%%ext%"/>
+  <StrRepl Search="-00." Repl="." AllOccurences="-1" CaseSensitive="0" IncludeExt="-1" OnlyExt="0"/>
+  <StrRepl Search="-" Repl="" AllOccurences="-1" CaseSensitive="0" IncludeExt="0" OnlyExt="0"/>
+  <StrRepl Search=" " Repl="." AllOccurences="-1" CaseSensitive="0" IncludeExt="0" OnlyExt="0"/>
+  <ChangeCase Option="3" AfterChars="- .+(" UseLocale="0" IncludeExt="0" OnlyExt="-1"/>
+ </Batch>
+</AntRenamer>
+"""
 
 if __name__ == '__main__':
     if 'nt' not in os.name:
@@ -90,35 +97,50 @@ if __name__ == '__main__':
         print 'Warning: no files were found in %s' % srcloc
         raw_input('Press <enter> to exit...')
         sys.exit(RC_NOFILES)
-    print """
-Where are these files from?
-  (1) CFNT  Cook Agronomy Farm, no-till
-  (2) LIND  Lind Dryland Research Station
-  (3) CFCT  Cook Agronomy Farm, conventional till
-  (4) MMTN  Moscow Mountain area site"""
+    print """\nWhere are these files from?"""
+    for (i,s) in enumerate(site_list):
+        print '  (%d) %s  %s' % (i+1, s.code, s.name)
 
     choice = ''
-    while choice not in ['1', '2', '3', '4', 'q', 'Q']:
-        choice = raw_input("Choose 1-4, <o> to open 1st file, <q> to quit: ")
+    while choice not in _codelist.keys()+['q', 'Q']:
+        choice = raw_input("Choose #, <o> to open 1st file, <q> to quit: ")
         if choice.lower() == 'o':
             smpfile = os.path.join(srcloc, filelist[0])
             subprocess.call(smpfile, shell=True)
     if choice.lower() == 'q':
         import sys; sys.exit()
 
-    arbfile = find_batch_file(_codelist[choice])
-    print '\nUsing batch file: ', arbfile
     cpydst = dstloc % _codelist[choice]
-    print 'Target directory: ', cpydst
+    print 'Using target directory: ', cpydst
+    confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
 
-    confirm = raw_input('Are these settings OK? C=continue, else quit: ')
-    if not confirm.strip().lower() == 'c':
+    try:
+        os.makedirs(cpydst)
+    except OSError:
+        if not os.path.isdir(cpydst):
+            raise
+
+    tmpdir = os.path.join(cpydst, 'imgs_to_rename')
+    if not os.path.isdir(tmpdir):
+        os.mkdir(tmpdir)
+
+    tmparb = os.path.join(tmpdir, 'renameactions.tmp~')
+    #temp file name must not be modified by ant renamer (no dot, dash...)
+    with open(tmparb, mode='w') as arbfile:
+        arbfile.write(_arbtemplate.format(site=_codelist[choice]))
+
+    print ' * Copying files to temporary destination... ',
+    cmd = cpyexe.format(src=srcloc, dst=tmpdir)
+    rc = subprocess.check_call(cmd, shell=True)
+    if rc:
+        print ' Error: Unable to copy files to destination'
         raw_input('Press <enter> to exit...')
-        sys.exit()
-    print
+        sys.exit(RC_CPYERR)
+    # xcopy prints equivalent 'done.' statement to stdout
 
-    print ' * Renaming image files...',
-    cmd = antexe + antarg % (arbfile, srcloc)
+    #if successful, results of copy cmd ends in "\n " so no preceding space
+    print '* Renaming image files...',
+    cmd = antexe + antarg.format(arb=os.path.normpath(tmparb), src=tmpdir)
     rc = subprocess.check_call(cmd, shell=True)
     if rc:
         print ' Error: Ant Renamer exited with code %s' % rc
@@ -126,16 +148,42 @@ Where are these files from?
         sys.exit(RC_ANTERR)
     else:
         print 'done.'
+    os.remove(tmparb) #delete renamer batch file
 
     # TODO check if files of same name exist in destination folder b4 copying
-    print ' * Copying files to destination... ',
-    cmd = cpyexe % (srcloc, cpydst)
-    rc = subprocess.check_call(cmd, shell=True)
-    if rc:
-        print ' Error: Unable to copy files to destination'
-        raw_input('Press <enter> to exit...')
-        sys.exit(RC_CPYERR)
-    # xcopy prints equivalent 'done.' statement to stdout
+    overwrite = False
+    confirm = '' #reset to known state
+    firstrenamefound = False
+    print ' * Moving files to final destination... ',
+    for tmppath in glob(os.path.join(tmpdir, '*.*')):
+        fname = os.path.basename(tmppath)
+        newpath = os.path.normpath(os.path.join(tmpdir, os.path.pardir, fname))
+        if os.path.isfile(newpath):
+            if not firstrenamefound:
+                print '\n' #extra white space to draw attention to prompt
+                firstrenamefound = True
+            if not overwrite:
+                msg = ('File exists at destination ({fname}). Overwrite? '
+                       '[Y]es, Yes to [a]ll, else no: ')
+                confirm = raw_input(msg.format(fname=fname))
+
+            if overwrite or confirm.lower() in ['y', 'a']:
+                os.remove(newpath)
+                if confirm.lower() == 'a': overwrite = True
+            else:
+                continue
+        try:
+            os.rename(tmppath, newpath)
+        except:
+            print ' ! Could not move: {name}'.format(name=tmppath)
+    if not os.listdir(tmpdir):
+        try:
+            os.rmdir(tmpdir)
+        except OSError:
+            print '\n ! Temporary directory emptied but could not be removed'
+    else:
+        print '\n ! Some files remain in the temporary directory ({dir})'.format(
+            dir=os.path.normpath(tmpdir))
 
     ask = raw_input('\nDelete all files in source directory? Y=yes, else no: ')
     print
