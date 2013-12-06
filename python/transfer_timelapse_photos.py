@@ -20,7 +20,8 @@ import sys
 
 from glob import glob
 
-from definitions import pathto, site_list
+from definitions.sites import site_list
+from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
 
 RC_NOSRCDIR = 1
 RC_NOFILES = 2
@@ -38,8 +39,8 @@ splashscreen = """\
 =               Washington State University             =
 =========================================================
 """
-srcloc = pathto.sd_card_photos
-dstloc = pathto.timelapse_photos
+srcloc = os.path.join(SD_DRIVE, 'DCIM', '100_WSCT')
+dstloc = TIMELAPSE_PHOTO_DIR
 antexe = r'"C:\Program Files (x86)\Ant Renamer\Renamer.exe"'
 if not os.path.isfile(antexe.strip('"')):
     antexe = antexe.replace(' (x86)','') # try x86 XP-style
@@ -110,7 +111,7 @@ if __name__ == '__main__':
     if choice.lower() == 'q':
         import sys; sys.exit()
 
-    cpydst = dstloc % _codelist[choice]
+    cpydst = dstloc.format % {'code' : _codelist[choice]}
     print 'Using target directory: ', cpydst
     confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
 
