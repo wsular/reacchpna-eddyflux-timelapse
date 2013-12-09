@@ -22,6 +22,7 @@ from glob import glob
 
 from definitions.sites import site_list
 from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
+from definitions.version import __version__
 
 RC_NOSRCDIR = 1
 RC_NOFILES = 2

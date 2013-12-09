@@ -16,6 +16,9 @@
 
 from os.path import join as pathjoin
 
+from definitions.version import __version__
+
+
 #### Base directory
 #HOME_DIR = r'B:\proj\2011_REACCH' # Share folder host computer
 HOME_DIR = r'D:\proj\2011_REACCH' # pokeeffe workstation
