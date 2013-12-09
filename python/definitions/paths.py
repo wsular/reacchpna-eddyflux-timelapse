@@ -20,16 +20,15 @@ from definitions.version import __version__
 
 
 #### Base directory
-#HOME_DIR = r'B:\proj\2011_REACCH' # Share folder host computer
-HOME_DIR = r'D:\proj\2011_REACCH' # pokeeffe workstation
+HOME_DIR = r'B:\proj\2011_REACCH' # Share folder host computer
 
 #### Path to recently downloaded telemetry files
 DOWNLOAD_DIR = r'C:\Campbellsci\Loggernet'
 
 #### Drive letters, no need for trailing slash
 CF_DRIVE = r'D:' # used by `CF Transfer Utility`
-#SD_DRIVE = r'F:' # used by `Transfer timelapse photo` script
-SD_DRIVE = r'D:' # pokeeffe workstation
+SD_DRIVE = r'F:' # used by `Transfer timelapse photo` script
+
 
 #### Subdirectory mask for tower data folders
 #### Use keyword substitute (e.g. tower_LIND, tower_CFNT...)
@@ -52,7 +51,7 @@ AGWEATHERNET_DIR = pathjoin(HOME_DIR, 'agweathernet_data')
 #### FUll paths to log files
 BASE_LOG_DIR = r'B:\proj\2011_REACCH\scripts\logs'
 
-TELEMETRY_LOG = pathjoin(BASE_LOG_DIR, 'telemetry.log')
+TELEMETRY_LOG = pathjoin(BASE_LOG_DIR, 'process_new_telemetry_data.log')
 
 
 
