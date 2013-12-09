@@ -46,3 +46,10 @@ TIMELAPSE_VIDEO_DIR = pathjoin(TOWER_DIR, 'videos_timelapse')
 AGWEATHERNET_DIR = pathjoin(HOME_DIR, 'agweathernet_data')
 
 
+#### FUll paths to log files
+BASE_LOG_DIR = r'B:\proj\2011_REACCH\scripts\logs'
+
+TELEMETRY_LOG = pathjoin(BASE_LOG_DIR, 'telemetry.log')
+
+
+
