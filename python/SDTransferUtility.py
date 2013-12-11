@@ -30,6 +30,7 @@ from exifread import process_file as process_file_exif_tags
 
 from definitions.fileio import (set_readonly_attr,
                                 set_archive_attr)
+from definitions.sites import site_list
 from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
 from definitions.version import __version__
 
@@ -140,6 +141,9 @@ class SDTransferUtility(Frame):
         """Window with tree of files found sorted by directory"""
         thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
                               text='Search Results')
+        lbl = Label(thispane, anchor=W,
+                    text='Right-click directory name, then select source site')
+        lbl.pack(side=TOP, expand=NO, fill=X, pady=(0,5))
         self._sourcetree = Treeview(thispane,
                                     columns=('destname'),
                                     selectmode='browse')
@@ -193,6 +197,18 @@ class SDTransferUtility(Frame):
         return thispane
 
 
+    def __gui_popup(self, event):
+        """Pop-up context menu for selecting site"""
+        w = self._sourcetree
+        row = w.identify_row(event.y)
+        menu = Menu(tearoff=0)
+        for site in site_list:
+            def make_caller(iid, code):
+                return lambda: self.__set_srcdir_site(iid=iid, code=code)
+            site = site.code
+            menu.add_command(label=site, command=make_caller(row, site))
+        menu.post(event.x_root, event.y_root)
+
 
     ##### GUI ^ / LOGIC v #####
 
@@ -207,7 +223,18 @@ class SDTransferUtility(Frame):
             if choice != oldchoice:
                 self._sources.clear()
                 self.__refresh_treeview()
-            print 'setting search dir', osp.normpath(choice)
+
+
+    def __set_srcdir_site(self, iid, code):
+        """set key from None to site's code"""
+        srcdir = self._sourcetree.item(iid, option='text')
+        destdir = TIMELAPSE_PHOTO_DIR % {'code' : code}
+        self._sources[srcdir]['destdir'] = destdir
+        self._sources[srcdir]['sitecode'] = code
+
+        self.__refresh_treeview()
+
+
 
 
     def __search(self):
@@ -216,8 +243,8 @@ class SDTransferUtility(Frame):
         files_found = glob(globstr)
         for f in files_found:
             this_dir = self._sources.setdefault(osp.dirname(f), {})
-            dest_dir = this_dir.setdefault('dest', None) # not used here
-            site_code = this_dir.setdefault('site', None) # just to defaults
+            dest_dir = this_dir.setdefault('destdir', None) # not used, just
+            site_code = this_dir.setdefault('sitecode', None) # make defaults
             flist = this_dir.setdefault('flist', [])
             flist.append(f)
         self.__refresh_treeview()
@@ -225,25 +252,45 @@ class SDTransferUtility(Frame):
 
     def __refresh_treeview(self):
         """Construct tree view data model"""
-        for node in self._sourcetree.get_children(''):
-            self._sourcetree.delete(node)
+        w = self._sourcetree
 
+### disabled until boolean state of item.open is resolved
+#        # preserve open tree controls
+#        open_nodes = []
+        for node in w.get_children(''):
+#            foo = w.item(node, option='open')
+#            print foo
+#            if w.item(node, option='open'):
+#                print 'node is open: ', w.item(node, option='text')
+#                open_nodes.append(w.item(node, option='text'))
+#            else:
+#                print 'node is closed: ', w.item(node, option='text')
+            w.delete(node)
+
+        # populate
         for srcdir in sorted(self._sources.keys()):
-            destdir = self._sources[srcdir]['dest']
+            destdir = self._sources[srcdir]['destdir']
             deststr = destdir or '<not yet determined>'
-            sitecode = self._sources[srcdir]['site']
-            iid = self._sourcetree.insert('', END,
-                                          text=srcdir,
-                                          values=[deststr])
+            sitecode = self._sources[srcdir]['sitecode']
+            iid = w.insert('', END, text=srcdir, tag='dir', values=[deststr])
             flist = self._sources[srcdir]['flist']
             for fname in flist:
                 destname = self.__dest_fname_mask(fname)
                 if sitecode:
-                    destname = destname % {'site' : sitecode}
-                self._sourcetree.insert(iid, END,
-                                        text=osp.basename(fname),
-                                        values=[destname])
-                self._sourcetree.bind('<<TreeviewSelect>>', self.__preview_img)
+                    destname = destname % {'code' : sitecode}
+                w.insert(iid, END, text=osp.basename(fname),
+                         tag='img', values=[destname])
+        w.tag_bind('dir', sequence='<Button-3>', callback=self.__gui_popup)
+        w.bind('<<TreeviewSelect>>', self.__preview_img)
+
+#        # restore open tree controls
+#        topchildren = w.get_children()
+#        toptext = {w.item(kid, option='text') : kid for kid in topchildren}
+#        for node in open_nodes:
+#            if node in toptext.keys():
+#                kid = toptext[node]
+#                w.item(kid, open=True)
+###
 
 
     def __preview_img(self, event):
@@ -307,7 +354,7 @@ class SDTransferUtility(Frame):
                                       stop_tag='DateTimeOriginal')
         timestamp = str(tags['EXIF DateTimeOriginal'])
         dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
-        return dt.strftime('%%(site)s_%Y%m%d.%H%M'+ext)
+        return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext)
 
 
     def __cprint(self, msg):
