@@ -51,14 +51,18 @@ class SDTransferUtility(Frame):
         self.pack(padx=5, pady=5, expand=YES, fill=BOTH)
 
         self._sources = {}
-        self._log_to_file = False
+        self._log_output = IntVar(value=0)
+        self._log_filepath = StringVar(value='')
 
-        self.__srch_dir = StringVar(value=SD_DRIVE) # XXX
-        self.__srch_str = StringVar(value=_default_search_string) # XXX
-        self.__set_output_RO = IntVar(value=1)
-        self.__set_output_A = IntVar(value=1)
+        self._search_dir = StringVar(value=SD_DRIVE) # XXX
+        self._search_str = StringVar(value=_default_search_string) # XXX
+#        self._set_output_RO = IntVar(value=1)
+#        self._set_output_A = IntVar(value=1)
 
         self.__gui_setup()
+
+        if self._search_dir and self._search_str:
+            self.__search()
 
 
     def __gui_setup(self):
@@ -67,88 +71,125 @@ class SDTransferUtility(Frame):
         topfrm.pack(expand=YES, fill=BOTH, side=TOP)
         Label(topfrm, text=_prog_title_).pack(side=TOP)
 
-        opts = self.__gui_options(topfrm)
-        opts.pack(expand=NO, fill=X)
+        out_vpane = PanedWindow(topfrm, orient=VERTICAL, sashrelief=GROOVE)
+        btm_hpane = PanedWindow(out_vpane, orient=HORIZONTAL, sashrelief=GROOVE)
+        top_hpane = PanedWindow(out_vpane, orient=HORIZONTAL, sashrelief=GROOVE)
+        inn_vpane = PanedWindow(top_hpane, orient=VERTICAL, sashrelief=GROOVE)
 
-        hpane = PanedWindow(topfrm, orient=VERTICAL, sashrelief=GROOVE)
-        hpane.pack(fill=BOTH, expand=YES)
+        out_vpane.pack(side=TOP, fill=BOTH, expand=YES, padx=5, pady=5)
+        btm_hpane.pack(side=TOP, fill=BOTH, expand=YES, padx=5, pady=5)
+        top_hpane.pack(side=TOP, fill=BOTH, expand=YES, padx=5, pady=5)
+        inn_vpane.pack(side=TOP, fill=BOTH, expand=YES, padx=5, pady=5)
 
-        console = self.__gui_preview(hpane)
-        logpane = self.__gui_logger(hpane)
+        win_search = self.__gui_search(inn_vpane)
+        win_results = self.__gui_results(inn_vpane)
+        win_preview = self.__gui_preview(top_hpane)
+        win_logger = self.__gui_logger(btm_hpane)
+        win_buttons = self.__gui_buttons(btm_hpane)
 
-        hpane.add(logpane, minsize=40)
-        hpane.add(console, before=logpane)
-        hpane.paneconfigure(logpane, pady=5)
-        hpane.paneconfigure(console, pady=5)
+        out_vpane.add(btm_hpane)
+        out_vpane.add(top_hpane, before=btm_hpane)
+        top_hpane.add(inn_vpane)
+        inn_vpane.add(win_search)
+        inn_vpane.add(win_results)
+        top_hpane.add(win_preview)
+        btm_hpane.add(win_logger)
+        btm_hpane.add(win_buttons)
+
+        out_vpane.paneconfigure(top_hpane, minsize=100)
+        out_vpane.paneconfigure(btm_hpane, minsize=100)
+        top_hpane.paneconfigure(inn_vpane)
+        inn_vpane.paneconfigure(win_search, padx=5, pady=5, minsize=50)
+        inn_vpane.paneconfigure(win_results, padx=5, pady=5, minsize=50)
+        top_hpane.paneconfigure(win_preview, padx=5, pady=5, minsize=100)
+        btm_hpane.paneconfigure(win_logger, padx=5, pady=5, minsize=100)
+        btm_hpane.paneconfigure(win_buttons, padx=5, pady=5, minsize=100)
 
 
-    def __gui_options(self, parent=None):
+    def __gui_search(self, parent=None):
         """Upper pane for entry fields, buttons, so on """
-        thispane = Frame(parent)
+        thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
+                              text='Source Image Search')
 
-        sfrm = LabelFrame(thispane, padx=5, pady=5, relief=RIDGE,
-                          text='Source Image Search')
-        sfrm.pack(expand=NO, fill=X, side=TOP)
-        srch_lbl = Label(sfrm, text='Root search dir.:')
-        srch_fld = Entry(sfrm, textvariable=self.__srch_dir)
-        find_lbl = Label(sfrm, text='Match string:')
-        find_fld = Entry(sfrm, textvariable=self.__srch_str)
-        rfsh_btn = Button(sfrm, text='Search', command=self.__search)
-        brws_btn = Button(sfrm, text='Browse', command=self.__set_srch_dir)
-        srch_lbl.pack(side=LEFT)
-        srch_fld.pack(side=LEFT, expand=YES, fill=X, padx=5)
-        brws_btn.pack(side=LEFT, padx=3)
-        rfsh_btn.pack(side=RIGHT, padx=3)
-        find_fld.pack(side=RIGHT, expand=YES, fill=X, padx=5)
-        find_lbl.pack(side=RIGHT)
+        row1 = Frame(thispane)
+        lbl_dir = Label(row1, text='Root search dir.:')
+        ent_dir = Entry(row1, textvariable=self._search_dir)
+        btn_dir = Button(row1, text='Browse', command=self.__set_srch_dir)
 
-        btnfrm = Frame(thispane)
-        btnfrm.pack(expand=NO, fill=X, pady=5, side=BOTTOM)
-        go_btn = Button(btnfrm, text='Begin processing',
-                        command=self.__transfer_images)
-        eject_btn = Button(btnfrm, text='Eject source dir.',
-                        command=self.__eject_srch_dir)
-        quit_btn = Button(btnfrm, text='Exit program',
-                        command=self.__quit)
-        go_btn.pack(side=LEFT)
-        quit_btn.pack(side=RIGHT)
-        eject_btn.pack(side=RIGHT, padx=10)
+        row2 = Frame(thispane)
+        lbl_find = Label(row2, text='Match pattern:')
+        ent_find = Entry(row2, textvariable=self._search_str)
+        btn_find = Button(row2, text='Search', command=self.__search)
+
+        lbl_dir.pack(side=LEFT)
+        btn_dir.pack(side=RIGHT, padx=(5,0))
+        ent_dir.pack(side=LEFT, expand=YES, fill=X)
+        row1.pack(side=TOP, expand=NO, fill=X, pady=(0,5))
+
+        lbl_find.pack(side=LEFT)
+        btn_find.pack(side=RIGHT, padx=(5,0))
+        ent_find.pack(side=LEFT, expand=YES, fill=X)
+        row2.pack(side=TOP, expand=NO, fill=X)
 
         return thispane
 
-    def __gui_preview(self, parent=None):
-        """Middle pane interacting with user"""
-        thispane = Frame(parent)
 
-        vpane = PanedWindow(thispane, orient=HORIZONTAL, sashrelief=GROOVE)
-        vpane.pack(fill=BOTH, expand=YES)
-
-        self._sourcetree = Treeview(vpane,
+    def __gui_results(self, parent=None):
+        """Window with tree of files found sorted by directory"""
+        thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
+                              text='Search Results')
+        self._sourcetree = Treeview(thispane,
                                     columns=('destname'),
                                     selectmode='browse')
         self._sourcetree.heading('destname', text='Destination', anchor=W)
-        self._preview = Button(vpane)
+        self._sourcetree.pack(side=TOP, expand=YES, fill=BOTH)
+        return thispane
 
-        vpane.add(self._sourcetree)
-        vpane.add(self._preview)
-        vpane.paneconfigure(self._sourcetree, padx=5)
-        vpane.paneconfigure(self._preview, padx=5)
 
+    def __gui_preview(self, parent=None):
+        """Middle pane interacting with user"""
+        thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
+                              text='Image Preview')
+        self._preview = Button(thispane)
+        self._preview.pack(side=TOP, expand=YES, fill=BOTH)
         return thispane
 
 
     def __gui_logger(self, parent=None):
         """Lower pane with logging output"""
-        thispane = Frame(parent)
+        thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
+                              text='Logging')
 
         hfrm = Frame(thispane)
-        cbLog = Checkbutton(hfrm, text='Log output to: ',
-                            variable=self._log_to_file)
+        chb_logging = Checkbutton(hfrm, text='Log output to: ',
+                                  variable=self._log_output)
+        ent_logpath = Entry(hfrm, textvariable=self._log_filepath)
+        chb_logging.pack(expand=NO, fill=X, side=LEFT)
+        ent_logpath.pack(expand=YES, fill=X, side=LEFT)
+        hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
 
         self.logpane = ScrolledText(thispane, height=2)
         self.logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
 
         return thispane
+
+
+    def __gui_buttons(self, parent=None):
+        """Lower-right pane containing action buttons"""
+        thispane = Frame(parent)
+
+        go_btn = Button(thispane, text='Begin processing',
+                        command=self.__transfer_images)
+        eject_btn = Button(thispane, text='Eject source dir.',
+                        command=self.__eject_srch_dir)
+        quit_btn = Button(thispane, text='Exit program',
+                        command=self.__quit)
+        go_btn.pack(side=TOP)
+        quit_btn.pack(side=BOTTOM)
+        eject_btn.pack(side=BOTTOM, pady=(0, 5))
+
+        return thispane
+
 
 
     ##### GUI ^ / LOGIC v #####
@@ -163,7 +204,7 @@ class SDTransferUtility(Frame):
 
     def __search(self):
         """Search for files in source directory"""
-        globstr = osp.join(self.__srch_dir.get(), self.__srch_str.get())
+        globstr = osp.join(self._search_dir.get(), self._search_str.get())
         files_found = glob(globstr)
         for f in files_found:
             this_dir = self._sources.setdefault(osp.dirname(f), {})
@@ -200,12 +241,17 @@ class SDTransferUtility(Frame):
     def __preview_img(self, event):
         w = event.widget
         if w.focus():
+            wd, ht = self._preview.winfo_width(), self._preview.winfo_height()
             fname = w.item(w.focus(), option='text')
             if fname not in self._sources.keys():
                 srcdir = w.item(w.parent(w.focus()), option='text')
                 imgpath = osp.join(srcdir, fname)
-                self._preview_img = ImageTk.PhotoImage(Image.open(imgpath))
-                self._preview.configure(image=self._preview_img)
+                img = Image.open(imgpath)
+                img.thumbnail((wd,ht), Image.ANTIALIAS)
+                self._preview_img = ImageTk.PhotoImage(img)
+                self._preview.configure(text=imgpath,
+                                        image=self._preview_img,
+                                        compound=TOP)
 
 
     def __eject_srch_dir(self):
