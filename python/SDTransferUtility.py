@@ -9,6 +9,8 @@ import logging
 import os
 import os.path as osp
 
+from sys import argv
+
 from datetime import datetime
 from glob import glob
 
@@ -20,6 +22,8 @@ from ScrolledText import ScrolledText
 from ttk import Treeview
 
 from PIL import Image, ImageTk
+
+from win32file import GetDriveType, DRIVE_REMOVABLE
 
 # Homepage: https://github.com/ianare/exif-py
 from exifread import process_file as process_file_exif_tags
@@ -271,7 +275,24 @@ class SDTransferUtility(Frame):
 
 
     def __eject_srch_dir(self):
-        pass
+        to_eject = self._search_dir.get()
+        if not to_eject or not osp.isdir(to_eject):
+            return
+        drive, path = osp.splitdrive(to_eject)
+        if GetDriveType(drive) != DRIVE_REMOVABLE:
+            print 'NOT A REMOVABLE DRIVE!'
+            return
+        if not osp.isfile('usb_disk_eject.exe'):
+            print 'CANNOT FIND DISK EJECTING SOFTWARE!'
+            return
+        try:
+            driveletter = drive.strip(':')
+            cwd = osp.dirname(argv[0])
+            eject_cmd = osp.join('"'+cwd, 'usb_disk_eject.exe" /REMOVELETTER %s')
+            os.system(eject_cmd % driveletter)
+            print 'SUCCESS EJECTING DISK!'
+        except:
+            print 'WAS NOT ABLE TO EXIT!'
 
 
     def __dest_fname_mask(self, fname):
