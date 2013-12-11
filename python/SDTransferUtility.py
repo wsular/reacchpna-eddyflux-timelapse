@@ -55,6 +55,8 @@ class SDTransferUtility(Frame):
 #        self._set_output_RO = IntVar(value=1)
 #        self._set_output_A = IntVar(value=1)
 
+        self._preview_img = None
+
         self.__gui_setup()
 
         if self._search_dir and self._search_str:
@@ -110,7 +112,7 @@ class SDTransferUtility(Frame):
         row1 = Frame(thispane)
         lbl_dir = Label(row1, text='Root search dir.:')
         ent_dir = Entry(row1, textvariable=self._search_dir)
-        btn_dir = Button(row1, text='Browse', command=self.__set_srch_dir)
+        btn_dir = Button(row1, text='Browse', command=self.__set_search_dir)
 
         row2 = Frame(thispane)
         lbl_find = Label(row2, text='Match pattern:')
@@ -190,12 +192,18 @@ class SDTransferUtility(Frame):
 
     ##### GUI ^ / LOGIC v #####
 
-    def __set_srch_dir(self):
+    def __set_search_dir(self):
         """Browse to source directory"""
+        oldchoice = self._search_dir.get()
         choice = askdirectory(title='Select source directory',
                               mustexist=True)
         if choice and osp.isdir(choice):
-             self._search_dir.set(choice.replace('/','\\'))
+            choice = osp.normpath(choice)
+            self._search_dir.set(choice)
+            if choice != oldchoice:
+                self._sources.clear()
+                self.__refresh_treeview()
+            print 'setting search dir', osp.normpath(choice)
 
 
     def __search(self):
@@ -235,19 +243,31 @@ class SDTransferUtility(Frame):
 
 
     def __preview_img(self, event):
-        w = event.widget
+        """Calculate size of, then display image"""
+        # event not used
+        w = self._sourcetree
         if w.focus():
-            wd, ht = self._preview.winfo_width(), self._preview.winfo_height()
             fname = w.item(w.focus(), option='text')
-            if fname not in self._sources.keys():
+            if fname in self._sources.keys():
+                if self._preview_img:
+                    self._preview.configure(text='', image=None)
+                    self._preview_img = None
+            else:
                 srcdir = w.item(w.parent(w.focus()), option='text')
                 imgpath = osp.join(srcdir, fname)
-                img = Image.open(imgpath)
-                img.thumbnail((wd,ht), Image.ANTIALIAS)
-                self._preview_img = ImageTk.PhotoImage(img)
-                self._preview.configure(text=imgpath,
-                                        image=self._preview_img,
-                                        compound=TOP)
+                try:
+                    img = Image.open(imgpath)
+                    wd = self._preview.winfo_width() # button dimensions
+                    ht = self._preview.winfo_height() - 25 # text label space
+                    img.thumbnail((wd,ht), Image.ANTIALIAS)
+                    self._preview_img = ImageTk.PhotoImage(img)
+                    self._preview.configure(text=imgpath,
+                                            image=self._preview_img,
+                                            compound=TOP)
+                except:
+                    self._preview.configure(text='<Preview not available>',
+                                            image=None)
+                    self._preview_img = None
 
 
     def __eject_srch_dir(self):
