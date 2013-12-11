@@ -199,7 +199,7 @@ class SDTransferUtility(Frame):
         choice = askdirectory(title='Select source directory',
                               mustexist=True)
         if choice and osp.isdir(choice):
-             self.__srch_dir.set(choice.replace('/','\\'))
+             self._search_dir.set(choice.replace('/','\\'))
 
 
     def __search(self):
