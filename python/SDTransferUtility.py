@@ -21,17 +21,13 @@ from ttk import Treeview
 
 from PIL import Image, ImageTk
 
+# Homepage: https://github.com/ianare/exif-py
+from exifread import process_file as process_file_exif_tags
+
 from definitions.fileio import (set_readonly_attr,
                                 set_archive_attr)
 from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
 from definitions.version import __version__
-
-
-try:
-    import exifread
-except ImportError:
-    raise
-    #### try to install exifread here or try an ant renamer alternative?
 
 
 log = logging.getLogger(__name__)
@@ -265,9 +261,9 @@ class SDTransferUtility(Frame):
         is (24) hour/min, and %(site)s is for dict-style string substitution.
         """
         _, ext = osp.splitext(fname)
-        tags = exifread.process_file(open(fname, mode='rb'),
-                                     details=False,
-                                     stop_tag='DateTimeOriginal')
+        tags = process_file_exif_tags(open(fname, mode='rb'),
+                                      details=False,
+                                      stop_tag='DateTimeOriginal')
         timestamp = str(tags['EXIF DateTimeOriginal'])
         dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
         return dt.strftime('%%(site)s_%Y%m%d.%H%M'+ext)
