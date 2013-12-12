@@ -15,7 +15,7 @@ from glob import glob
 
 from Tkinter import *
 from tkMessageBox import askyesno, showerror
-from tkFileDialog import askdirectory
+from tkFileDialog import askdirectory, asksaveasfilename
 from ScrolledText import ScrolledText
 from ttk import Treeview
 
@@ -174,9 +174,11 @@ class SDTransferUtility(Frame):
         chb_logging = Checkbutton(hfrm, text='Log output to: ',
                                   variable=self._log_output)
         ent_logpath = Entry(hfrm, textvariable=self._log_filepath)
+        btn_browse = Button(hfrm, text='Browse', command=self.__set_logfile)
         chb_logging.pack(expand=NO, fill=X, side=LEFT)
         ent_logpath.pack(expand=YES, fill=X, side=LEFT)
         hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
+        btn_browse.pack(expand=NO, padx=(5,0), side=RIGHT)
 
         self.__logpane = ScrolledText(thispane, height=2)
         self.__logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
@@ -247,6 +249,13 @@ class SDTransferUtility(Frame):
 
         self.__refresh_treeview()
         self.__enable_processing()
+
+
+    def __set_logfile(self):
+        """Browse to target log file"""
+        fname = asksaveasfilename(title='Log to file', parent=self)
+        if fname:
+            self.log_fname.set(fname)
 
 
     def __enable_eject_btn(self):
