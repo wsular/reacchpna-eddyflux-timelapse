@@ -324,7 +324,7 @@ class SDTransferUtility(Frame):
                 w.insert(src_dir, END, text=osp.basename(src_name), tag='img',
                          iid=src_name, values=[dest_name])
         w.tag_bind('dir', sequence='<Button-3>', callback=self.__gui_popup)
-        w.bind('<<TreeviewSelect>>', self.__preview_img)
+        w.bind('<<TreeviewSelect>>', lambda event: self.__preview_img())
 
         # restore open tree controls & select previous item
         topchildren = w.get_children()
@@ -335,7 +335,7 @@ class SDTransferUtility(Frame):
             w.selection_set(selected_row)
 
 
-    def __preview_img(self, event):
+    def __preview_img(self):
         """Calculate size of, then display image"""
         # event not used
         w = self._sourcetree
