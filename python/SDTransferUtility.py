@@ -177,8 +177,8 @@ class SDTransferUtility(Frame):
         btn_browse = Button(hfrm, text='Browse', command=self.__set_logfile)
         chb_logging.pack(expand=NO, fill=X, side=LEFT)
         ent_logpath.pack(expand=YES, fill=X, side=LEFT)
-        hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
         btn_browse.pack(expand=NO, padx=(5,0), side=RIGHT)
+#        hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
 
         self.__logpane = ScrolledText(thispane, height=2)
         self.__logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
