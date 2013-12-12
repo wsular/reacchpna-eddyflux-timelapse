@@ -14,7 +14,6 @@ from datetime import datetime
 from glob import glob
 
 from Tkinter import *
-from tkMessageBox import askyesno, showerror
 from tkFileDialog import askdirectory, asksaveasfilename
 from ScrolledText import ScrolledText
 from ttk import Treeview
@@ -26,8 +25,6 @@ from win32file import GetDriveType, DRIVE_REMOVABLE
 # Homepage: https://github.com/ianare/exif-py
 from exifread import process_file as get_exif_tags
 
-from definitions.fileio import (set_readonly_attr,
-                                set_archive_attr)
 from definitions.sites import site_list
 from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
 from definitions.version import __version__
@@ -158,7 +155,7 @@ class SDTransferUtility(Frame):
         """Tie logger into Tkinter Text object"""
         def __init__(self, widget):
             logging.Handler.__init__(self)
-            self.text=widget
+            self.text = widget
 
         def emit(self, record):
             self.text.insert(END, record.msg + '\n')
@@ -262,7 +259,6 @@ class SDTransferUtility(Frame):
         """if the source drive is removable, enable the 'eject' button"""
         state = DISABLED
         srcdir = self._search_dir.get()
-        print srcdir
         if osp.isdir(srcdir):
             drive, _ = osp.splitdrive(srcdir)
         if GetDriveType(drive) == DRIVE_REMOVABLE:
@@ -308,7 +304,6 @@ class SDTransferUtility(Frame):
         for row in w.get_children():
             open_opt.set(str(w.item(row, option='open'))) # force to bool
             if open_opt.get():
-                #open_nodes.append(w.item(row, option='text'))
                 open_nodes.append(row)
             w.delete(row)
 
@@ -427,6 +422,7 @@ class SDTransferUtility(Frame):
 
 
     def __eject_srch_dir(self):
+        """attempt to eject source directory"""
         to_eject = self._search_dir.get()
         if not to_eject or not osp.isdir(to_eject):
             return
@@ -448,6 +444,7 @@ class SDTransferUtility(Frame):
 
 
     def __quit(self):
+        """exit program"""
         # reserved for clean-up
         self.master.destroy()
 
