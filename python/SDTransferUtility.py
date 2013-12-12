@@ -55,8 +55,10 @@ class SDTransferUtility(Frame):
 
         self.master.title(self._prog_title)
         self.__gui_setup()
-        if self._search_dir and self._search_str:
-            self.__search()
+        if self._search_dir:
+            self.__enable_eject_btn()
+            if self._search_str:
+                self.__search()
 
 
     def __gui_setup(self):
@@ -202,6 +204,7 @@ class SDTransferUtility(Frame):
         eject_btn.pack(side=BOTTOM, pady=(0, 5))
 
         self.__begin_proc_btn = go_btn
+        self.__eject_src_btn = eject_btn
         return thispane
 
 
@@ -228,6 +231,7 @@ class SDTransferUtility(Frame):
         if choice and osp.isdir(choice):
             choice = osp.normpath(choice)
             self._search_dir.set(choice)
+            self.__enable_eject_btn()
             if choice != oldchoice:
                 self._sources.clear()
                 self.__refresh_treeview()
@@ -242,6 +246,20 @@ class SDTransferUtility(Frame):
 
         self.__refresh_treeview()
         self.__enable_processing()
+
+
+    def __enable_eject_btn(self):
+        """if the source drive is removable, enable the 'eject' button"""
+        state = DISABLED
+        srcdir = self._search_dir.get()
+        print srcdir
+        if osp.isdir(srcdir):
+            drive, _ = osp.splitdrive(srcdir)
+        if GetDriveType(drive) == DRIVE_REMOVABLE:
+            logger.info('Source directory drive type is DRIVE_REMOVABLE so '
+                         'enabling eject button')
+            state = NORMAL
+        self.__eject_src_btn.configure(state=state)
 
 
     def __enable_processing(self):
