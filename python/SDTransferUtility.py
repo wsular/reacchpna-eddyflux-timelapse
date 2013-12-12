@@ -5,9 +5,9 @@ Created on Mon Dec 09 14:57:26 2013
 @author: pokeeffe
 """
 
-import logging
 import os
 import os.path as osp
+import logging
 
 from sys import argv
 from datetime import datetime
@@ -33,8 +33,9 @@ from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
 from definitions.version import __version__
 
 
-log = logging.getLogger(__name__)
-log.addHandler(logging.NullHandler())
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.NullHandler())
 
 
 class SDTransferUtility(Frame):
@@ -151,6 +152,16 @@ class SDTransferUtility(Frame):
         return thispane
 
 
+    class __TextLogger(logging.Handler):
+        """Tie logger into Tkinter Text object"""
+        def __init__(self, widget):
+            logging.Handler.__init__(self)
+            self.text=widget
+
+        def emit(self, record):
+            self.text.insert(END, record.msg + '\n')
+
+
     def __gui_logger(self, parent=None):
         """Lower pane with logging output"""
         thispane = LabelFrame(parent, padx=5, pady=5, relief=RIDGE,
@@ -164,8 +175,13 @@ class SDTransferUtility(Frame):
         ent_logpath.pack(expand=YES, fill=X, side=LEFT)
         hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
 
-        self.logpane = ScrolledText(thispane, height=2)
-        self.logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
+        self.__logpane = ScrolledText(thispane, height=2)
+        self.__logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
+
+        ## tie into logging
+        log2pane = self.__TextLogger(self.__logpane)
+        log2pane.setLevel(logging.INFO)
+        logger.addHandler(log2pane)
 
         return thispane
 
@@ -368,16 +384,10 @@ class SDTransferUtility(Frame):
         """Move single image; threadable"""
         try:
             os.rename(src, dst)
-            print 'Moved %s to %s' % (src, dst)
+            logger.info('Moved %s to %s' % (src, dst))
         except WindowsError as err:
-            print 'Error moving %s (file skipped):  %s' % (src, err.strerror)
-
-
-    def __cprint(self, msg):
-        """Print to console pane"""
-        self.console.insert(END, str(msg))
-        self.console.see(END)
-        self.update()
+            logger.info('Error moving %s (file skipped):  %s' %
+                        (src, err.strerror))
 
 
     def __eject_srch_dir(self):
@@ -386,19 +396,19 @@ class SDTransferUtility(Frame):
             return
         drive, path = osp.splitdrive(to_eject)
         if GetDriveType(drive) != DRIVE_REMOVABLE:
-            print 'NOT A REMOVABLE DRIVE!'
+            logger.info('NOT A REMOVABLE DRIVE!')
             return
         if not osp.isfile('usb_disk_eject.exe'):
-            print 'CANNOT FIND DISK EJECTING SOFTWARE!'
+            logger.info('CANNOT FIND DISK EJECTING SOFTWARE!')
             return
         try:
             driveletter = drive.strip(':')
             cwd = osp.dirname(argv[0])
             eject_cmd = osp.join('"'+cwd, 'usb_disk_eject.exe" /REMOVELETTER %s')
             os.system(eject_cmd % driveletter)
-            print 'SUCCESS EJECTING DISK!'
+            logger.info('SUCCESS EJECTING DISK!')
         except:
-            print 'WAS NOT ABLE TO EXIT!'
+            logger.info('WAS NOT ABLE TO EXIT!')
 
 
     def __quit(self):
