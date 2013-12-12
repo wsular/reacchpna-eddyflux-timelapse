@@ -336,7 +336,7 @@ class SDTransferUtility(Frame):
         for row in open_nodes:
             if row in topchildren:
                 w.item(row, open=True)
-        if selected_row:
+        if selected_row and w.exists(selected_row):
             w.selection_set(selected_row)
 
 
@@ -389,6 +389,7 @@ class SDTransferUtility(Frame):
             self._preview.configure(text='', image=None) # de-associate
             self._preview_img = None # then release image file
 
+        dirs_to_remove = []
         for srcdir, info in sorted(self._sources.items()):
             dest_names = info['dest_names']
             if not dest_names:
@@ -399,11 +400,18 @@ class SDTransferUtility(Frame):
             except OSError as e:
                 if not osp.isdir(dest_dir):
                     raise e
+            files_to_remove = []
             for src_path, dest_file in sorted(dest_names.items()):
                 dest_path = osp.join(dest_dir, dest_file)
-                self.__move_image(src_path, dest_path)
+                moved = self.__move_image(src_path, dest_path)
+                if moved:
+                    files_to_remove.append(src_path)
+            for ea in files_to_remove: dest_names.pop(ea) # remove if success
+            if not dest_names:
+                dirs_to_remove.append(srcdir)
+        for ea in dirs_to_remove: self._sources.pop(srcdir)
 
-        self.__search() # update results pane post-tranfer
+        self.__refresh_treeview()
 
 
     def __move_image(self, src, dst):
@@ -411,9 +419,11 @@ class SDTransferUtility(Frame):
         try:
             os.rename(src, dst)
             logger.info('Moved %s to %s' % (src, dst))
+            return True
         except WindowsError as err:
             logger.info('Error moving %s (file skipped):  %s' %
                         (src, err.strerror))
+            return False
 
 
     def __eject_srch_dir(self):
