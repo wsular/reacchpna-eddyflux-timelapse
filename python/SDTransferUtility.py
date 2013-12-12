@@ -45,7 +45,7 @@ class SDTransferUtility(Frame):
         self._prog_title = 'Timelapse Image Transfer Utility'
         self._sources = {}
         self._log_output = IntVar(value=0)
-        self._log_filepath = StringVar(value='')
+        self._log_fname = StringVar(value='')
         self._search_dir = StringVar(value=SD_DRIVE) # XXX
         self._search_str = StringVar(value=r'DCIM\*_WSCT\*.jpg') # XXX
         self._preview_img = None
@@ -170,7 +170,7 @@ class SDTransferUtility(Frame):
         hfrm = Frame(thispane)
         chb_logging = Checkbutton(hfrm, text='Log output to: ',
                                   variable=self._log_output)
-        ent_logpath = Entry(hfrm, textvariable=self._log_filepath)
+        ent_logpath = Entry(hfrm, textvariable=self._log_fname)
         btn_browse = Button(hfrm, text='Browse', command=self.__set_logfile)
         chb_logging.pack(expand=NO, fill=X, side=LEFT)
         ent_logpath.pack(expand=YES, fill=X, side=LEFT)
@@ -252,7 +252,7 @@ class SDTransferUtility(Frame):
         """Browse to target log file"""
         fname = asksaveasfilename(title='Log to file', parent=self)
         if fname:
-            self.log_fname.set(fname)
+            self._log_fname.set(fname)
 
 
     def __enable_eject_btn(self):
