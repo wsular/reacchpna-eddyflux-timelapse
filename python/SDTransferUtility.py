@@ -188,9 +188,9 @@ class SDTransferUtility(Frame):
                         command=self.__transfer_images,
                         state=DISABLED)
         eject_btn = Button(thispane, text='Eject source dir.',
-                        command=self.__eject_srch_dir)
+                           command=self.__eject_srch_dir)
         quit_btn = Button(thispane, text='Exit program',
-                        command=self.__quit)
+                          command=self.__quit)
         go_btn.pack(side=TOP)
         quit_btn.pack(side=BOTTOM)
         eject_btn.pack(side=BOTTOM, pady=(0, 5))
@@ -411,7 +411,8 @@ class SDTransferUtility(Frame):
 
 
     def __quit(self):
-        Frame.quit(self)
+        # reserved for clean-up
+        self.master.destroy()
 
 
 if __name__=='__main__':
