@@ -253,6 +253,7 @@ class SDTransferUtility(Frame):
         """Search for files in source directory"""
         globstr = osp.join(self._search_dir.get(), self._search_str.get())
         files_found = glob(globstr)
+        self._sources.clear()
         for f in files_found:
             this_dir = self._sources.setdefault(osp.dirname(f), {})
             dest_dir = this_dir.setdefault('dest_dir', None) # not used, just
