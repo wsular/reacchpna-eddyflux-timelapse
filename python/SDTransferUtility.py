@@ -273,18 +273,21 @@ class SDTransferUtility(Frame):
         """Construct tree view data model"""
         w = self._sourcetree
 
-### disabled until boolean state of item.open is resolved
-#        # preserve open tree controls
+#        # remember selected row
+#        selected_row = w.selection()
+#        #print selected_row
+#        #if selected_row:
+#        #    # row iid may change, remember directory itself
+#        #    selected_row = w.item(selected_row, option='text')
+#
+#        # remember open tree controls
 #        open_nodes = []
-        for node in w.get_children(''):
-#            foo = w.item(node, option='open')
-#            print foo
-#            if w.item(node, option='open'):
-#                print 'node is open: ', w.item(node, option='text')
-#                open_nodes.append(w.item(node, option='text'))
-#            else:
-#                print 'node is closed: ', w.item(node, option='text')
-            w.delete(node)
+#        open_opt = BooleanVar() # for coercing _tkinter objects to bool
+#        for row in w.get_children():
+#            open_opt.set(str(w.item(row, option='open'))) # force to bool
+#            if open_opt.get():
+#                open_nodes.append(w.item(row, option='text'))
+#            w.delete(row)
 
         # populate
         for src_dir in sorted(self._sources.keys()):
@@ -307,11 +310,17 @@ class SDTransferUtility(Frame):
 #        # restore open tree controls
 #        topchildren = w.get_children()
 #        toptext = {w.item(kid, option='text') : kid for kid in topchildren}
-#        for node in open_nodes:
-#            if node in toptext.keys():
-#                kid = toptext[node]
+#        for row in open_nodes:
+#            if row in toptext.keys():
+#                kid = toptext[row]
 #                w.item(kid, open=True)
-###
+
+#        # restore selected item
+#        if selected_row:
+#            w.selection_set(selected_row)
+##            row_iid = toptext.get(selected_row)
+##            if row_iid:
+##                w.selection_set(row_iid)
 
 
     def __preview_img(self, event):
