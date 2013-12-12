@@ -10,7 +10,6 @@ import os
 import os.path as osp
 
 from sys import argv
-
 from datetime import datetime
 from glob import glob
 
@@ -18,7 +17,6 @@ from Tkinter import *
 from tkMessageBox import askyesno, showerror
 from tkFileDialog import askdirectory
 from ScrolledText import ScrolledText
-
 from ttk import Treeview
 
 from PIL import Image, ImageTk
@@ -26,7 +24,7 @@ from PIL import Image, ImageTk
 from win32file import GetDriveType, DRIVE_REMOVABLE
 
 # Homepage: https://github.com/ianare/exif-py
-from exifread import process_file as process_file_exif_tags
+from exifread import process_file as get_exif_tags
 
 from definitions.fileio import (set_readonly_attr,
                                 set_archive_attr)
@@ -39,11 +37,6 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
 
-_prog_title_ = 'Timelapse Image Transfer Utility'
-
-_default_search_string = r'DCIM\*_WSCT\*.jpg'
-
-
 class SDTransferUtility(Frame):
     """GUI program for transferring timelapse images from SD cards"""
 
@@ -51,19 +44,16 @@ class SDTransferUtility(Frame):
         Frame.__init__(self, parent)
         self.pack(padx=5, pady=5, expand=YES, fill=BOTH)
 
+        self._prog_title = 'Timelapse Image Transfer Utility'
         self._sources = {}
         self._log_output = IntVar(value=0)
         self._log_filepath = StringVar(value='')
-
         self._search_dir = StringVar(value=SD_DRIVE) # XXX
-        self._search_str = StringVar(value=_default_search_string) # XXX
-#        self._set_output_RO = IntVar(value=1)
-#        self._set_output_A = IntVar(value=1)
-
+        self._search_str = StringVar(value=r'DCIM\*_WSCT\*.jpg') # XXX
         self._preview_img = None
 
+        self.master.title(self._prog_title)
         self.__gui_setup()
-
         if self._search_dir and self._search_str:
             self.__search()
 
@@ -72,7 +62,7 @@ class SDTransferUtility(Frame):
         """Build up GUI from widgets"""
         topfrm = Frame(self)
         topfrm.pack(expand=YES, fill=BOTH, side=TOP)
-        Label(topfrm, text=_prog_title_).pack(side=TOP)
+        Label(topfrm, text=self._prog_title).pack(side=TOP)
 
         out_vpane = PanedWindow(topfrm, orient=VERTICAL, sashrelief=GROOVE)
         btm_hpane = PanedWindow(out_vpane, orient=HORIZONTAL, sashrelief=GROOVE)
@@ -343,9 +333,9 @@ class SDTransferUtility(Frame):
         is (24) hour/min, and %(site)s is for dict-style string substitution.
         """
         _, ext = osp.splitext(fname)
-        tags = process_file_exif_tags(open(fname, mode='rb'),
-                                      details=False,
-                                      stop_tag='DateTimeOriginal')
+        tags = get_exif_tags(open(fname, mode='rb'),
+                             details=False,
+                             stop_tag='DateTimeOriginal')
         timestamp = str(tags['EXIF DateTimeOriginal'])
         dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
         return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext)
@@ -417,9 +407,5 @@ class SDTransferUtility(Frame):
 
 
 if __name__=='__main__':
-    root = Tk()
-    root.title(_prog_title_)
-    root.update_idletasks()
-    root.minsize(root.winfo_reqwidth(),root.winfo_reqheight())
     SDTransferUtility().mainloop()
 
