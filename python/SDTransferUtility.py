@@ -185,7 +185,8 @@ class SDTransferUtility(Frame):
         thispane = Frame(parent)
 
         go_btn = Button(thispane, text='Begin processing',
-                        command=self.__transfer_images)
+                        command=self.__transfer_images,
+                        state=DISABLED)
         eject_btn = Button(thispane, text='Eject source dir.',
                         command=self.__eject_srch_dir)
         quit_btn = Button(thispane, text='Exit program',
@@ -194,6 +195,7 @@ class SDTransferUtility(Frame):
         quit_btn.pack(side=BOTTOM)
         eject_btn.pack(side=BOTTOM, pady=(0, 5))
 
+        self.__begin_proc_btn = go_btn
         return thispane
 
 
@@ -229,12 +231,22 @@ class SDTransferUtility(Frame):
         """set key from None to site's code"""
         srcdir = self._sourcetree.item(iid, option='text')
         destdir = TIMELAPSE_PHOTO_DIR % {'code' : code}
-        self._sources[srcdir]['destdir'] = destdir
-        self._sources[srcdir]['sitecode'] = code
+        self._sources[srcdir]['dest_dir'] = destdir
+        self._sources[srcdir]['site_code'] = code
 
         self.__refresh_treeview()
+        self.__enable_processing()
 
 
+    def __enable_processing(self):
+        """if conditions are OK, enable the 'begin processing' button"""
+        state = NORMAL
+        for srcdir, info in self._sources.items():
+            if not info['dest_dir']:
+                state = DISABLED
+            if not info['site_code']:
+                state = DISABLED
+        self.__begin_proc_btn.configure(state=state)
 
 
     def __search(self):
@@ -243,10 +255,10 @@ class SDTransferUtility(Frame):
         files_found = glob(globstr)
         for f in files_found:
             this_dir = self._sources.setdefault(osp.dirname(f), {})
-            dest_dir = this_dir.setdefault('destdir', None) # not used, just
-            site_code = this_dir.setdefault('sitecode', None) # make defaults
-            flist = this_dir.setdefault('flist', [])
-            flist.append(f)
+            dest_dir = this_dir.setdefault('dest_dir', None) # not used, just
+            site_code = this_dir.setdefault('site_code', None) # make defaults
+            dest_names = this_dir.setdefault('dest_names', {})
+            dest_names[f] = None # init to none
         self.__refresh_treeview()
 
 
@@ -268,18 +280,20 @@ class SDTransferUtility(Frame):
             w.delete(node)
 
         # populate
-        for srcdir in sorted(self._sources.keys()):
-            destdir = self._sources[srcdir]['destdir']
-            deststr = destdir or '<not yet determined>'
-            sitecode = self._sources[srcdir]['sitecode']
-            iid = w.insert('', END, text=srcdir, tag='dir', values=[deststr])
-            flist = self._sources[srcdir]['flist']
-            for fname in flist:
-                destname = self.__dest_fname_mask(fname)
-                if sitecode:
-                    destname = destname % {'code' : sitecode}
-                w.insert(iid, END, text=osp.basename(fname),
-                         tag='img', values=[destname])
+        for src_dir in sorted(self._sources.keys()):
+            dest_dir = self._sources[src_dir]['dest_dir']
+            dest_names = self._sources[src_dir]['dest_names']
+            site_code = self._sources[src_dir]['site_code']
+
+            dest_str = dest_dir or '<not yet determined>'
+            iid = w.insert('', END, text=src_dir, tag='dir', values=[dest_str])
+            for src_name in sorted(dest_names.keys()):
+                dest_name = self.__dest_fname_mask(src_name)
+                if site_code:
+                    dest_name = dest_name % {'code' : site_code}
+                    dest_names[src_name] = dest_name
+                w.insert(iid, END, text=osp.basename(src_name),
+                         tag='img', values=[dest_name])
         w.tag_bind('dir', sequence='<Button-3>', callback=self.__gui_popup)
         w.bind('<<TreeviewSelect>>', self.__preview_img)
 
