@@ -162,6 +162,7 @@ class SDTransferUtility(Frame):
 
         def emit(self, record):
             self.text.insert(END, record.msg + '\n')
+            self.text.see(END)
 
 
     def __gui_logger(self, parent=None):
