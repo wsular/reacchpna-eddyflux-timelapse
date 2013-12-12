@@ -335,6 +335,60 @@ class SDTransferUtility(Frame):
                     self._preview_img = None
 
 
+    def __dest_fname_mask(self, fname):
+        """Return image destination name file mask
+
+        In form of `%(site)s_YYYYMMDD.hhmm` YYYYMMDD is year/month/day, hhmm
+        is (24) hour/min, and %(site)s is for dict-style string substitution.
+        """
+        _, ext = osp.splitext(fname)
+        tags = process_file_exif_tags(open(fname, mode='rb'),
+                                      details=False,
+                                      stop_tag='DateTimeOriginal')
+        timestamp = str(tags['EXIF DateTimeOriginal'])
+        dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
+        return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext)
+
+
+    def __transfer_images(self):
+        """Process image files from results objects"""
+        if self._preview_img:
+            self._preview.configure(text='', image=None) # de-associate
+            self._preview_img = None # then release image file
+
+        for srcdir, info in sorted(self._sources.items()):
+            dest_names = info['dest_names']
+            if not dest_names:
+                continue
+            dest_dir = info['dest_dir']
+            try:
+                os.makedirs(dest_dir)
+            except OSError as e:
+                if not osp.isdir(dest_dir):
+                    raise e
+            for src_path, dest_file in sorted(dest_names.items()):
+                dest_path = osp.join(dest_dir, dest_file)
+                self.__move_image(src_path, dest_path)
+
+        self.__search() # update results pane post-tranfer
+
+
+    def __move_image(self, src, dst):
+        """Move single image; threadable"""
+        try:
+            os.rename(src, dst)
+            print 'Moved %s to %s' % (src, dst)
+        except WindowsError as err:
+            print 'Error moving %s (file skipped):  %s' % (src, err.strerror)
+
+
+    def __cprint(self, msg):
+        """Print to console pane"""
+        self.console.insert(END, str(msg))
+        self.console.see(END)
+        self.update()
+
+
     def __eject_srch_dir(self):
         to_eject = self._search_dir.get()
         if not to_eject or not osp.isdir(to_eject):
@@ -354,32 +408,6 @@ class SDTransferUtility(Frame):
             print 'SUCCESS EJECTING DISK!'
         except:
             print 'WAS NOT ABLE TO EXIT!'
-
-
-    def __dest_fname_mask(self, fname):
-        """Return image destination name file mask
-
-        In form of `%(site)s_YYYYMMDD.hhmm` YYYYMMDD is year/month/day, hhmm
-        is (24) hour/min, and %(site)s is for dict-style string substitution.
-        """
-        _, ext = osp.splitext(fname)
-        tags = process_file_exif_tags(open(fname, mode='rb'),
-                                      details=False,
-                                      stop_tag='DateTimeOriginal')
-        timestamp = str(tags['EXIF DateTimeOriginal'])
-        dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
-        return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext)
-
-
-    def __cprint(self, msg):
-        """Print to console pane"""
-        self.console.insert(END, str(msg))
-        self.console.see(END)
-        self.update()
-
-
-    def __transfer_images(self):
-        print 'Entered `__transfer_images`'
 
 
     def __quit(self):
