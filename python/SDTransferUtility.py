@@ -273,21 +273,16 @@ class SDTransferUtility(Frame):
         """Construct tree view data model"""
         w = self._sourcetree
 
-#        # remember selected row
-#        selected_row = w.selection()
-#        #print selected_row
-#        #if selected_row:
-#        #    # row iid may change, remember directory itself
-#        #    selected_row = w.item(selected_row, option='text')
-#
-#        # remember open tree controls
-#        open_nodes = []
-#        open_opt = BooleanVar() # for coercing _tkinter objects to bool
-#        for row in w.get_children():
-#            open_opt.set(str(w.item(row, option='open'))) # force to bool
-#            if open_opt.get():
-#                open_nodes.append(w.item(row, option='text'))
-#            w.delete(row)
+        # remember open tree controls & current selection
+        selected_row = w.selection()
+        open_nodes = []
+        open_opt = BooleanVar() # for coercing _tkinter objects to bool
+        for row in w.get_children():
+            open_opt.set(str(w.item(row, option='open'))) # force to bool
+            if open_opt.get():
+                #open_nodes.append(w.item(row, option='text'))
+                open_nodes.append(row)
+            w.delete(row)
 
         # populate
         for src_dir in sorted(self._sources.keys()):
@@ -296,31 +291,25 @@ class SDTransferUtility(Frame):
             site_code = self._sources[src_dir]['site_code']
 
             dest_str = dest_dir or '<not yet determined>'
-            iid = w.insert('', END, text=src_dir, tag='dir', values=[dest_str])
+            w.insert('', END, iid=src_dir, text=src_dir,
+                     tag='dir', values=[dest_str])
             for src_name in sorted(dest_names.keys()):
                 dest_name = self.__dest_fname_mask(src_name)
                 if site_code:
                     dest_name = dest_name % {'code' : site_code}
                     dest_names[src_name] = dest_name
-                w.insert(iid, END, text=osp.basename(src_name),
-                         tag='img', values=[dest_name])
+                w.insert(src_dir, END, text=osp.basename(src_name), tag='img',
+                         iid=src_name, values=[dest_name])
         w.tag_bind('dir', sequence='<Button-3>', callback=self.__gui_popup)
         w.bind('<<TreeviewSelect>>', self.__preview_img)
 
-#        # restore open tree controls
-#        topchildren = w.get_children()
-#        toptext = {w.item(kid, option='text') : kid for kid in topchildren}
-#        for row in open_nodes:
-#            if row in toptext.keys():
-#                kid = toptext[row]
-#                w.item(kid, open=True)
-
-#        # restore selected item
-#        if selected_row:
-#            w.selection_set(selected_row)
-##            row_iid = toptext.get(selected_row)
-##            if row_iid:
-##                w.selection_set(row_iid)
+        # restore open tree controls & select previous item
+        topchildren = w.get_children()
+        for row in open_nodes:
+            if row in topchildren:
+                w.item(row, open=True)
+        if selected_row:
+            w.selection_set(selected_row)
 
 
     def __preview_img(self, event):
