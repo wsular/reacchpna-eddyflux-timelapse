@@ -16,15 +16,24 @@ Folders
 Release Notes
 =============
 
+Next release
+------------
+- New graphical program for transferring timelapse image photos released:
+  `SDTransferUtility.pyw` replaces `transfer_timelapse_photos.py`
+    * Finds images using file name mask (e.g. searches multiple directories)
+    * Automatic preview of selected image file
+    * Process images from multiple locations (handled per directory)
+    * No external dependency on Ant Renamer (does require Windows)
+
 Version 0.3
 -------------
 - Release of script for processing newly downloaded telemetry data into 
   standard format and appending to existing data files
 - Definitions now contained in groups across multiple files:
-    . fileio : functions to open files, sniff properties, etc
-    . paths  : locations of directories and files
-    . sites  : objects containing monitoring site attributes
-    . tables : functions and dictionaries representing data file structure 
+    * fileio : functions to open files, sniff properties, etc
+    * paths  : locations of directories and files
+    * sites  : objects containing monitoring site attributes
+    * tables : functions and dictionaries representing data file structure 
 
 Version 0.2.3
 -----------

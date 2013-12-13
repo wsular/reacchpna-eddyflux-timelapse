@@ -30,6 +30,10 @@ CF_DRIVE = r'D:' # used by `CF Transfer Utility`
 SD_DRIVE = r'F:' # used by `Transfer timelapse photo` script
 
 
+#### Search pattern to find default image storage directories on SD cards
+SD_DEF_IMG_DIR = r'DCIM\*_WSCT\*.jpg' # w.r.t. SD_DRIVE (e.g. F:\DCIM\...)
+
+
 #### Subdirectory mask for tower data folders
 #### Use keyword substitute (e.g. tower_LIND, tower_CFNT...)
 TOWER_DIR = pathjoin(HOME_DIR, 'tower_%(code)s')
