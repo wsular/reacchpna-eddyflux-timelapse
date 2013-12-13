@@ -408,7 +408,7 @@ class SDTransferUtility(Frame):
             if not dest_names:
                 dirs_to_remove.append(srcdir)
         for ea in dirs_to_remove:
-            self._sources.pop(srcdir) # remove dirs with no files left
+            self._sources.pop(ea, None) # remove dirs with no files left
 
         self.__refresh_treeview()
 
