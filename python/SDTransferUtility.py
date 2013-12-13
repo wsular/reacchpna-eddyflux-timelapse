@@ -94,8 +94,8 @@ class SDTransferUtility(Frame):
         top_hpane.paneconfigure(inn_vpane)
         inn_vpane.paneconfigure(win_search, padx=5, pady=5, minsize=50)
         inn_vpane.paneconfigure(win_results, padx=5, pady=5, minsize=50)
-        top_hpane.paneconfigure(win_preview, padx=5, pady=5, minsize=100)
-        btm_hpane.paneconfigure(win_logger, padx=5, pady=5, minsize=100)
+        top_hpane.paneconfigure(win_preview, padx=5, pady=5, minsize=300)
+        btm_hpane.paneconfigure(win_logger, padx=5, pady=5, minsize=300)
         btm_hpane.paneconfigure(win_buttons, padx=5, pady=5, minsize=100)
 
 
@@ -177,7 +177,7 @@ class SDTransferUtility(Frame):
         btn_browse.pack(expand=NO, padx=(5,0), side=RIGHT)
 #        hfrm.pack(expand=NO, fill=X, side=BOTTOM, pady=(5,0))
 
-        self.__logpane = ScrolledText(thispane, height=2)
+        self.__logpane = ScrolledText(thispane, height=12)
         self.__logpane.pack(expand=YES, fill=BOTH, side=BOTTOM)
 
         ## tie into logging
