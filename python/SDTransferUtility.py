@@ -26,7 +26,7 @@ from win32file import GetDriveType, DRIVE_REMOVABLE
 from exifread import process_file as get_exif_tags
 
 from definitions.sites import site_list
-from definitions.paths import SD_DRIVE, TIMELAPSE_PHOTO_DIR
+from definitions.paths import SD_DRIVE, SD_DEF_IMG_DIR, TIMELAPSE_PHOTO_DIR
 from definitions.version import __version__
 
 
@@ -38,7 +38,7 @@ logger.addHandler(logging.NullHandler())
 class SDTransferUtility(Frame):
     """GUI program for transferring timelapse images from SD cards"""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, search_dir=None, search_str=None):
         Frame.__init__(self, parent)
         self.pack(padx=5, pady=5, expand=YES, fill=BOTH)
 
@@ -46,9 +46,12 @@ class SDTransferUtility(Frame):
         self._sources = {}
         self._log_output = IntVar(value=0)
         self._log_fname = StringVar(value='')
-        self._search_dir = StringVar(value=SD_DRIVE) # XXX
-        self._search_str = StringVar(value=r'DCIM\*_WSCT\*.jpg') # XXX
+        self._search_dir = StringVar()
+        self._search_str = StringVar()
         self._preview_img = None
+
+        self._search_dir.set(search_dir if search_dir else SD_DRIVE)
+        self._search_str.set(search_str if search_str else SD_DEF_IMG_DIR)
 
         self.master.title(self._prog_title)
         self.__gui_setup()
@@ -454,5 +457,10 @@ class SDTransferUtility(Frame):
 
 
 if __name__=='__main__':
-    SDTransferUtility().mainloop()
+    if len(argv) > 2:
+        SDTransferUtility(search_dir=argv[1], search_str=argv[2]).mainloop()
+    elif len(argv) > 1:
+        SDTransferUtility(search_dir=argv[1]).mainloop()
+    else:
+        SDTransferUtility().mainloop()
 
