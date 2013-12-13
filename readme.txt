@@ -16,6 +16,15 @@ Folders
 Release Notes
 =============
 
+Next release
+------------
+- New graphical program for transferring timelapse image photos released:
+  `SDTransferUtility.pyw` replaces `transfer_timelapse_photos.py`
+    * Finds images using file name mask (e.g. searches multiple directories)
+    * Automatic preview of selected image file
+    * Process images from multiple locations (handled per directory)
+    * No external dependency on Ant Renamer (does require Windows)
+
 Version 0.3
 -------------
 - Release of script for processing newly downloaded telemetry data into 
