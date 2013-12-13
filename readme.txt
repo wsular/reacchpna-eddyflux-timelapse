@@ -21,10 +21,10 @@ Version 0.3
 - Release of script for processing newly downloaded telemetry data into 
   standard format and appending to existing data files
 - Definitions now contained in groups across multiple files:
-    . fileio : functions to open files, sniff properties, etc
-    . paths  : locations of directories and files
-    . sites  : objects containing monitoring site attributes
-    . tables : functions and dictionaries representing data file structure 
+    * fileio : functions to open files, sniff properties, etc
+    * paths  : locations of directories and files
+    * sites  : objects containing monitoring site attributes
+    * tables : functions and dictionaries representing data file structure 
 
 Version 0.2.3
 -----------
