@@ -271,7 +271,7 @@ class SDTransferUtility(Frame):
     def __enable_processing(self):
         """if conditions are OK, enable the 'begin processing' button"""
         state = NORMAL
-        for srcdir, info in self._sources.items():
+        for _, info in self._sources.items():
             if not info['dest_dir']:
                 state = DISABLED
             if not info['site_code']:
@@ -286,8 +286,8 @@ class SDTransferUtility(Frame):
         self._sources.clear()
         for f in files_found:
             this_dir = self._sources.setdefault(osp.dirname(f), {})
-            dest_dir = this_dir.setdefault('dest_dir', None) # not used, just
-            site_code = this_dir.setdefault('site_code', None) # make defaults
+            this_dir.setdefault('dest_dir', None) # not used
+            this_dir.setdefault('site_code', None) # just set defaults
             dest_names = this_dir.setdefault('dest_names', {})
             dest_names[f] = None # init to none
         self.__refresh_treeview()
@@ -357,10 +357,12 @@ class SDTransferUtility(Frame):
                     self._preview.configure(text=imgpath,
                                             image=self._preview_img,
                                             compound=TOP)
-                except:
+                except Exception as ex:
                     self._preview.configure(text='<Preview not available>',
                                             image=None)
                     self._preview_img = None
+                    logger.debug('Exception prevented image preview load:\n'
+                                 + ex.message)
 
 
     def __dest_fname_mask(self, fname):
@@ -401,10 +403,12 @@ class SDTransferUtility(Frame):
                 moved = self.__move_image(src_path, dest_path)
                 if moved:
                     files_to_remove.append(src_path)
-            for ea in files_to_remove: dest_names.pop(ea) # remove if success
+            for ea in files_to_remove:
+                dest_names.pop(ea) # remove file name if moved
             if not dest_names:
                 dirs_to_remove.append(srcdir)
-        for ea in dirs_to_remove: self._sources.pop(srcdir)
+        for ea in dirs_to_remove:
+            self._sources.pop(srcdir) # remove dirs with no files left
 
         self.__refresh_treeview()
 
@@ -426,7 +430,7 @@ class SDTransferUtility(Frame):
         to_eject = self._search_dir.get()
         if not to_eject or not osp.isdir(to_eject):
             return
-        drive, path = osp.splitdrive(to_eject)
+        drive, _ = osp.splitdrive(to_eject)
         if GetDriveType(drive) != DRIVE_REMOVABLE:
             logger.info('NOT A REMOVABLE DRIVE!')
             return
@@ -436,11 +440,11 @@ class SDTransferUtility(Frame):
         try:
             driveletter = drive.strip(':')
             cwd = osp.dirname(argv[0])
-            eject_cmd = osp.join('"'+cwd, 'usb_disk_eject.exe" /REMOVELETTER %s')
-            os.system(eject_cmd % driveletter)
+            eject = osp.join('"'+cwd, 'usb_disk_eject.exe" /REMOVELETTER %s')
+            os.system(eject % driveletter)
             logger.info('SUCCESS EJECTING DISK!')
-        except:
-            logger.info('WAS NOT ABLE TO EXIT!')
+        except Exception as err:
+            logger.info('WAS NOT ABLE TO EXIT! Exception:\n' + err.message)
 
 
     def __quit(self):
