@@ -261,10 +261,10 @@ class SDTransferUtility(Frame):
         srcdir = self._search_dir.get()
         if osp.isdir(srcdir):
             drive, _ = osp.splitdrive(srcdir)
-        if GetDriveType(drive) == DRIVE_REMOVABLE:
-            logger.info('Source directory drive type is DRIVE_REMOVABLE so '
-                         'enabling eject button')
-            state = NORMAL
+            if GetDriveType(drive) == DRIVE_REMOVABLE:
+                logger.info('Source directory drive type is DRIVE_REMOVABLE so '
+                             'enabling eject button')
+                state = NORMAL
         self.__eject_src_btn.configure(state=state)
 
 
