@@ -16,6 +16,8 @@
 
 from os.path import join as pathjoin
 
+import os.path as osp
+
 from definitions.version import __version__
 
 
@@ -57,5 +59,27 @@ BASE_LOG_DIR = r'B:\proj\2011_REACCH\scripts\logs'
 
 TELEMETRY_LOG = pathjoin(BASE_LOG_DIR, 'process_new_telemetry_data.log')
 
+
+#### Path templates
+#
+# Substitute dict-style:
+#
+#   raw_binary_path = RAW_BINARY_DIR % {'site' : site_code,
+#                                       'table' : table_name}
+#
+# Available substitutions:
+#
+# %(site)s      replaced with four-character site code
+#               (e.g.: 'CFNT', 'LIND', 'MSLK', ...)
+# %(table)s     replaced with data file's table name
+#               (e.g.: 'tsdata', 'stats5', 'site_info', ...)
+#
+HOME = r'D:\proj\2011_REACCH'
+
+TOWERDATA = osp.join(HOME, r'tower_%(site)s')
+
+RAW_ASCII = osp.join(TOWERDATA, r'L0_raw_ascii')
+RAW_BINARY = osp.join(TOWERDATA, r'L0_raw_binary')
+RAW_STDFMT = osp.join(TOWERDATA, r'L0_standard_format')
 
 
