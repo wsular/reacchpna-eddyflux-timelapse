@@ -28,8 +28,8 @@ HOME_DIR = r'B:\proj\2011_REACCH' # Share folder host computer
 DOWNLOAD_DIR = r'C:\Campbellsci\Loggernet'
 
 #### Drive letters, no need for trailing slash
-CF_DRIVE = r'D:' # used by `CF Transfer Utility`
-SD_DRIVE = r'F:' # used by `Transfer timelapse photo` script
+CF_DRIVE = 'D:\\' # used by `CF Transfer Utility`
+SD_DRIVE = 'F:\\' # used by `Transfer timelapse photo` script
 
 
 #### Search pattern to find default image storage directories on SD cards
