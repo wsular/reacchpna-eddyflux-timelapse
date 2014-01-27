@@ -41,7 +41,7 @@ STD_FORMAT_DIR = pathjoin(TOWER_DIR, 'L0_standard_format')
 TELEMETRY_DIR = pathjoin(TOWER_DIR, 'L0_telemetry')
 
 #### Timelapse cam paths
-TIMELAPSE_PHOTO_DIR = pathjoin(TOWER_DIR, 'photos_timelapse')
+TIMELAPSE_PHOTO_DIR = pathjoin(TOWER_DIR, 'photos_timelapsecam')
 TIMELAPSE_VIDEO_DIR = pathjoin(TOWER_DIR, 'videos_timelapse')
 
 #### Agweathernet data storage location

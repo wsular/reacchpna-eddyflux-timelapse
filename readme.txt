@@ -16,6 +16,11 @@ Folders
 Release Notes
 =============
 
+Version 0.3.1
+-------------
+- Hot-fix correction of directory path handling in relation to timelapse
+  camera image transfer script
+
 Version 0.3
 -------------
 - Release of script for processing newly downloaded telemetry data into 

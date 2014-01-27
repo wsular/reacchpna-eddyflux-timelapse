@@ -112,7 +112,7 @@ if __name__ == '__main__':
     if choice.lower() == 'q':
         import sys; sys.exit()
 
-    cpydst = dstloc.format % {'code' : _codelist[choice]}
+    cpydst = dstloc % {'code' : _codelist[choice]}
     print 'Using target directory: ', cpydst
     confirm = raw_input('Press <enter> to continue or Ctrl+C to abort.')
 
