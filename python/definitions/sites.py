@@ -8,7 +8,7 @@
 @author: Patrick O'Keeffe <pokeeffe@wsu.edu>
 """
 
-from definitions.version import __version__
+from version import version as __version__
 
 
 class cfnt():
