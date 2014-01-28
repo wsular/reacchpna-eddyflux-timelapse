@@ -26,7 +26,7 @@ from win32file import GetDriveType, DRIVE_REMOVABLE
 from exifread import process_file as get_exif_tags
 
 from definitions.sites import site_list
-from definitions.paths import SD_DRIVE, SD_DEF_IMG_DIR, TIMELAPSE_PHOTO_DIR
+from definitions.paths import TIMELAPSE_PHOTOS
 from version import version as __version__
 
 
@@ -49,9 +49,6 @@ class SDTransferUtility(Frame):
         self._search_dir = StringVar()
         self._search_str = StringVar()
         self._preview_img = None
-
-        self._search_dir.set(search_dir if search_dir else SD_DRIVE)
-        self._search_str.set(search_str if search_str else SD_DEF_IMG_DIR)
 
         self.master.title(self._prog_title)
         self.__gui_setup()
@@ -243,7 +240,7 @@ class SDTransferUtility(Frame):
     def __set_srcdir_site(self, iid, code):
         """set key from None to site's code"""
         srcdir = self._sourcetree.item(iid, option='text')
-        destdir = TIMELAPSE_PHOTO_DIR % {'code' : code}
+        destdir = TIMELAPSE_PHOTOS % {'site' : code}
         self._sources[srcdir]['dest_dir'] = destdir
         self._sources[srcdir]['site_code'] = code
 
