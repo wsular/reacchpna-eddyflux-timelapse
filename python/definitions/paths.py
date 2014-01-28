@@ -26,7 +26,7 @@ from version import version as __version__
 
 
 # Base directory for project
-HOME = r'D:\proj\2011_REACCH' # for lar-d216-share.cee.wsu.edu
+HOME = r'B:\proj\2011_REACCH' # for lar-d216-share.cee.wsu.edu
 
 # Path to recently downloaded telemetry files
 TELEMETRY_SRC = r'C:\Campbellsci\Loggernet' # for lar-d216-share.cee.wsu.edu
