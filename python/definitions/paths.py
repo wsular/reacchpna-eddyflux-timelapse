@@ -18,7 +18,7 @@ from os.path import join as pathjoin
 
 import os.path as osp
 
-from definitions.version import __version__
+from version import version as __version__
 
 
 #### Base directory

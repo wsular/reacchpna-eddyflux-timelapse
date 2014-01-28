@@ -27,7 +27,7 @@ from exifread import process_file as get_exif_tags
 
 from definitions.sites import site_list
 from definitions.paths import SD_DRIVE, SD_DEF_IMG_DIR, TIMELAPSE_PHOTO_DIR
-from definitions.version import __version__
+from version import version as __version__
 
 
 logger = logging.getLogger(__name__)
