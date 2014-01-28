@@ -59,11 +59,14 @@ class SDTransferUtility(Frame):
         self._search_str = StringVar()
         self._preview_img = None
 
+        if search_dir: self._search_dir.set(search_dir)
+        if search_str: self._search_str.set(search_str)
+
         self.master.title(self._prog_title)
         self.__gui_setup()
-        if self._search_dir:
+        if self._search_dir.get():
             self.__enable_eject_btn()
-            if self._search_str:
+            if self._search_str.get():
                 self.__search()
 
 
