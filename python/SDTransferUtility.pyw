@@ -15,15 +15,24 @@ from glob import glob
 
 from Tkinter import *
 from tkFileDialog import askdirectory, asksaveasfilename
+from tkMessageBox import showerror
 from ScrolledText import ScrolledText
 from ttk import Treeview
+
+try:
+    # Homepage: https://github.com/ianare/exif-py
+    from exifread import process_file as get_exif_tags
+except ImportError:
+    Tk().withdraw() # hide default window
+    msg = ('The module `exifread` is missing. Please install by running "pip '
+            'install exifread" \nas an Administrator. The source can be found'
+            ' at https://github.com/ianare/exif-py. \n\nPress OK to exit.')
+    showerror(title='Missing module', message=msg)
+    exit()
 
 from PIL import Image, ImageTk
 
 from win32file import GetDriveType, DRIVE_REMOVABLE
-
-# Homepage: https://github.com/ianare/exif-py
-from exifread import process_file as get_exif_tags
 
 from definitions.sites import site_list
 from definitions.paths import TIMELAPSE_PHOTOS
