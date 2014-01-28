@@ -16,14 +16,30 @@ Folders
 Release Notes
 =============
 
-Next release
-------------
+Version 0.4.0
+-------------
+- Script launching batch files replaced with shortcuts; solves issue with
+  command reverting to Windows directory because of starting with UNC path
+  as CWD and thus failing to find targets
 - New graphical program for transferring timelapse image photos released:
   `SDTransferUtility.pyw` replaces `transfer_timelapse_photos.py`
     * Finds images using file name mask (e.g. searches multiple directories)
     * Automatic preview of selected image file
     * Process images from multiple locations (handled per directory)
-    * No external dependency on Ant Renamer (does require Windows)
+    * No external dependency on Ant Renamer
+    * Still only Windows-only
+- Overhaul of CompactFlash memory card transfer program
+    * More informative file characterization
+    * Automatic exclusion of non-REACCH/invalid data files
+    * Begin processing with single button press
+    * Input file names are no longer permanently modified
+    * Enhanced options availability: 
+        . Set parameters for identifying & splitting large files
+        . Specify target folder for standardized output
+    * Process files from multiple sites simulataneously
+    * Threading speeds up some processing steps
+    * Still requires monitoring to acknowledge CardConvert dialogs
+- Updated path definitions are cleaner to use
 
 Version 0.3
 -------------
