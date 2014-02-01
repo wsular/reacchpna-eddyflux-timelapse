@@ -16,6 +16,11 @@ Folders
 Release Notes
 =============
 
+Version 0.4.1
+-------------
+- Apply hotfix to `process_new_telemetry_data.py` which fixes script's ability
+  to locate correct destination directory
+
 Version 0.4.0
 -------------
 - Script launching batch files replaced with shortcuts; solves issue with
