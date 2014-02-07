@@ -16,6 +16,19 @@ Folders
 Release Notes
 =============
 
+Version 0.4.2
+-------------
+- New script `email_telemetry_plots.py` generates plots of data collected by 
+  telemetry from all five tower monitoring sites over the last 24 hours, 
+  exports the plots to a PDF file and emails the PDF to a list of individuals. 
+    * Runs automatically as part of the daily telemetry data processing task
+    * Can be run independently if necessary
+- New script `rebuild_telemetry_files.py` reconstructs monitoring tower 
+  "telemetry" data files (L0_telemetry) from the "raw plain-text" files
+  (L0_raw_ascii) using the standardizing script `standardize_toa5.py`. This
+  represents the first step to patching "raw plain-text" files with data in the
+  "telemetry" data files. 
+
 Version 0.4.1
 -------------
 - Apply hotfix to `process_new_telemetry_data.py` which fixes script's ability
