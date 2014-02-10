@@ -16,6 +16,17 @@ Folders
 Release Notes
 =============
 
+Version 0.4.3
+-------------
+- Minor tweaks to axis settings in telemetry plots:
+    * Clarify labels on logger panel temp. and friction velocity plots
+    * Set static bounds (+/-1000m) on Obukhov length plot axis
+- Reorder sites in telemetry plot summary to group by locality
+- Update scripts to reflect new location on share host -- scripts which run
+  automatically are no longer accessible on the network share.
+- Shortcuts are removed in favor of those on the share host's desktop and
+  start menu
+
 Version 0.4.2
 -------------
 - New script `email_telemetry_plots.py` generates plots of data collected by 
