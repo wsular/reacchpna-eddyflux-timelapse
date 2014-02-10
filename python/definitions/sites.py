@@ -47,7 +47,7 @@ class mslk():
     remote_ip = ('166.154.195.59', '255.255.255.0')
 
 
-site_list = [cfnt, lind, cfct, mmtn, mslk]
+site_list = [cfnt, cfct, mmtn, lind, mslk]
 
 
 sn2code = dict([[site.serial_num, site.code] for site in site_list])
