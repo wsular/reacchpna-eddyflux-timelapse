@@ -10,7 +10,7 @@ Source repository (Git):
   https://lar-d216-share.cee.wsu.edu/repos/git/reacch-obj2/ectower_data_scripts
 
 Project page:
-  https://lar-d216-share.cee.wsu.edu/redmine/projects/reacchobj2-ectower-datascripts
+  https://lar-d216-share.cee.wsu.edu/redmine/projects/id24
 
 The security certificate is self-signed. Non-SSL (http://) is available while
 using the WSU CEE network. For access from outside the WSU CEE network use:
