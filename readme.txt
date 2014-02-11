@@ -127,8 +127,6 @@ Version 0.4.3
     * Clarify labels on logger panel temp. and friction velocity plots
     * Set static bounds (+/-1000m) on Obukhov length plot axis
 - Reorder sites in telemetry plot summary to group by locality
-- Update scripts to reflect new location on share host -- scripts which run
-  automatically are no longer accessible on the network share.
 - Shortcuts are removed in favor of those on the share host's desktop and
   start menu
 - Add Overview section to readme explaining each script

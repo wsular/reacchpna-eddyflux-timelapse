@@ -48,6 +48,6 @@ TIMELAPSE_PHOTOS = osp.join(TOWERDATA, 'photos_timelapsecam') # captured images
 TIMELAPSE_VIDEOS = osp.join(TOWERDATA, 'videos_timelapse') # produced videos
 
 # Script log files
-LOGDIR = osp.join(r'C:\SERVER\routine_ops\reacch-obj2\logs')
+LOGDIR = osp.join(HOME, r'scripts\logs')
 TELEMETRY_LOG = osp.join(LOGDIR, 'process_new_telemetry_data.log')
 
