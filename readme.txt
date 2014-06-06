@@ -121,6 +121,13 @@ usb_disk_eject.exe
 Release Notes
 =============
 
+Version 0.4.4
+-------------
+- Hotfix applied to telemetry processing script so only REACCH-related files
+  are processed and deleted (!). Applied fix is still imperfect: it would
+  affect future additions if they follow the same naming convention for the
+  station in Loggernet (e.g. "REMOTE_<something>")
+
 Version 0.4.3
 -------------
 - Minor tweaks to axis settings in telemetry plots:
