@@ -389,7 +389,7 @@ class SDTransferUtility(Frame):
                              stop_tag='DateTimeOriginal')
         timestamp = str(tags['EXIF DateTimeOriginal'])
         dt = datetime.strptime(timestamp, '%Y:%m:%d %H:%M:%S')
-        return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext)
+        return dt.strftime('%%(code)s_%Y%m%d.%H%M'+ext.lower())
 
 
     def __transfer_images(self):
