@@ -1,6 +1,13 @@
 Release Notes
 =============
 
+### split-from-tower-data-repo ###
+
+- Not a version per-se, but an important point in the change history
+- Commit hash: df5b9ec2673078cb5a23c98c314a6585685a73fa
+- This commit was `HEAD` during the process of extraction from its parent repo,
+  the [tower data management repo](https://bitbucket.org/wsular/2011-reacch-tower-data).
+
 ### Version 0.4.4 ###
 
 - Hotfix applied to telemetry processing script so only REACCH-related files
