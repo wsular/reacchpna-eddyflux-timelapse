@@ -1,38 +1,29 @@
-Timelapse Image Management & Processing
-=======================================
+# Field Timelapse Image Management
 
-Regional Approaches to Climate Change (2011-2016)
--------------------------------------------------
+## Regional Approaches to Climate Change (2011-2016)
 
-The eddy covariance tower subgroup of the Objective 2 Monitoring team deploys
-consumer-grade time-lapse cameras at each monitoring site. This repository 
-tracks scripts for:
+Python scripts to automate file management from the greenhouse gas flux tower
+timelapse cameras.
 
-- transferring retrieved images to final storage location
-- extracting Exif metadata and renaming files to standard convention
-- [**FUTURE**] generating timelapse videos
+* Project Home: <http://reacchpna.org>
+* Flux tower repos
+    * [Biomass Sampling Data and Records](https://github.com/wsular/reacchpna-eddyflux-biomass)
+    * [Tower Logger Source Code](https://github.com/wsular/reacchpna-eddyflux-tower)
+    * [Tower Data Processing](https://github.com/wsular/reacchpna-eddyflux-processing)
+    * Field Timelapse Image Management (here)
 
-### Links 
 
-- Project home: <http://reacchpna.org>
-- Repositories
-    - Standard Operating Procedures: <https://bitbucket.org/wsular/2011-reacch-sops>
-    - Tower datalogger program: <https://bitbucket.org/wsular/2011-reacch-tower-logger>
-    - Tower data processing: <https://bitbucket.org/wsular/2011-reacch-tower-data>
-    - Timelapse cameras (**HERE**): <https://bitbucket.org/wsular/2011-reacch-timelapse>
+### Requirements
 
-### Components
+* [ExifRead](https://github.com/ianare/exif-py)
 
-Available scripts are described briefly below. For more complete operating
-instructions refer to `Monitoring Towers SOP.docx` within the 
-[SOP repository](https://bitbucket.org/wsular/2011-reacch-sops).
 
-#### SDTransferUtility.pyw
+### SDTransferUtility.pyw
 
 A graphical program for transferring images captured by timelapse cameras at
 monitoring tower sites (via SD card). It provides a simple interface to:
 
-* Identify which site the images were taken at
+* Identify which site the images were taken at (via right-click)
 * Review and update the destination directory
 * Copy images to the destination directory under new timestamped names
 
