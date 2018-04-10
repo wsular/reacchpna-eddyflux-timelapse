@@ -15,6 +15,7 @@ timelapse cameras.
 
 ### Requirements
 
+* Python 2.7 (or time to migrate to 3.x)
 * [ExifRead](https://github.com/ianare/exif-py)
 
 
